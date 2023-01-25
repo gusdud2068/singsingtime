@@ -21,6 +21,8 @@ public class OpenviduController {
 
 	private OpenVidu openvidu;
 
+	//private
+
 	@PostConstruct
 	public void init() {
 		this.openvidu = new OpenVidu(OPENVIDU_URL, OPENVIDU_SECRET);
