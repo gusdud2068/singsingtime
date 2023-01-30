@@ -1,6 +1,6 @@
 <template>
   <h2><b>Community</b></h2>
-
+  <div>
   <ul class="infinite-list" v-infinite-scroll="load" style="overflow: auto">
     <li
       v-for="i in video_list"
@@ -18,6 +18,7 @@
       ></v-pagination>
     </div>
   </ul>
+</div>
 </template>
 
 <script>
