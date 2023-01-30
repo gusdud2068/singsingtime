@@ -1,24 +1,109 @@
 <template>
   <h2><b>Community</b></h2>
   <div>
-  <ul class="infinite-list" v-infinite-scroll="load" style="overflow: auto">
-    <li
-      v-for="i in video_list"
-      class="infinite-list-item"
-      @click="clickContent(i)"
-      :key="i"
-    >
-      <ContentBox />
-    </li>
-    <div class="text-center">
-      <v-pagination
-        v-model="state.page"
-        :length="max_page"
-        @click="consolemethod(state.page)"
-      ></v-pagination>
-    </div>
-  </ul>
-</div>
+    <v-row justify="end" style="margin-right:60px;">
+      <div style="width:400px;">
+      <v-text-field
+        hide-details
+        placeholder="검색"
+        single-line
+        @keydown.enter="community_search_thing"
+        class="commu_search"
+      ></v-text-field>
+      </div>
+      <v-btn
+        class="inline"
+        variant="text"
+        icon="mdi-magnify"
+        style="margin-top: 20px"
+      ></v-btn>
+
+      <v-dialog v-model="content_dialog" max-width="600px">
+        <template v-slot:activator="{ on }">
+          <v-btn
+            class="inline upload"
+            variant="text"
+            @click="content_dialog = true"
+            v-on="on"
+            v-show="!state.token"
+          >
+            업로드
+          </v-btn>
+        </template>
+        <v-card>
+          <v-card-title>
+            <img
+              class="logo"
+              src="../../assets/images/login_logo.png"
+              style="width: 220px; margin-left: 180px"
+            />
+            <v-spacer></v-spacer>
+            <span class="text-h5" style="margin-left: 22px"
+              ><b>게시글 업로드</b></span
+            >
+          </v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12">
+                  <label for="title">제목</label>
+                  <textarea name="title" style="width: 100%"></textarea>
+                </v-col>
+                <v-col cols="12">
+                  <label for="context">내용</label>
+                  <textarea
+                    name="context"
+                    required
+                    style="height: 200px; width: 100%"
+                  ></textarea>
+                </v-col>
+                <div
+                  class="custom-file"
+                  style="margin-top: 25px; margin-left: 25px"
+                >
+                  <input id="customFile" type="file" @change="handleFileChange" />
+                  <label class="custom-file-label" for="customFile">{{
+                    file_name
+                  }}</label>
+                </div>
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="content_dialog = false">
+              Close
+            </v-btn>
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="(content_dialog = false), clickLogin()"
+            >
+              Save
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
+
+    <ul class="infinite-list">
+      <li
+        v-for="i in video_list"
+        class="infinite-list-item"
+        @click="clickContent(i)"
+        :key="i"
+      >
+        <ContentBox />
+      </li>
+      <div class="text-center">
+        <v-pagination
+          v-model="state.page"
+          :length="max_page"
+          @click="consolemethod(state.page)"
+        ></v-pagination>
+      </div>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -35,6 +120,7 @@ export default {
     return {
       page: 1,
       video_list: [],
+      content_dialog: false,
     };
   },
   setup() {
@@ -43,6 +129,12 @@ export default {
     const state = reactive({
       count: 54,
       page: 1,
+      community_search: false,
+      token: localStorage.getItem("jwt"),
+      form: {
+        id: "",
+        password: "",
+      },
     });
 
     const max_page = parseInt(state.count / 12) + 1;
@@ -62,7 +154,15 @@ export default {
         params: { Id: id },
       });
     };
-    return { state, load, clickContent, max_page, video_list };
+    
+    // const community_search_hover = () => {
+    //   state.community_search = !state.community_search;
+    //   // console.log(state.community_search);
+    // };
+    const community_search_thing = () => {
+      state.community_search = false;
+    };
+    return { state, load, clickContent, max_page, video_list, community_search_thing };
   },
   methods: {
     consolemethod(value) {
@@ -80,7 +180,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .infinite-list {
   padding-left: 0;
   max-height: calc(100% - 35px);
@@ -103,5 +203,22 @@ export default {
   max-width: 25%;
   display: inline-block;
   cursor: pointer;
+}
+
+.upload {
+  border: 1px solid rgb(186, 205, 255);
+  background-color: aliceblue;
+  margin-top: 25px; 
+}
+
+textarea {
+  border: 2px solid black;
+  outline: 2px solid rgb(219, 228, 230);
+  border-radius: 6px;
+}
+
+.commu_search{
+  margin-top:15px;
+  margin-bottom:10px;
 }
 </style>
