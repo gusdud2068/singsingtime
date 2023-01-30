@@ -37,7 +37,6 @@ public class UserServiceImpl implements UserService {
 		user.setUserId(userRegisterInfo.getId());
 		user.setName(userRegisterInfo.getName());
 		user.setNickname(userRegisterInfo.getNickname());
-		user.setEmail(userRegisterInfo.getEmail());
 		user.setPrefferedGenre(userRegisterInfo.getPrefferedGenre());
 		// 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
 		user.setPassword(passwordEncoder.encode(userRegisterInfo.getPassword()));
@@ -69,7 +68,6 @@ public class UserServiceImpl implements UserService {
 		User getUser = selectedUser.get();
 		getUser.setName(userUpdateReq.getName());
 		getUser.setNickname(userUpdateReq.getNickname());
-		getUser.setEmail(userUpdateReq.getEmail());
 		getUser.setPrefferedGenre(userUpdateReq.getPrefferedGenre());
 		getUser.setPassword(passwordEncoder.encode(userUpdateReq.getPassword()));
 
@@ -88,6 +86,15 @@ public class UserServiceImpl implements UserService {
 		Optional<User> selectedUser = userRepository.findByUserId(userId);
 		int res = selectedUser.isPresent() ? 1 : 0;
 		System.out.println("user service 85 " + res);
+		return res;
+	}
+
+	@Override
+	public int checkUserNickname(String nickname) {
+		Optional<User> selectedUser = userRepository.findByNickname(nickname);
+		int res = selectedUser.isPresent() ? 1 : 0;
+		System.out.println("user service 94 " + res);
+
 		return res;
 	}
 

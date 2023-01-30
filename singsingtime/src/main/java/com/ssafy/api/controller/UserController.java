@@ -86,6 +86,20 @@ public class UserController {
 		}
 	}
 
+	@GetMapping("/{nickname}")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "사용 가능한 ID 입니다."),
+			@ApiResponse(code = 409, message = "이미 존재하는 사용자 ID 입니다.")
+	})
+	public ResponseEntity<? extends BaseResponseBody> checkNicknameDuplication(@PathVariable String nickname){
+
+		if(userService.checkUserNickname(nickname) > 0){
+			return ResponseEntity.status(409).body(BaseResponseBody.of(409, "이미 존재하는 사용자 닉네임 입니다."));
+		}
+		else{
+			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "사용 가능한 닉네임 입니다."));
+		}
+	}
 
 
 	@PatchMapping("/{userId}")

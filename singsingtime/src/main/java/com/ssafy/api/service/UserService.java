@@ -16,4 +16,5 @@ public interface UserService {
 	int checkUserID(String userId);
 //	String getKaKaoAccessToken(String code);
 //	void createKakaoUser(String token);
+	int checkUserNickname(String nickname);
 }
