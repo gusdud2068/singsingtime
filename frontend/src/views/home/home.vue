@@ -40,7 +40,6 @@
   display: inline-block;
   cursor: pointer;
 }
-
 ::-webkit-scrollbar {
   width: 15px;
   height: 8px;

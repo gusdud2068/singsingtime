@@ -2,8 +2,6 @@
   <HeaderBar />
   <SideBar />
   <FooterBar />
-  <!-- <LogIn />
-  <SignUp /> -->
 </template>
 <script>
 import HeaderBar from "./components/HeaderBar.vue";

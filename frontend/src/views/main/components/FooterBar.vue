@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">FooterBar</div>
+  <div class="footer" :class="{dark: $route.name == 'ConferencesBox'}">FooterBar</div>
 </template>
 
 <script>

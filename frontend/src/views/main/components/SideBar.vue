@@ -6,6 +6,7 @@
         rail
         class="sidebar"
         style="transform: translateX(0%)"
+        v-if="$route.name !== 'ConferencesBox'"
       >
         <!-- <v-list>
           <v-list-item

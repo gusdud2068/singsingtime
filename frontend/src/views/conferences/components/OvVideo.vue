@@ -1,5 +1,5 @@
 <template>
-  <video autoplay />
+  <video class="live" autoplay />
 </template>
 
 <script>
@@ -15,3 +15,8 @@ export default {
   },
 };
 </script>
+<style>
+.live{
+  width: 200px;
+}
+</style>
