@@ -1,13 +1,5 @@
 <template>
-  <video
-    src="https://sstvideo.s3.ap-northeast-2.amazonaws.com/images/test.mp4"
-    width="400"
-    height="400"
-    controls
-  ></video>
-  <br />
   <h1>명예의 전당</h1>
-
   <div
     class="basebox"
     style="margin: auto; display: flex; width: 1200px; height: 70%"

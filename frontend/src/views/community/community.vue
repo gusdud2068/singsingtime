@@ -1,15 +1,15 @@
 <template>
   <h2><b>Community</b></h2>
   <div>
-    <v-row justify="end" style="margin-right:60px;">
-      <div style="width:400px;">
-      <v-text-field
-        hide-details
-        placeholder="검색"
-        single-line
-        @keydown.enter="community_search_thing"
-        class="commu_search"
-      ></v-text-field>
+    <v-row justify="end" style="margin-right: 60px">
+      <div style="width: 400px">
+        <v-text-field
+          hide-details
+          placeholder="검색"
+          single-line
+          @keydown.enter="community_search_thing"
+          class="commu_search"
+        ></v-text-field>
       </div>
       <v-btn
         class="inline"
@@ -61,7 +61,11 @@
                   class="custom-file"
                   style="margin-top: 25px; margin-left: 25px"
                 >
-                  <input id="customFile" type="file" @change="handleFileChange" />
+                  <input
+                    id="customFile"
+                    type="file"
+                    @change="handleFileChange"
+                  />
                   <label class="custom-file-label" for="customFile">{{
                     file_name
                   }}</label>
@@ -154,7 +158,7 @@ export default {
         params: { Id: id },
       });
     };
-    
+
     // const community_search_hover = () => {
     //   state.community_search = !state.community_search;
     //   // console.log(state.community_search);
@@ -162,7 +166,14 @@ export default {
     const community_search_thing = () => {
       state.community_search = false;
     };
-    return { state, load, clickContent, max_page, video_list, community_search_thing };
+    return {
+      state,
+      load,
+      clickContent,
+      max_page,
+      video_list,
+      community_search_thing,
+    };
   },
   methods: {
     consolemethod(value) {
@@ -208,7 +219,7 @@ export default {
 .upload {
   border: 1px solid rgb(186, 205, 255);
   background-color: aliceblue;
-  margin-top: 25px; 
+  margin-top: 25px;
 }
 
 textarea {
@@ -217,8 +228,8 @@ textarea {
   border-radius: 6px;
 }
 
-.commu_search{
-  margin-top:15px;
-  margin-bottom:10px;
+.commu_search {
+  margin-top: 15px;
+  margin-bottom: 10px;
 }
 </style>

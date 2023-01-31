@@ -177,7 +177,7 @@ export default {
 
       // Remove beforeunload listener
       window.removeEventListener("beforeunload", this.leaveSession);
-      window.close()
+      window.close();
     },
 
     updateMainVideoStreamManager(stream) {

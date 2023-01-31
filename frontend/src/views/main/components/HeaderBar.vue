@@ -65,15 +65,13 @@
             />
             <v-spacer></v-spacer>
             <span class="text-h5" style="margin-left: 22px"
-              ><b>회원가입</b></span>
+              ><b>회원가입</b></span
+            >
           </v-card-title>
           <v-card-text>
             <v-container>
-              
               <v-row>
-                
-                <v-col cols="9" style = "padding-top :0px;padding-bottom:0px;">
-                  
+                <v-col cols="9" style="padding-top: 0px; padding-bottom: 0px">
                   <v-text-field
                     v-model="user_id"
                     label="아이디"
@@ -85,8 +83,8 @@
                 <v-btn color="primary" style="margin-top: 22px"
                   >중복 확인</v-btn
                 >
-              
-                <v-col cols="9" style = "padding-top :0px;padding-bottom:0px;">
+
+                <v-col cols="9" style="padding-top: 0px; padding-bottom: 0px">
                   <v-text-field
                     v-model="user_nickname"
                     label="닉네임"
@@ -98,7 +96,7 @@
                 <v-btn color="primary" style="margin-top: 22px"
                   >중복 확인</v-btn
                 >
-                <v-col cols="12" style = "padding-top :0px;padding-bottom:5px;">
+                <v-col cols="12" style="padding-top: 0px; padding-bottom: 5px">
                   <v-text-field
                     v-model="user_password"
                     label="비밀번호*"
@@ -109,7 +107,7 @@
                     required
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" style = "padding-top :0px;padding-bottom:5px;">
+                <v-col cols="12" style="padding-top: 0px; padding-bottom: 5px">
                   <v-text-field
                     v-model="user_password_confirm"
                     label="비밀번호 확인*"
@@ -120,7 +118,7 @@
                     required
                   ></v-text-field>
                 </v-col>
-              
+
                 <!-- <v-col
                   cols="12"
                   sm="6"
@@ -131,7 +129,7 @@
                     required
                   ></v-select>
                 </v-col> -->
-                <v-col cols="6" style = "padding-top :0px;padding-bottom:5px;">
+                <v-col cols="6" style="padding-top: 0px; padding-bottom: 5px">
                   <v-autocomplete
                     v-model="user_genre"
                     :items="[
@@ -434,5 +432,4 @@ export default {
 .btnlogin {
   margin: auto;
 }
-
 </style>
