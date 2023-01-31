@@ -5,10 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="225203b2-75ab-45ec-aa8e-e49f81b2379a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../frontend/src/views/rank/rank.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/views/rank/rank.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.6/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.6/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.6/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.6/checksums/md5-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.6/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.6/checksums/sha1-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.6/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.6/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.6/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.6/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.6/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.6/fileHashes/fileHashes.bin" afterDir="false" />
@@ -17,18 +13,21 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/SingsingtimeApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/SingsingtimeApplication.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/controller/AuthController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/controller/AuthController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/controller/OpenviduController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/controller/OpenviduController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/controller/UserController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/controller/videoController.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/request/UserLoginPostReq.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/request/UserLoginPostReq.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/request/UserRegisterPostReq.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/request/UserRegisterPostReq.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/request/UserUpdatePatchReq.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/request/UserUpdatePatchReq.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/response/UserLoginPostRes.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/response/UserLoginPostRes.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/response/UserRes.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/response/UserRes.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/service/DiaryService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/service/DiaryService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/service/DiaryServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/service/DiaryServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/service/S3Uploader.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/service/S3Uploader.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/service/UserService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/service/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/api/service/UserServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/common/auth/JwtAuthenticationFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/common/auth/JwtAuthenticationFilter.class" afterDir="false" />
@@ -39,10 +38,12 @@
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/common/util/JwtTokenUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/common/util/JwtTokenUtil.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/common/util/ResponseBodyWriteUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/common/util/ResponseBodyWriteUtil.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/config/JpaConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/config/JpaConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/config/S3Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/config/S3Config.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/config/SecurityConfig.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/config/SwaggerConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/config/SwaggerConfig.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/config/WebMvcConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/config/WebMvcConfig.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/BaseEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/BaseEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/Diary.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/Diary.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/FamePlay$FamePlayBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/FamePlay$FamePlayBuilder.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/FamePlay.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/FamePlay.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/Genre$GenreBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/Genre$GenreBuilder.class" afterDir="false" />
@@ -52,6 +53,7 @@
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/PlayroomHistory$PlayroomHistoryBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/PlayroomHistory$PlayroomHistoryBuilder.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/PlayroomHistory.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/PlayroomHistory.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/QBaseEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/QBaseEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/QDiary.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/QDiary.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/QFamePlay.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/QFamePlay.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/QGenre.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/QGenre.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/QPlayroom.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/QPlayroom.class" afterDir="false" />
@@ -68,12 +70,19 @@
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/UserPlayroom.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/UserPlayroom.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/UserSong$UserSongBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/UserSong$UserSongBuilder.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/UserSong.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/entity/UserSong.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/repository/DiaryRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/repository/DiaryRepository.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/repository/UserRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/ssafy/db/repository/UserRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/main/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileQuerydsl/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileQuerydsl/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ssafy/api/controller/OpenviduController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ssafy/api/controller/OpenviduController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/generated/com/ssafy/db/entity/QBaseEntity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/generated/com/ssafy/db/entity/QDiary.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/generated/com/ssafy/db/entity/QFamePlay.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/generated/com/ssafy/db/entity/QGenre.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/generated/com/ssafy/db/entity/QPlayroom.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/generated/com/ssafy/db/entity/QPlayroomHistory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/generated/com/ssafy/db/entity/QSong.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/generated/com/ssafy/db/entity/QUser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/generated/com/ssafy/db/entity/QUserPlayroom.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/generated/com/ssafy/db/entity/QUserSong.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ssafy-web.log" beforeDir="false" afterPath="$PROJECT_DIR$/ssafy-web.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -101,8 +110,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -134,13 +143,13 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/SSAFY/2학기 공통/S08P12C105/singsingtime",
+    "last_opened_file_path": "C:/ssafy/singsingtime/S08P12C105/singsingtime",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.0",
     "spring.configuration.checksum": "8fb2fb2d1ffa32075b1eadc56dad3233",
     "vue.rearranger.settings.migration": "true"
@@ -166,6 +175,7 @@
       <workItem from="1675038567770" duration="3857000" />
       <workItem from="1675076080202" duration="13000" />
       <workItem from="1675076121321" duration="4818000" />
+      <workItem from="1675123383950" duration="1403000" />
     </task>
     <servers />
   </component>
