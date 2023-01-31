@@ -4,6 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
+    <list default="true" id="225203b2-75ab-45ec-aa8e-e49f81b2379a" name="Changes" comment="Changes" />
+=======
     <list default="true" id="225203b2-75ab-45ec-aa8e-e49f81b2379a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.gradle/7.6/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.6/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.6/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.6/executionHistory/executionHistory.lock" afterDir="false" />
@@ -85,6 +88,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/generated/com/ssafy/db/entity/QUserSong.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ssafy-web.log" beforeDir="false" afterPath="$PROJECT_DIR$/ssafy-web.log" afterDir="false" />
     </list>
+>>>>>>> 0445a28fb94cebd9553ef5b62fed24693aaf8411
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -143,15 +147,25 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
+<<<<<<< HEAD
+    "last_opened_file_path": "C:/SSAFY/singsingtime/S08P12C105",
+=======
     "last_opened_file_path": "C:/ssafy/singsingtime/S08P12C105/singsingtime",
+>>>>>>> 0445a28fb94cebd9553ef5b62fed24693aaf8411
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+<<<<<<< HEAD
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+=======
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.0",
     "spring.configuration.checksum": "8fb2fb2d1ffa32075b1eadc56dad3233",
+>>>>>>> 0445a28fb94cebd9553ef5b62fed24693aaf8411
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -173,9 +187,13 @@
       <option name="presentableId" value="Default" />
       <updated>1675038564031</updated>
       <workItem from="1675038567770" duration="3857000" />
+<<<<<<< HEAD
+      <workItem from="1675088078937" duration="88000" />
+=======
       <workItem from="1675076080202" duration="13000" />
       <workItem from="1675076121321" duration="4818000" />
       <workItem from="1675123383950" duration="1403000" />
+>>>>>>> 0445a28fb94cebd9553ef5b62fed24693aaf8411
     </task>
     <servers />
   </component>

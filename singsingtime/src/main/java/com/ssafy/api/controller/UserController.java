@@ -88,8 +88,8 @@ public class UserController {
 
 	@GetMapping("/{nickname}")
 	@ApiResponses({
-			@ApiResponse(code = 200, message = "사용 가능한 ID 입니다."),
-			@ApiResponse(code = 409, message = "이미 존재하는 사용자 ID 입니다.")
+			@ApiResponse(code = 200, message = "사용 가능한 닉네임 입니다."),
+			@ApiResponse(code = 409, message = "이미 존재하는 닉네임 입니다.")
 	})
 	public ResponseEntity<? extends BaseResponseBody> checkNicknameDuplication(@PathVariable String nickname){
 
@@ -102,7 +102,7 @@ public class UserController {
 	}
 
 
-	@PatchMapping("/{userId}")
+	@PutMapping("/{userId}")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
 			@ApiResponse(code = 401, message = "인증 실패"),
@@ -124,4 +124,7 @@ public class UserController {
 		userService.deleteUser(userId);
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
+
+
+
 }
