@@ -2,7 +2,9 @@
   <div justify="center" align="center" style="margin-top: 40px">
     <v-row>
       <v-col lg="7">
-        <h3 align="start" style="margin-left: 80px;"><b>어제자 광주 김범수 대결 영상 ㄷㄷ</b></h3>
+        <h3 align="start" style="margin-left: 80px">
+          <b>어제자 광주 김범수 대결 영상 ㄷㄷ</b>
+        </h3>
         <video
           src="../../assets/video/test.mp4"
           width="700"
@@ -10,8 +12,8 @@
           autoplay
         ></video>
         <v-row justify="space-between">
-          <p style="margin-left:80px;">3,201 View</p>
-          <p style="margin-right:80px;">219 <v-icon>mdi-heart</v-icon></p>
+          <p style="margin-left: 80px">3,201 View</p>
+          <p style="margin-right: 80px">219 <v-icon>mdi-heart</v-icon></p>
         </v-row>
       </v-col>
       <v-col lg="4" class="comment_box">
@@ -25,9 +27,9 @@
           />
           <v-btn class="comment_create">+</v-btn>
         </v-row>
-        <v-row justify="space-between" style="margin-top:20px;">
-          <p style="margin-left:5px;">내용</p>
-          <p style="margin-right:10px;">작성자</p>
+        <v-row justify="space-between" style="margin-top: 20px">
+          <p style="margin-left: 5px">내용</p>
+          <p style="margin-right: 10px">작성자</p>
         </v-row>
         <div class="comments_list"></div>
       </v-col>
@@ -47,7 +49,7 @@ export default {
 </script>
 
 <style>
-.comment_box{
+.comment_box {
   margin-top: 80px;
 }
 
@@ -63,7 +65,7 @@ export default {
   border-radius: 20px;
 }
 
-.comments_list{
+.comments_list {
   margin-top: 10px;
   width: 100%;
   height: 70%;

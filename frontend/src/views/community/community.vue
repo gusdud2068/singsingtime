@@ -1,107 +1,109 @@
 <template>
   <h2><b>Community</b></h2>
-    <v-row justify="end" style="margin-right: 60px">
-      <div style="width: 400px">
-        <v-text-field
-          hide-details
-          placeholder="검색"
-          single-line
-          @keydown.enter="community_search_thing"
-          class="commu_search"
-        ></v-text-field>
-      </div>
-      <v-btn
-        class="inline"
-        variant="text"
-        icon="mdi-magnify"
-        style="margin-top: 20px"
-      ></v-btn>
+  <v-row justify="end" style="margin-right: 60px">
+    <div style="width: 400px">
+      <v-text-field
+        hide-details
+        placeholder="검색"
+        single-line
+        @keydown.enter="community_search_thing"
+        class="commu_search"
+      ></v-text-field>
+    </div>
+    <v-btn
+      class="inline"
+      variant="text"
+      icon="mdi-magnify"
+      style="margin-top: 20px"
+    ></v-btn>
 
-      <v-dialog v-model="content_dialog" max-width="600px">
-        <template v-slot:activator="{ on }">
-          <v-btn
-            class="inline upload"
-            variant="text"
-            @click="content_dialog = true"
-            v-on="on"
-            v-show="state.token"
+    <v-dialog v-model="content_dialog" max-width="600px">
+      <template v-slot:activator="{ on }">
+        <v-btn
+          class="inline upload"
+          variant="text"
+          @click="content_dialog = true"
+          v-on="on"
+          v-show="state.token"
+        >
+          업로드
+        </v-btn>
+      </template>
+      <v-card>
+        <v-card-title>
+          <img
+            class="logo"
+            src="../../assets/images/login_logo.png"
+            style="width: 220px; margin-left: 180px"
+          />
+          <v-spacer></v-spacer>
+          <span class="text-h5" style="margin-left: 22px"
+            ><b>게시글 업로드</b></span
           >
-            업로드
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <label for="title">제목</label>
+                <textarea
+                  name="title"
+                  style="width: 100%"
+                  v-model="state.form.title"
+                ></textarea>
+              </v-col>
+              <v-col cols="12">
+                <label for="context">내용</label>
+                <textarea
+                  name="context"
+                  required
+                  style="height: 200px; width: 100%"
+                  v-model="state.form.context"
+                ></textarea>
+              </v-col>
+              <div class="custom-file">
+                <v-file-input id="customFile" @change="changeFile" />
+                <label class="custom-file-label" for="customFile">{{
+                  state.form.video.name
+                }}</label>
+              </div>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="content_dialog = false">
+            Close
           </v-btn>
-        </template>
-        <v-card>
-          <v-card-title>
-            <img
-              class="logo"
-              src="../../assets/images/login_logo.png"
-              style="width: 220px; margin-left: 180px"
-            />
-            <v-spacer></v-spacer>
-            <span class="text-h5" style="margin-left: 22px"
-              ><b>게시글 업로드</b></span
-            >
-          </v-card-title>
-          <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col cols="12">
-                  <label for="title">제목</label>
-                  <textarea
-                    name="title"
-                    style="width: 100%"
-                    v-model="state.form.title"
-                  ></textarea>
-                </v-col>
-                <v-col cols="12">
-                  <label for="context">내용</label>
-                  <textarea
-                    name="context"
-                    required
-                    style="height: 200px; width: 100%"
-                    v-model="state.form.context"
-                  ></textarea>
-                </v-col>
-                <div class="custom-file">
-                  <v-file-input id="customFile" @change="changeFile"/>
-                  <label class="custom-file-label" for="customFile">{{state.form.video.name}}</label>
-                </div>
-              </v-row>
-            </v-container>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="content_dialog = false">
-              Close
-            </v-btn>
-            <v-btn
-              color="blue darken-1"
-              text
-              @click="(content_dialog = false), submit()"
-            >
-              Save
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-row>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="(content_dialog = false), submit()"
+          >
+            Save
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
 
-    <ul class="infinite-list">
-      <li
-        v-for="i in video_list"
-        class="infinite-list-item"
-        @click="clickContent(i)"
-        :key="i"
-      >
-        <ContentBox />
-      </li>
-      <div class="text-center">
-        <v-pagination
-          v-model="state.page"
-          :length="max_page"
-          @click="consolemethod(state.page)"
-        ></v-pagination>
-      </div>
-    </ul>
+  <ul class="infinite-list">
+    <li
+      v-for="i in video_list"
+      class="infinite-list-item"
+      @click="clickContent(i)"
+      :key="i"
+    >
+      <ContentBox />
+    </li>
+    <div class="text-center">
+      <v-pagination
+        v-model="state.page"
+        :length="max_page"
+        @click="consolemethod(state.page)"
+      ></v-pagination>
+    </div>
+  </ul>
 </template>
 
 <script>
@@ -166,17 +168,17 @@ export default {
         id: state.form.id,
         title: state.form.title,
         context: state.form.context,
-        video: state.form.video
+        video: state.form.video,
       };
-      console.log(info.video)
-      console.log(111)
+      console.log(info.video);
+      console.log(111);
       axios({
         method: "post",
         url: "http://localhost:8080/diary/video",
         data: info,
         headers: {
-                'Content-Type': 'multipart/form-data'
-              }
+          "Content-Type": "multipart/form-data",
+        },
       })
         .then((res) => {
           alert("비디오 업로드 성공!");
@@ -213,15 +215,15 @@ export default {
     },
     async submit() {
       const formData = new FormData();
-      formData.append("video", this.video.target.files[0])
+      formData.append("video", this.video.target.files[0]);
 
       axios({
         method: "post",
         url: "http://localhost:8080/diary/video",
         data: formData,
         headers: {
-                'Content-Type': 'multipart/form-data'
-              }
+          "Content-Type": "multipart/form-data",
+        },
       })
         .then((res) => {
           alert("비디오 업로드 성공!");
@@ -235,8 +237,8 @@ export default {
         });
     },
     changeFile(file) {
-      this.video = file
-    }
+      this.video = file;
+    },
   },
 };
 </script>

@@ -16,7 +16,7 @@ export default {
 };
 </script>
 <style>
-.live{
+.live {
   width: 200px;
 }
 </style>

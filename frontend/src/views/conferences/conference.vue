@@ -1,12 +1,12 @@
 <template>
   <div id="main-container" class="container">
-      <input
-        class="btn btn-large btn-danger exit"
-        type="button"
-        id="buttonLeaveSession"
-        @click="leaveSession"
-        value="나가기"
-      />
+    <input
+      class="btn btn-large btn-danger exit"
+      type="button"
+      id="buttonLeaveSession"
+      @click="leaveSession"
+      value="나가기"
+    />
     <div id="session" v-if="jwt">
       <div id="session-header">
         <h1 id="session-title">{{ mySessionId }} 번방</h1>
@@ -18,12 +18,12 @@
         controls
         class="music"
       ></video>
-      <div class="play" style="display: flex;">
+      <div class="play" style="display: flex">
         <div id="main-video" class="user_video">
           <user-video :stream-manager="mainStreamManager" />
         </div>
         <div id="video-container">
-          <div class="user_video" style="margin-left: 270px;">
+          <div class="user_video" style="margin-left: 270px">
             <user-video
               :stream-manager="publisher"
               @click="updateMainVideoStreamManager(publisher)"
@@ -236,9 +236,9 @@ export default {
   color: white;
   padding: 20px;
 }
-#session{
+#session {
 }
-.play{
+.play {
   display: flex;
   width: 50%;
   margin: auto;
@@ -246,19 +246,19 @@ export default {
   left: 26%;
   /* border: 1px solid red; */
   position: absolute;
-  justify:space-between;
+  justify: space-between;
 }
-.user_video{
+.user_video {
   /* border: 1px solid white; */
   margin: 20px;
 }
-.music{
+.music {
   position: relative;
   top: 0%;
   left: 0%;
   border: 1px solid white;
 }
-.exit{
+.exit {
   float: right;
 }
 </style>

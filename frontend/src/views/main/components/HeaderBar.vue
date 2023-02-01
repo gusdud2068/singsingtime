@@ -1,7 +1,11 @@
 <template>
-  <v-card >
+  <v-card>
     <!-- <v-system-bar color="deep-purple darken-3"></v-system-bar> -->
-    <v-bar class="header_bar" color="primary" :class="{dark: $route.name == 'ConferencesBox'}">
+    <v-bar
+      class="header_bar"
+      color="primary"
+      :class="{ dark: $route.name == 'ConferencesBox' }"
+    >
       <button>
         <img
           class="logo"
@@ -43,7 +47,7 @@
             @click="logout"
             v-on="on"
             v-show="state.token"
-            :class="{dark: $route.name == 'ConferencesBox'}"
+            :class="{ dark: $route.name == 'ConferencesBox' }"
           >
             로그아웃
           </v-btn>
@@ -417,7 +421,7 @@ export default {
   display: flex;
   background-color: rgb(244, 247, 255);
 }
-.dark{
+.dark {
   background-color: black;
   color: white;
 }
