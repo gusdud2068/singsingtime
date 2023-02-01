@@ -50,13 +50,13 @@ export default {
       resolvePromise.value(true);
       const url = "#/conferences/" + state.conferencename + "/";
       window.open(url);
-      state.conferencename=''
+      state.conferencename = "";
     };
 
     const cancel = () => {
       baseModal.value.close();
       resolvePromise.value(false);
-      state.conferencename=''
+      state.conferencename = "";
     };
     return { state, baseModal, show, confirm, cancel };
   },

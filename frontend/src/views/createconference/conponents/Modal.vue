@@ -24,7 +24,8 @@ export default {
     };
 
     const close = () => {
-      isVis
+      isVisible.value = false;
+    };
 
     // setup 함수에서 리턴해주어야, 부모 컴포넌트에서 접근이 가능합니다.
     return {
@@ -47,22 +48,13 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  ba1kground: rgba($1olor: #000000, $alpha: 0.2);
+  background: rgba($color: #000000, $alpha: 0.2);
 
   .modal-container {
     background: white;
     max-width: 320px;
     width: 100%;
     padding: 1.5rem;
-  }
-}
-</style>
-x;
-    width: 100%;
-    padding: 1.5rem;
-  }
-}
-</style>ding: 1.5rem;
   }
 }
 </style>
