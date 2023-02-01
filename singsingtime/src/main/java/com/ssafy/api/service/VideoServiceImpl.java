@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.VideoRegisterPostReq;
 import com.ssafy.db.entity.Diary;
 import com.ssafy.db.entity.Video;
 import com.ssafy.db.repository.VideoRepository;
@@ -35,8 +36,12 @@ public class VideoServiceImpl implements VideoService{
 //    }
 
     @Override @Transactional
-    public void uploadVideo(MultipartFile file, Video video) throws IOException {
+    public void uploadVideo(MultipartFile file, VideoRegisterPostReq videoRegisterPostReq) throws IOException {
 //        System.out.println("Diary service saveDiary");
+        Video video = new Video();
+        video.setUserId(videoRegisterPostReq.getId());
+        video.setTitle(videoRegisterPostReq.getTitle());
+        video.setDescription(videoRegisterPostReq.getContext());
         if(!file.isEmpty()) {
             String storedFileName = s3Uploader.upload(file,"images");
             video.setUrl(storedFileName);

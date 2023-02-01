@@ -1,5 +1,6 @@
 package com.ssafy.db.repository;
 
+import com.ssafy.api.request.VideoRegisterPostReq;
 import com.ssafy.db.entity.Diary;
 import com.ssafy.db.entity.Video;
 import org.springframework.data.domain.Pageable;
