@@ -16,7 +16,7 @@
         "
       ></div>
       <div class="basebox" style="height: 60px">
-        <img class="medal" src="../../assets/images/2nd.png" />
+        <img class="medal" src="../../assets/images/second.png" />
       </div>
     </row>
     <row style="margin: 50px">
@@ -30,7 +30,7 @@
         "
       ></div>
       <div class="basebox" style="height: 90px">
-        <img class="medal" src="../../assets/images/1st.png" />
+        <img class="medal" src="../../assets/images/first.png" />
       </div>
     </row>
     <row style="margin: 50px">
@@ -45,7 +45,7 @@
         "
       ></div>
       <div class="basebox" style="height: 50px">
-        <img class="medal" src="../../assets/images/3rd.png" />
+        <img class="medal" src="../../assets/images/third.png" />
       </div>
     </row>
   </div>
@@ -64,7 +64,7 @@
             class="people_rank1"
             style="height: 90px; border-top: 5px solid black"
           >
-            <img class="mini_medal" src="../../assets/images/2nd.png" />
+            <img class="mini_medal" src="../../assets/images/second.png" />
           </div>
         </div>
         <div class="basebox1">
@@ -76,7 +76,7 @@
             class="people_rank1"
             style="height: 100px; border-top: 5px solid black"
           >
-            <img class="mini_medal" src="../../assets/images/1st.png" />
+            <img class="mini_medal" src="../../assets/images/first.png" />
           </div>
         </div>
         <div class="basebox1">
@@ -89,7 +89,7 @@
             class="people_rank1"
             style="height: 40px; border-top: 5px solid black"
           >
-            <img class="mini_medal" src="../../assets/images/3rd.png" />
+            <img class="mini_medal" src="../../assets/images/third.png" />
           </div>
         </div>
       </div>
@@ -107,7 +107,7 @@
             class="people_rank1"
             style="height: 90px; border-top: 5px solid black"
           >
-            <img class="mini_medal" src="../../assets/images/2nd.png" />
+            <img class="mini_medal" src="../../assets/images/second.png" />
           </div>
         </div>
         <div class="basebox1">
@@ -119,7 +119,7 @@
             class="people_rank1"
             style="height: 100px; border-top: 5px solid black"
           >
-            <img class="mini_medal" src="../../assets/images/1st.png" />
+            <img class="mini_medal" src="../../assets/images/first.png" />
           </div>
         </div>
         <div class="basebox1">
@@ -132,7 +132,7 @@
             class="people_rank1"
             style="height: 40px; border-top: 5px solid black"
           >
-            <img class="mini_medal" src="../../assets/images/3rd.png" />
+            <img class="mini_medal" src="../../assets/images/third.png" />
           </div>
         </div>
       </div>
