@@ -36,7 +36,7 @@ public class UserRes{
 		res.setPassword(user.getPassword());
 		res.setNickname(user.getNickname());
 		res.setChampionCnt(user.getChampionCnt());
-		res.setRank(user.getRank());
+		res.setRank(user.getUserRank());
 
 		return res;
 	}
