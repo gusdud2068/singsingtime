@@ -26,16 +26,16 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String userId;
 
-//    @JsonIgnore
-//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-//    @Column(nullable = false)
+    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(nullable = false)
     private String password;
 
     private String name;
     private String nickname;
     private int championCnt;
     private String prefferedGenre;
-    private int rank;
+    private int userRank;
 
 //    private String role;
 }
