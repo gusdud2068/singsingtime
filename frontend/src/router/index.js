@@ -5,12 +5,19 @@ import HomeView from "../views/home/home.vue";
 import MypageView from "../views/mypage/mypage.vue";
 import RankView from "../views/rank/rank.vue";
 import ContentsView from "../views/contents/content.vue";
+// import CreateConference from "../views/createconference/";
 
 const routes = [
   {
     path: "/",
     name: "HomeBox",
     component: HomeView,
+    // children: [
+    //   {
+    //     path: "createconference",
+    //     component: CreateConference,
+    //   },
+    // ],
   },
   {
     path: "/rank",

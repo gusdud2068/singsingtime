@@ -1,44 +1,43 @@
 <template>
-  <!-- <iframe
-    width="750px"
-    height="500px"
-    :src="movieVideo"
-    frameborder="0"
-  ></iframe> -->
   <div id="main-container" class="container">
+    <input
+      class="btn btn-large btn-danger exit"
+      type="button"
+      id="buttonLeaveSession"
+      @click="leaveSession"
+      value="나가기"
+    />
     <div id="session" v-if="jwt">
-      <!-- <iframe
-        width="750px"
-        height="500px"
-        :src="movieVideo"
-        frameborder="0"
-      ></iframe> -->
       <div id="session-header">
-        <h1 id="session-title">{{ mySessionId }}</h1>
-        <h1 id="session-title">{{ myUserName }}</h1>
-        <h1 id="session-title">{{ name }}</h1>
-        <input
-          class="btn btn-large btn-danger"
-          type="button"
-          id="buttonLeaveSession"
-          @click="leaveSession"
-          value="Leave session"
-        />
+        <h1 id="session-title">{{ mySessionId }} 번방</h1>
       </div>
-      <div id="main-video" class="col-md-6">
-        <user-video :stream-manager="mainStreamManager" />
-      </div>
-      <div id="video-container" class="col-md-6">
-        <user-video
-          :stream-manager="publisher"
-          @click="updateMainVideoStreamManager(publisher)"
-        />
-        <user-video
-          v-for="sub in subscribers"
-          :key="sub.stream.connection.connectionId"
-          :stream-manager="sub"
-          @click="updateMainVideoStreamManager(sub)"
-        />
+      <video
+        src="https://sstvideo.s3.ap-northeast-2.amazonaws.com/images/test.mp4"
+        width="800"
+        height="500"
+        controls
+        class="music"
+      ></video>
+      <div class="play" style="display: flex">
+        <div id="main-video" class="user_video">
+          <user-video :stream-manager="mainStreamManager" />
+        </div>
+        <div id="video-container">
+          <div class="user_video" style="margin-left: 270px">
+            <user-video
+              :stream-manager="publisher"
+              @click="updateMainVideoStreamManager(publisher)"
+            />
+          </div>
+          <div class="user_video">
+            <user-video
+              v-for="sub in subscribers"
+              :key="sub.stream.connection.connectionId"
+              :stream-manager="sub"
+              @click="updateMainVideoStreamManager(sub)"
+            />
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -177,7 +176,7 @@ export default {
 
       // Remove beforeunload listener
       window.removeEventListener("beforeunload", this.leaveSession);
-      this.$router.push("/");
+      window.close();
     },
 
     updateMainVideoStreamManager(stream) {
@@ -229,3 +228,37 @@ export default {
   },
 };
 </script>
+<style>
+.container {
+  height: 100%;
+  width: 100vw;
+  background-color: black;
+  color: white;
+  padding: 20px;
+}
+#session {
+}
+.play {
+  display: flex;
+  width: 50%;
+  margin: auto;
+  top: 15%;
+  left: 26%;
+  /* border: 1px solid red; */
+  position: absolute;
+  justify: space-between;
+}
+.user_video {
+  /* border: 1px solid white; */
+  margin: 20px;
+}
+.music {
+  position: relative;
+  top: 0%;
+  left: 0%;
+  border: 1px solid white;
+}
+.exit {
+  float: right;
+}
+</style>

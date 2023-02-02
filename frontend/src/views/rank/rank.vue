@@ -1,8 +1,10 @@
 <template>
-  <br>
   <h1>명예의 전당</h1>
-  <div class="basebox" style="margin: auto; display: flex; width: 1200px; height: 70%;">
-    <row style="margin:50px;">
+  <div
+    class="basebox"
+    style="margin: auto; display: flex; width: 1200px; height: 70%"
+  >
+    <row style="margin: 50px">
       <div class="basebox" style="height: 40px"></div>
       <div
         class="basebox award"
@@ -17,7 +19,7 @@
         <img class="medal" src="@/assets/images/2nd.png" />
       </div>
     </row>
-    <row style="margin:50px;">
+    <row style="margin: 50px">
       <div
         class="basebox award"
         style="
@@ -31,7 +33,7 @@
         <img class="medal" src="@/assets/images/1st.png" />
       </div>
     </row>
-    <row style="margin:50px;">
+    <row style="margin: 50px">
       <div class="basebox" style="height: 80px"></div>
       <div
         class="basebox award"
@@ -48,61 +50,93 @@
     </row>
   </div>
   <hr />
-  <div style="display: flex;">
+  <div style="display: flex">
     <div class="people_rank">
       <h3>우승횟수 랭킹</h3>
-      <div style="width:90%; margin: auto; display: flex;">
+      <div style="width: 90%; margin: auto; display: flex">
         <div class="basebox1">
-          <div class="people_rank1" style="height:20px; "></div>
+          <div class="people_rank1" style="height: 20px"></div>
           <h5>asdf</h5>
-          <div class="people_rank1" style="height:100px;"><img class="ex" src="@/assets/images/user_ex.png" /></div>
-          <div class="people_rank1" style="height:90px; border-top: 5px solid black;">
-            <img class="medal" src="@/assets/images/2nd.png" /></div>
-        </div>
-        <div class="basebox1">
-          <h5>asdf</h5>
-          <div class="people_rank1" style="height:100px;"><img class="ex" src="@/assets/images/user_ex.png" /></div>
-          <div class="people_rank1" style="height:100px; border-top: 5px solid black;">
-            <img class="medal" src="@/assets/images/1st.png" />
+          <div class="people_rank1" style="height: 100px">
+            <img class="ex" src="@/assets/images/user_ex.png" />
+          </div>
+          <div
+            class="people_rank1"
+            style="height: 90px; border-top: 5px solid black"
+          >
+            <img class="mini_medal" src="@/assets/images/2nd.png" />
           </div>
         </div>
         <div class="basebox1">
-          <div class="people_rank1" style="height:20px;"></div>
           <h5>asdf</h5>
-          <div class="people_rank1" style="height:100px;"><img class="ex" src="@/assets/images/user_ex.png" /></div>
-          <div class="people_rank1" style="height:40px; border-top: 5px solid black;">
-            <img class="medal" src="@/assets/images/3rd.png" />
+          <div class="people_rank1" style="height: 100px">
+            <img class="ex" src="@/assets/images/user_ex.png" />
+          </div>
+          <div
+            class="people_rank1"
+            style="height: 100px; border-top: 5px solid black"
+          >
+            <img class="mini_medal" src="@/assets/images/1st.png" />
+          </div>
+        </div>
+        <div class="basebox1">
+          <div class="people_rank1" style="height: 20px"></div>
+          <h5>asdf</h5>
+          <div class="people_rank1" style="height: 100px">
+            <img class="ex" src="@/assets/images/user_ex.png" />
+          </div>
+          <div
+            class="people_rank1"
+            style="height: 40px; border-top: 5px solid black"
+          >
+            <img class="mini_medal" src="@/assets/images/3rd.png" />
           </div>
         </div>
       </div>
     </div>
     <div class="people_rank" style="border-left: 1px solid lightgrey">
       <h3>연승횟수 랭킹</h3>
-      <div style="width:90%; margin: auto; display: flex;">
+      <div style="width: 90%; margin: auto; display: flex">
         <div class="basebox1">
-          <div class="people_rank1" style="height:30px; "></div>
+          <div class="people_rank1" style="height: 30px"></div>
           <h5>asdf</h5>
-          <div class="people_rank1" style="height:100px;"><img class="ex" src="@/assets/images/user_ex.png" /></div>
-          <div class="people_rank1" style="height:90px; border-top: 5px solid black;">
-            <img class="medal" src="@/assets/images/2nd.png" /></div>
-        </div>
-        <div class="basebox1">
-          <h5>asdf</h5>
-          <div class="people_rank1" style="height:100px;"><img class="ex" src="@/assets/images/user_ex.png" /></div>
-          <div class="people_rank1" style="height:100px; border-top: 5px solid black;">
-            <img class="medal" src="@/assets/images/1st.png" />
+          <div class="people_rank1" style="height: 100px">
+            <img class="ex" src="@/assets/images/user_ex.png" />
+          </div>
+          <div
+            class="people_rank1"
+            style="height: 90px; border-top: 5px solid black"
+          >
+            <img class="mini_medal" src="@/assets/images/2nd.png" />
           </div>
         </div>
         <div class="basebox1">
-          <div class="people_rank1" style="height:20px;"></div>
           <h5>asdf</h5>
-          <div class="people_rank1" style="height:100px;"><img class="ex" src="@/assets/images/user_ex.png" /></div>
-          <div class="people_rank1" style="height:40px; border-top: 5px solid black;">
-            <img class="medal" src="@/assets/images/3rd.png" />
+          <div class="people_rank1" style="height: 100px">
+            <img class="ex" src="@/assets/images/user_ex.png" />
+          </div>
+          <div
+            class="people_rank1"
+            style="height: 100px; border-top: 5px solid black"
+          >
+            <img class="mini_medal" src="@/assets/images/1st.png" />
+          </div>
+        </div>
+        <div class="basebox1">
+          <div class="people_rank1" style="height: 20px"></div>
+          <h5>asdf</h5>
+          <div class="people_rank1" style="height: 100px">
+            <img class="ex" src="@/assets/images/user_ex.png" />
+          </div>
+          <div
+            class="people_rank1"
+            style="height: 40px; border-top: 5px solid black"
+          >
+            <img class="mini_medal" src="@/assets/images/3rd.png" />
           </div>
         </div>
       </div>
-  </div>
+    </div>
   </div>
 </template>
 
@@ -113,14 +147,17 @@ export default {
 </script>
 
 <style>
-.ex{
+.mini_medal {
+  width: 50px;
+}
+.ex {
   height: 70px;
 }
-.people_rank1{
+.people_rank1 {
   width: 100%;
   padding: 0;
 }
-.basebox1{
+.basebox1 {
   margin: auto;
   padding: 0;
   width: 30%;

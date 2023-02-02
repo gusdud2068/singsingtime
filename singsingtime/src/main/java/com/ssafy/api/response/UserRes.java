@@ -16,20 +16,28 @@ public class UserRes{
 	@ApiModelProperty(name="User ID")
 	String userId;
 
-	@ApiModelProperty(name="User Name")
-	String name;
+	@ApiModelProperty(name="User password")
+	String password;
 
-	@ApiModelProperty(name="User Position")
-	String position;
+	@ApiModelProperty(name="User nickname")
+	String nickname;
 
-	@ApiModelProperty(name="User Department")
-	String department;
+	@ApiModelProperty(name="User championCnt")
+	int championCnt;
 
+	@ApiModelProperty(name="User rank")
+	int rank;
+	//노래 리스트도 추가해야함. 고민중.
 
 	
 	public static UserRes of(User user) {
 		UserRes res = new UserRes();
 		res.setUserId(user.getUserId());
+		res.setPassword(user.getPassword());
+		res.setNickname(user.getNickname());
+		res.setChampionCnt(user.getChampionCnt());
+		res.setRank(user.getRank());
+
 		return res;
 	}
 }
