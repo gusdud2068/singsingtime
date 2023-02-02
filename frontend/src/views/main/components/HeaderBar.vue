@@ -252,7 +252,7 @@
 <script>
 import { reactive, onMounted } from "vue";
 import axios from "axios";
-import { useStore } from "vuex";
+// import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
 export default {
@@ -327,7 +327,7 @@ export default {
   },
   methods: {
     async save() {
-      const validate = this.$refs.form.validate()
+      const validate = this.$refs.form.validate();
       // console.log(validate)
       // console.log(
       //   this.user_id,
@@ -336,11 +336,11 @@ export default {
       //   this.user_genre
       // );
 
-      const genre_list = []
-      for (let i =0; i <= this.user_genre.length-1 ; i++) {
-        genre_list.push(this.user_genre[i])
-      } 
-      const genre_string = genre_list.join(',')
+      const genre_list = [];
+      for (let i = 0; i <= this.user_genre.length - 1; i++) {
+        genre_list.push(this.user_genre[i]);
+      }
+      const genre_string = genre_list.join(",");
       const user = {
         name: this.user_name,
         id: this.user_id,
@@ -363,7 +363,7 @@ export default {
               (this.user_genre = "");
             alert("회원가입 성공!");
             console.log(res);
-            console.log(genre_string)
+            console.log(genre_string);
           })
           .catch((err) => {
             console.log(err);
@@ -434,7 +434,7 @@ export default {
           // localStorage.setItem("nickname", state.form.user_nickname);
           window.location.reload(true);
         })
-        .catch((err) => {
+        .catch(() => {
           alert("올바르지않은 아이디 혹은 비밀번호 입니다.");
         });
       // 로그인 클릭 시 validate 체크 후 그 결과 값에 따라, 로그인 API 호출 또는 경고창 표시
@@ -448,7 +448,7 @@ export default {
         url: "#",
         data: info,
       })
-        .then((res) => {
+        .then(() => {
           alert("아이디 중복체크 성공");
         })
         .catch((err) => {
@@ -465,7 +465,7 @@ export default {
         url: "#",
         data: info,
       })
-        .then((res) => {
+        .then(() => {
           alert("닉네임 중복체크 성공");
         })
         .catch((err) => {

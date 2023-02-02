@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import Modal from "../createconference/conponents/modal";
+import Modal from "@/views/createconference/conponents/Modal.vue";
 import { ref, reactive } from "vue";
 
 export default {
