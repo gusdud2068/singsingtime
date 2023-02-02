@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1fc333d5-4bad-4596-bd4f-f1b289093c8c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/application-develop.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/application-release.properties" afterDir="false" />
+    <list default="true" id="bfdf542d-bec4-421c-babb-667bb57455af" name="Changes" comment="fix: modify 비디오리포지토리 버그 수정">
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,17 +30,6 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="singsingtime" type="f1a62948:ProjectNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="singsingtime" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="singsingtime" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="build" type="c8890929:TasksNode$1" />
               </path>
             </expand>
             <select />
@@ -74,10 +60,13 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/ssafy/singsingtime/S08P12C105/singsingtime/src/main/resources",
+    "last_opened_file_path": "C:/SSAFY/C105_DEV/S08P12C105",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -127,16 +116,32 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="1fc333d5-4bad-4596-bd4f-f1b289093c8c" name="Changes" comment="" />
+      <changelist id="bfdf542d-bec4-421c-babb-667bb57455af" name="Changes" comment="fix: modify 비디오리포지토리 버그 수정" />
       <created>1675298997631</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1675298997631</updated>
       <workItem from="1675298998645" duration="4118000" />
+      <workItem from="1675314871701" duration="49000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fix: modify 비디오리포지토리 버그 수정" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: modify 비디오리포지토리 버그 수정" />
   </component>
 </project>
