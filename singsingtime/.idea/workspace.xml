@@ -10,13 +10,9 @@
       <change beforePath="$PROJECT_DIR$/.gradle/7.6/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.6/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.6/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.6/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ssafy/db/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ssafy/db/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ssafy-web.log" beforeDir="false" afterPath="$PROJECT_DIR$/ssafy-web.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +99,7 @@
       <recent name="C:\ssafy\singsingtime\S08P12C105\singsingtime" />
     </key>
   </component>
-  <component name="RunManager" selected="Docker.Dockerfile builder">
+  <component name="RunManager" selected="Spring Boot.SingsingtimeApplication-develop">
     <configuration name="singsingtime [bootJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -125,7 +121,8 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="SingsingtimeApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <configuration name="SingsingtimeApplication-develop" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <option name="ACTIVE_PROFILES" value="develop" />
       <module name="io.openvidu.singsingtime.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.ssafy.SingsingtimeApplication" />
       <method v="2">
@@ -133,7 +130,7 @@
       </method>
     </configuration>
     <configuration name="SingsingtimeApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="singsingtime.main" />
+      <module name="io.openvidu.singsingtime.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.ssafy.SingsingtimeApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -155,6 +152,12 @@
       <deployment type="dockerfile" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Docker.Dockerfile builder" />
+      <item itemvalue="Gradle.singsingtime [bootJar]" />
+      <item itemvalue="Spring Boot.SingsingtimeApplication" />
+      <item itemvalue="Spring Boot.SingsingtimeApplication-develop" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Docker.Dockerfile builder" />
@@ -172,7 +175,7 @@
       <updated>1675298997631</updated>
       <workItem from="1675298998645" duration="4118000" />
       <workItem from="1675314871701" duration="49000" />
-      <workItem from="1675315636945" duration="2082000" />
+      <workItem from="1675315636945" duration="4295000" />
     </task>
     <servers />
   </component>

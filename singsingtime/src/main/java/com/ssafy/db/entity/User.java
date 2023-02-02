@@ -26,9 +26,9 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String userId;
 
-    @JsonIgnore
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(nullable = false)
+//    @JsonIgnore
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//    @Column(nullable = false)
     private String password;
 
     private String name;
