@@ -351,7 +351,7 @@ export default {
       if (validate) {
         axios({
           method: "post",
-          url: "http://localhost:8080/api/v1/users/",
+          url: "http://singsingtime:8080/api/v1/users/",
           data: user,
         })
           .then((res) => {
