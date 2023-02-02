@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> fe4f5dfb6a10e5569cb82a4c4cd6acd6ada4f121
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/singsingtime.iml" filepath="$PROJECT_DIR$/.idea/modules/singsingtime.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/singsingtime.main.iml" filepath="$PROJECT_DIR$/.idea/modules/singsingtime.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/singsingtime.querydsl.iml" filepath="$PROJECT_DIR$/.idea/modules/singsingtime.querydsl.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/singsingtime.test.iml" filepath="$PROJECT_DIR$/.idea/modules/singsingtime.test.iml" />
-<<<<<<< HEAD
-=======
-=======
-      <module fileurl="file://$PROJECT_DIR$/.idea/singsingtime.iml" filepath="$PROJECT_DIR$/.idea/singsingtime.iml" />
->>>>>>> 6104c458b6fcc4859e11f19006222b85d522ef87
->>>>>>> fe4f5dfb6a10e5569cb82a4c4cd6acd6ada4f121
     </modules>
   </component>
 </project>
