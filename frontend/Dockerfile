@@ -3,7 +3,7 @@ WORKDIR /var/jenkins_home/workspace/singsingtime/frontend
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build
+RUN npm run dev
 FROM nginx:stable-alpine as production-stage
 
 COPY --from=build-stage /var/jenkins_home/workspace/singsingtime/frontend/dist /usr/share/nginx/html
