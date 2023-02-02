@@ -416,7 +416,7 @@ export default {
       };
       axios({
         method: "post",
-        url: "http://localhost:8080/api/v1/auth/login",
+        url: "http://3.36.120.87:8080/api/v1/auth/login",
         data: user,
       })
         .then((res) => {
