@@ -71,7 +71,7 @@ public class UserController {
 	}
 
 
-	@GetMapping("/{userId}")
+	@GetMapping("/id/{userId}")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "사용 가능한 ID 입니다."),
 			@ApiResponse(code = 409, message = "이미 존재하는 사용자 ID 입니다.")
@@ -86,7 +86,7 @@ public class UserController {
 		}
 	}
 
-	@GetMapping("/{nickname}")
+	@GetMapping("/nickname/{nickname}")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "사용 가능한 닉네임 입니다."),
 			@ApiResponse(code = 409, message = "이미 존재하는 닉네임 입니다.")
