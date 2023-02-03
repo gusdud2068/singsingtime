@@ -77,7 +77,7 @@ public class UserController {
 			@ApiResponse(code = 409, message = "이미 존재하는 사용자 ID 입니다.")
 	})
 	public ResponseEntity<? extends BaseResponseBody> checkIDDuplication(@PathVariable String userId){
-
+		System.out.println("id check 80");
 		if(userService.checkUserID(userId) > 0){
 			return ResponseEntity.status(409).body(BaseResponseBody.of(409, "이미 존재하는 사용자 ID 입니다."));
 		}

@@ -27,6 +27,25 @@
         ></v-app-bar-nav-icon> 
       -->
       <v-spacer></v-spacer>
+<<<<<<< HEAD
+      <div style="width: 60%; padding-right: 20px;">
+        <div style="text-align: right">
+          <h4 v-show="state.token">{{ state.user_id }}님 환영합니다</h4>
+        </div>
+        <div style="display: flex; width: 100%">
+          <v-text-field
+            hide-details
+            placeholder="검색"
+            single-line
+            style="margin: 20px; width: 40%"
+            v-show="state.search"
+            @keydown.enter="search_thing"
+          ></v-text-field>
+          <div
+            style="width: 100%; height: 96px;"
+            v-show="!state.search"
+          ></div>
+=======
 
       <!-- <v-text-field
         hide-details
@@ -47,143 +66,179 @@
 
       <v-dialog v-model="signup_dialog" persistent max-width="600px">
         <template v-slot:activator="{ on }">
+>>>>>>> ac53f5c897263e6d1d3ceeaea937f70c0d70e170
           <v-btn
+            @click="search_hover"
             class="inline"
             variant="text"
-            @click="logout"
-            v-on="on"
-            v-show="state.token"
-            :class="{ dark: $route.name == 'ConferencesBox' }"
-          >
-            로그아웃
-          </v-btn>
-          <v-btn
-            class="inline"
-            variant="text"
-            @click="signup_dialog = true"
-            v-on="on"
-            v-show="!state.token"
-          >
-            회원가입
-          </v-btn>
-        </template>
-        <v-card>
-          <v-card-title>
-            <img
-              class="logo"
-              src="../../../assets/images/login_logo.png"
-              style="width: 220px; margin-left: 180px"
-            />
-            <v-spacer></v-spacer>
-            <span class="text-h5" style="margin-left: 22px"
-              ><b>회원가입</b></span
-            >
-          </v-card-title>
-          <v-card-text style="padding-bottom: 0px">
-            <v-form ref="form" @submit.prevent="save">
-              <v-row>
-                <v-col cols="6" style="padding-top: 0px; padding-bottom: 0px">
-                  <v-text-field
-                    v-model="user_name"
-                    label="이름"
-                    :rules="name_rule"
-                    required
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="9" style="padding-top: 0px; padding-bottom: 0px">
-                  <v-text-field
-                    v-model="user_id"
-                    label="아이디"
-                    hint="영문과 숫자를 포함하여 5자~10자 이내로 작성해주세요"
-                    :rules="id_rule"
-                    required
-                  ></v-text-field>
-                </v-col>
+            icon="mdi-magnify"
+            style="margin-top: 25px"
+          ></v-btn>
+
+          <v-dialog v-model="signup_dialog" persistent max-width="600px">
+            <template v-slot:activator="{ on }">
+              <v-btn
+                class="inline"
+                variant="text"
+                @click="logout"
+                v-on="on"
+                v-show="state.token"
+                :class="{ dark: $route.name == 'ConferencesBox' }"
+              >
+                로그아웃
+              </v-btn>
+
+              <v-btn
+                class="inline"
+                variant="text"
+                @click="signup_dialog = true"
+                v-on="on"
+                v-show="!state.token"
+              >
+                회원가입
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-title>
+                <img
+                  class="logo"
+                  src="../../../assets/images/login_logo.png"
+                  style="width: 220px; margin-left: 180px"
+                />
+                <v-spacer></v-spacer>
+                <span class="text-h5" style="margin-left: 22px"
+                  ><b>회원가입</b></span
+                >
+              </v-card-title>
+              <v-card-text style="padding-bottom: 0px">
+                <v-form ref="form" @submit.prevent="save">
+                  <v-row>
+                    <v-col
+                      cols="6"
+                      style="padding-top: 0px; padding-bottom: 0px"
+                    >
+                      <v-text-field
+                        v-model="user_name"
+                        label="이름"
+                        :rules="name_rule"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col
+                      cols="9"
+                      style="padding-top: 0px; padding-bottom: 0px"
+                    >
+                      <v-text-field
+                        v-model="user_id"
+                        label="아이디"
+                        hint="영문과 숫자를 포함하여 5자~10자 이내로 작성해주세요"
+                        :rules="id_rule"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                    <v-btn
+                      color="primary"
+                      style="margin-top: 10px"
+                      @click="id_check"
+                      >중복 확인</v-btn
+                    >
+
+                    <v-col
+                      cols="9"
+                      style="padding-top: 0px; padding-bottom: 0px"
+                    >
+                      <v-text-field
+                        v-model="user_nickname"
+                        label="닉네임"
+                        hint="2자~10자 이내로 작성해주세요"
+                        :rules="nickname_rule"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                    <v-btn color="primary" style="margin-top: 10px"
+                      >중복 확인</v-btn
+                    >
+                    <v-col
+                      cols="12"
+                      style="padding-top: 0px; padding-bottom: 5px"
+                    >
+                      <v-text-field
+                        v-model="user_password"
+                        label="비밀번호*"
+                        hint="영문자, 숫자, 특수문자를 조합하여 8자~13자 이내로 작성해주세요"
+                        persistent-hint
+                        :rules="password_rule"
+                        type="password"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      style="padding-top: 0px; padding-bottom: 5px"
+                    >
+                      <v-text-field
+                        v-model="user_password_confirm"
+                        label="비밀번호 확인*"
+                        hint="비밀번호를 다시 입력해주세요"
+                        persistent-hint
+                        :rules="password_confirm_rule"
+                        type="password"
+                        required
+                      ></v-text-field>
+                    </v-col>
+
+                    <!-- <v-col
+                          cols="12"
+                          sm="6"
+                        >
+                          <v-select
+                            :items="['0-17', '18-29', '30-54', '54+']"
+                            label="Age*"
+                            required
+                          ></v-select>
+                        </v-col> -->
+                    <v-col
+                      cols="6"
+                      style="padding-top: 0px; padding-bottom: 5px"
+                    >
+                      <v-autocomplete
+                        v-model="user_genre"
+                        :items="[
+                          '발라드',
+                          '힙합',
+                          '댄스',
+                          '인디',
+                          '트로트',
+                          '팝송',
+                        ]"
+                        label="좋아하는 장르"
+                        multiple
+                      ></v-autocomplete>
+                    </v-col>
+                  </v-row>
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
                 <v-btn
-                  color="primary"
-                  style="margin-top: 10px"
-                  @click="id_check"
-                  >중복 확인</v-btn
+                  color="blue darken-1"
+                  text
+                  @click="signup_dialog = false"
                 >
-
-                <v-col cols="9" style="padding-top: 0px; padding-bottom: 0px">
-                  <v-text-field
-                    v-model="user_nickname"
-                    label="닉네임"
-                    hint="2자~10자 이내로 작성해주세요"
-                    :rules="nickname_rule"
-                    required
-                  ></v-text-field>
-                </v-col>
-                <v-btn color="primary" style="margin-top: 10px"
-                  >중복 확인</v-btn
+                  Close
+                </v-btn>
+                <v-btn
+                  color="blue darken-1"
+                  text
+                  @click="(signup_dialog = false), save()"
                 >
-                <v-col cols="12" style="padding-top: 0px; padding-bottom: 5px">
-                  <v-text-field
-                    v-model="user_password"
-                    label="비밀번호*"
-                    hint="영문자, 숫자, 특수문자를 조합하여 8자~13자 이내로 작성해주세요"
-                    persistent-hint
-                    :rules="password_rule"
-                    type="password"
-                    required
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" style="padding-top: 0px; padding-bottom: 5px">
-                  <v-text-field
-                    v-model="user_password_confirm"
-                    label="비밀번호 확인*"
-                    hint="비밀번호를 다시 입력해주세요"
-                    persistent-hint
-                    :rules="password_confirm_rule"
-                    type="password"
-                    required
-                  ></v-text-field>
-                </v-col>
-
-                <!-- <v-col
-                  cols="12"
-                  sm="6"
-                >
-                  <v-select
-                    :items="['0-17', '18-29', '30-54', '54+']"
-                    label="Age*"
-                    required
-                  ></v-select>
-                </v-col> -->
-                <v-col cols="6" style="padding-top: 0px; padding-bottom: 5px">
-                  <v-autocomplete
-                    v-model="user_genre"
-                    :items="[
-                      '발라드',
-                      '힙합',
-                      '댄스',
-                      '인디',
-                      '트로트',
-                      '팝송',
-                    ]"
-                    label="좋아하는 장르"
-                    multiple
-                  ></v-autocomplete>
-                </v-col>
-              </v-row>
-            </v-form>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="signup_dialog = false">
-              Close
-            </v-btn>
-            <v-btn
-              color="blue darken-1"
-              text
-              @click="(signup_dialog = false), save()"
-            >
-              Save
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+                  Save
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </div>
+      </div>
 
       <!--로그인-->
       <v-dialog v-model="login_dialog" persistent max-width="600px">
@@ -396,6 +451,7 @@ export default {
 >>>>>>> ecf69bfe9f7f9738bff76a017c8542625dbbda16
     },
   },
+
   watch: {
     group() {
       this.drawer = false;
@@ -407,9 +463,11 @@ export default {
     const state = reactive({
       search: false,
       token: localStorage.getItem("jwt"),
+      user_id: localStorage.getItem("Id"),
       form: {
         id: "",
         password: "",
+        // nickname:"",
       },
     });
     const search_hover = () => {
@@ -468,9 +526,29 @@ export default {
 >>>>>>> ecf69bfe9f7f9738bff76a017c8542625dbbda16
           state.token = res.data.accessToken;
           localStorage.setItem("jwt", res.data.accessToken);
+          localStorage.setItem("Id", state.form.id);
           // localStorage.setItem("nickname", state.form.user_nickname);
+          axios({
+            method: "get",
+            url: "http://localhost:8080/api/v1/users/me",
+            // data: state.token,
+            // headers: {
+            //   Authrozation: res.data.accessToken,
+            // },
+            data: { Authrozation: res.data.accessToken },
+          })
+            .then((res) => {
+              console.log(res);
+            })
+            .catch(() => {
+              console.log("불러오기 실패");
+            });
           window.location.reload(true);
         })
+<<<<<<< HEAD
+        .catch(() => {
+          alert("올바르지 않은 아이디 혹은 비밀번호 입니다.");
+=======
 <<<<<<< HEAD
         .catch((res) => {
           alert(res);
@@ -479,6 +557,7 @@ export default {
         .catch(() => {
           alert("올바르지않은 아이디 혹은 비밀번호 입니다.");
 >>>>>>> ecf69bfe9f7f9738bff76a017c8542625dbbda16
+>>>>>>> ac53f5c897263e6d1d3ceeaea937f70c0d70e170
         });
       // 로그인 클릭 시 validate 체크 후 그 결과 값에 따라, 로그인 API 호출 또는 경고창 표시
     };
@@ -486,9 +565,10 @@ export default {
       const info = {
         id: state.form.id,
       };
+      // console.log(state.form.id);
       axios({
-        method: "post",
-        url: "#",
+        method: "get",
+        url: `http://localhost:8080/api/v1/users/${state.form.id}`,
         data: info,
       })
         .then(() => {
