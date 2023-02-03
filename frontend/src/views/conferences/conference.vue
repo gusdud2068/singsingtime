@@ -7,17 +7,67 @@
       @click="leaveSession"
       value="나가기"
     />
+    <input
+      class="btn btn-large btn-danger exit"
+      type="button"
+      @click="handleClick"
+      value="유튜브"
+    />
+    <YouTube ref="modal" :content="modalContent" />
     <div id="session" v-if="jwt">
       <div id="session-header">
         <h1 id="session-title">{{ mySessionId }} 번방</h1>
       </div>
-      <video
+      <div v-if="sharing === true" class="buttomMenu">
+          <button
+            class="btn btn-large btn-default footerBtn"
+            type="button"
+            id="buttonLeaveSession"
+            @click="startScreenSharing()"
+          >
+            <b-icon
+              icon="file-arrow-up"
+              class="buttomMenuIcon"
+              aria-hidden="true"
+            ></b-icon>
+            <span class="footerBtnText">화면공유</span>
+          </button>
+        </div>
+
+        <div v-else class="buttomMenu">
+          <button
+            class="btn btn-large btn-default footerBtn"
+            type="button"
+            id="buttonLeaveSession"
+            @click="leaveSessionForScreenSharing()"
+          >
+            <b-icon
+              icon="file-arrow-down"
+              class="buttomMenuIcon"
+              aria-hidden="true"
+            ></b-icon>
+            <span class="footerBtnText">공유중지</span>
+          </button>
+          <!-- 나가기 버튼 -->
+        </div>
+      <!-- <video
         src="https://sstvideo.s3.ap-northeast-2.amazonaws.com/images/test.mp4"
         width="800"
         height="500"
         controls
         class="music"
-      ></video>
+      ></video> -->
+
+      <div v-if="video.id" class="embed-responsive embed-responsive-16by9" style="border: 1px solid white; height: 500px; width: 800px; margin: auto;">
+    <iframe
+      class="embed-responsive-item"
+      frameborder="0"
+      allowfullscreen="1"
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+      :src="`https://www.youtube.com/embed/${video.id.videoId}`"
+      style="width: 800px; height: 500px; "
+    ></iframe>
+  </div>
       <div class="play" style="display: flex">
         <div id="main-video" class="user_video">
           <user-video :stream-manager="mainStreamManager" />
@@ -47,6 +97,9 @@
 import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
 import UserVideo from "./components/UserVideo.vue";
+import YouTube from "../youtube/youtube.vue";
+import {ref} from "vue"
+import { mapGetters } from "vuex";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -58,6 +111,7 @@ export default {
 
   components: {
     UserVideo,
+    YouTube,
   },
 
   data() {
@@ -81,6 +135,7 @@ export default {
     sessionId() {
       return this.$route.params.Id;
     },
+    ...mapGetters(["video"]),
   },
   created() {
     this.joinSession();
@@ -225,6 +280,31 @@ export default {
       );
       return response.data; // The token
     },
+  },
+  setup(){
+    const modal = ref(null);
+    const modalContent = ref([
+      "확인/취소를 누르고",
+      "배경에 결과가 출력되는 것을",
+      "확인해보세요",
+    ]);
+    const result = ref("");
+
+    // async-await을 사용하여, Modal로부터 응답을 기다리게 된다.
+    const handleClick = async () => {
+      const ok = await modal.value.show();
+      if (ok) {
+        result.value = "확인을 눌렀군요!";
+      } else {
+        result.value = "취소를 눌렀네요?";
+      }
+    };
+    return {
+      modal,
+      modalContent,
+      result,
+      handleClick,
+    }
   },
 };
 </script>

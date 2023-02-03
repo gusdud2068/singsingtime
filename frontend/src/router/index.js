@@ -5,6 +5,7 @@ import HomeView from "../views/home/home.vue";
 import MypageView from "../views/mypage/mypage.vue";
 import RankView from "../views/rank/rank.vue";
 import ContentsView from "../views/contents/content.vue";
+import YouTube from "../views/youtube/youtube.vue";
 // import CreateConference from "../views/createconference/";
 
 const routes = [
@@ -45,6 +46,11 @@ const routes = [
     path: "/mypage",
     name: "MypageBox",
     component: MypageView,
+  },
+  {
+    path: "/youtube",
+    name: "YouTube",
+    component: YouTube,
   },
 ];
 

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
+<<<<<<< HEAD
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="jbr-17" project-jdk-type="JavaSDK" />
+=======
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$" />
   </component>
@@ -8,4 +11,5 @@
   <component name="ProjectType">
     <option name="id" value="jpab" />
   </component>
+>>>>>>> ecf69bfe9f7f9738bff76a017c8542625dbbda16
 </project>
