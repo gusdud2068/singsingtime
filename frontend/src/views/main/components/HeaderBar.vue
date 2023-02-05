@@ -19,7 +19,6 @@
           v-if="$route.name !== 'ConferencesBox'"
         />
       </button>
-
       <!-- 
           <v-app-bar-nav-icon
           variant="text"                
@@ -292,7 +291,7 @@ import { reactive, onMounted } from "vue";
 import axios from "axios";
 // import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-
+// import http from "@/libs/http";
 export default {
   name: "HeaderBar",
   data() {
@@ -388,7 +387,8 @@ export default {
       };
       axios({
         method: "post",
-        url: "http://localhost:8080/api/v1/users/",
+        // url: "http://localhost:8080/api/v1/users/",
+        url: import.meta.env.VITE_APP_URL+"/api/v1/users/",
         data: user,
       })
         .then((res) => {
@@ -442,7 +442,6 @@ export default {
       router.push("/");
     };
     const clickLogo = function () {
-      console.log(router.name);
       if (router.name !== "ConferencesBox") {
         router.push("/");
       }
