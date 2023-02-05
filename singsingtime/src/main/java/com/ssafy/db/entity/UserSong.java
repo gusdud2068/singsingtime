@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class UserSong {
@@ -21,4 +19,9 @@ public class UserSong {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "songId")
     private Song song;
+    @Builder
+    public UserSong(User user, Song song){
+        this.user =user;
+        this.song = song;
+    }
 }

@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
 		user.setUserId(userRegisterInfo.getId());
 		user.setName(userRegisterInfo.getName());
 		user.setNickname(userRegisterInfo.getNickname());
-		user.setPrefferedGenre(userRegisterInfo.getPrefferedGenre());
+		user.setPreferedGenre(userRegisterInfo.getPrefferedGenre());
 		// 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
 		user.setPassword(passwordEncoder.encode(userRegisterInfo.getPassword()));
 		return userRepository.save(user);
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
 		User getUser = selectedUser.get();
 		getUser.setName(userUpdateReq.getName());
 		getUser.setNickname(userUpdateReq.getNickname());
-		getUser.setPrefferedGenre(userUpdateReq.getPrefferedGenre());
+		getUser.setPreferedGenre(userUpdateReq.getPrefferedGenre());
 		getUser.setPassword(passwordEncoder.encode(userUpdateReq.getPassword()));
 
 		User updatedUser = userRepository.save(getUser);
@@ -97,7 +97,6 @@ public class UserServiceImpl implements UserService {
 
 		return res;
 	}
-
 //	@Override
 //	public String getKaKaoAccessToken(String code){
 //		String access_Token="";

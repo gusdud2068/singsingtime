@@ -19,23 +19,28 @@ import java.util.List;
  */
 @Data
 @Entity
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 public class User extends BaseEntity {
     @Column(nullable = false)
     private String userId;
-
     @JsonIgnore
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private String password;
-
     private String name;
     private String nickname;
     private int championCnt;
-    private String prefferedGenre;
+    private String preferedGenre;
     private int userRank;
-
+    @Builder
+    public User(String UserId, String password, String nickname, int championCnt,
+    String preferedGenre,int userRank){
+        this.userId = userId;
+        this.password =password;
+        this.nickname=nickname;
+        this.championCnt=championCnt;
+        this.preferedGenre=preferedGenre;
+        this.userRank=userRank;
+    }
 //    private String role;
 }
