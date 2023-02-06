@@ -14,12 +14,10 @@ import javax.persistence.Entity;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Video extends BaseEntity {
-    @Column(nullable = false)
-    private String userId;
-    @Column(nullable = false)
-    private String url;
-    @Column(nullable = false)
-    private int likeCnt;
     private String title;
     private String description;
+    private String url;
+    private int likeCnt;
+
+    private String userId;
 }

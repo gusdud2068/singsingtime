@@ -1,21 +1,30 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.VideoRegisterPostReq;
-import com.ssafy.db.entity.Diary;
 import com.ssafy.db.entity.Video;
 import com.ssafy.db.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class VideoServiceImpl implements VideoService{
-
-    // 의존성 주입
+    @Autowired
     private final VideoRepository videoRepository;
+    @Override
+    public List<Video> getAllVideo() {
+        return videoRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+    }
+
+    @Override
+    public List<Video> searchVideo(String keyword) {
+        return videoRepository.findByTitleContains(keyword);
+    }
 
     @Autowired
     private S3Uploader s3Uploader;
@@ -24,22 +33,11 @@ public class VideoServiceImpl implements VideoService{
         this.videoRepository = videoRepository;
     }
 
-//    @Override @Transactional
-//    public Long keepDiary(MultipartFile image, Video diary) throws IOException {
-//        System.out.println("Diary service saveDiary");
-//        if(!image.isEmpty()) {
-//            String storedFileName = s3Uploader.upload(image,"images");
-//            diary.setImageUrl(storedFileName);
-//        }
-//        Diary savedDiary = videoRepository.save(diary);
-//        return savedDiary.getDiary_id();
-//    }
-
     @Override @Transactional
-    public void uploadVideo(MultipartFile file, VideoRegisterPostReq videoRegisterPostReq) throws IOException {
+    public void uploadVideo(MultipartFile file, VideoRegisterPostReq videoRegisterPostReq, String userId) throws IOException {
 //        System.out.println("Diary service saveDiary");
         Video video = new Video();
-        video.setUserId(videoRegisterPostReq.getId());
+        video.setUserId(userId);
         video.setTitle(videoRegisterPostReq.getTitle());
         video.setDescription(videoRegisterPostReq.getContext());
         if(!file.isEmpty()) {
@@ -47,6 +45,5 @@ public class VideoServiceImpl implements VideoService{
             video.setUrl(storedFileName);
         }
         videoRepository.save(video);
-//        return saveVideo.
     }
 }

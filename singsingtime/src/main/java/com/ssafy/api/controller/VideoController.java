@@ -4,14 +4,18 @@ package com.ssafy.api.controller;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.request.VideoRegisterPostReq;
 import com.ssafy.api.service.VideoService;
+import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.Diary;
+import com.ssafy.db.entity.Song;
+import com.ssafy.db.entity.User;
 import com.ssafy.db.entity.Video;
 import com.ssafy.db.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,33 +24,34 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
+@RequestMapping("/videos")
 public class VideoController {
 
     @Autowired
     private VideoService videoService;
+    @Autowired
 
-//    @ResponseBody   // Long 타입을 리턴하고 싶은 경우 붙여야 함 (Long - 객체)
-//    @PostMapping(value="/diary/image",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public Long saveImage(HttpServletRequest request, @RequestParam(value="image") MultipartFile image, Diary diary) throws IOException {
-//        System.out.println("DiaryController.saveDiary");
-//        System.out.println(image);
-//        System.out.println(diary);
-//        System.out.println("------------------------------------------------------");
-//        Long diaryId = diaryService.keepDiary(image, diary);
-//        return diaryId;
-//    }
+    VideoRepository videoRepository;
 
-//    @ResponseBody   // Long 타입을 리턴하고 싶은 경우 붙여야 함 (Long - 객체)
-    @PostMapping(value="/diary/video",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<? extends BaseResponseBody> saveVideo(@RequestParam(value="video") MultipartFile file, VideoRegisterPostReq videoRegisterPostReq) throws IOException {
-//		System.out.println(video);
-        videoService.uploadVideo(file, videoRegisterPostReq);
+    @GetMapping()
+    public ResponseEntity<List<Video>> getAllVideo(){
+        List<Video> videoList = videoService.getAllVideo();
+        return ResponseEntity.status(200).body(videoList);
+    }
+
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<? extends BaseResponseBody> uploadVideo(@RequestParam(value="video") MultipartFile file, VideoRegisterPostReq videoRegisterPostReq, Authentication authentication) throws IOException {
+        SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+        String userId = userDetails.getUsername();
+        videoService.uploadVideo(file, videoRegisterPostReq, userId);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
-
-    @Autowired
-    VideoRepository videoRepository;
+    @GetMapping("/{keyword}")
+    public ResponseEntity<List<Video>> searchVideo(@PathVariable String keyword) {
+        List<Video> videoList = videoService.searchVideo(keyword);
+        return ResponseEntity.status(200).body(videoList);
+    }
 
     @GetMapping("/sort/daily")
     public ResponseEntity<List<Video>> getDailyVideo(){
