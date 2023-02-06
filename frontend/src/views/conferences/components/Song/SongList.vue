@@ -19,7 +19,6 @@ export default {
   },
   methods: {
     onSelectVideo: function (video) {
-      this.$emit("select-video", video);
       this.session
         .signal({
           data: JSON.stringify(video.id.videoId),
@@ -33,6 +32,7 @@ export default {
           console.log(err);
           console.log("전송 에러");
         });
+      console.log(this.$store.state.video);
     },
   },
   components: {

@@ -1,5 +1,6 @@
 <template>
   <div id="main-container" class="container">
+    <h1 style="color:white;">{{ this.mySessionId }} </h1>
     <input
       class="btn btn-large btn-danger exit"
       type="button"
@@ -50,7 +51,9 @@ export default {
     UserVideo,
     Song,
   },
-
+props:{
+  id:""
+},
   data() {
     return {
       // OpenVidu objects
