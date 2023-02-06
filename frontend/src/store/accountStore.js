@@ -1,25 +1,34 @@
-import { requestLogin } from "../common/api/accountAPI";
+// import { requestLogin } from "../common/api/accountAPI";
 
 const state = {
   token: null,
+  id: null,
+  password: null,
 };
 
 const getters = {
   getToken: (state) => {
     return state.token;
   },
+  getId: (state) => {
+    return state.id;
+  },
+  getPassword: (state) => {
+    return state.password;
+  },
 };
 
 const mutations = {
-  setToken: (state, token) => {
-    state.token = token;
+  setUserInfo: (state, loginData) => {
+    state.id = loginData.id;
+    state.password = loginData.password;
+    state.token = loginData.token;
   },
 };
 
 const actions = {
   loginAction: ({ commit }, loginData) => {
-    const response = requestLogin(loginData);
-    commit("setToken", response.data.accessToken);
+    commit("setUserInfo", loginData);
   },
 };
 

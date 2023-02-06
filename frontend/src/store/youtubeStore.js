@@ -1,64 +1,68 @@
-import Vue from "vue";
-import Vuex from "vuex";
 import axios from "axios";
 
-Vue.use(Vuex);
+const state = {
+  // data 저장소 ~= methods
+  userInput: "",
+  videos: [],
+  video: {},
+};
 
-export default new Vuex.Store({
-  state: {
-    // data 저장소 ~= methods
-    userInput: "",
-    videos: [],
-    video: {},
+const getters = {
+  // computed
+  userInput(state) {
+    return state.userInput;
   },
-  getters: {
-    // computed
-    userInput(state) {
-      return state.userInput;
-    },
-    videos(state) {
-      return state.videos;
-    },
-    video(state) {
-      return state.video;
-    },
+  videos(state) {
+    return state.videos;
   },
-  mutations: {
-    // data를 변경 ~= methods (동기적)
-    setUserInput(state, data) {
-      state.userInput = data;
-    },
-    setVideos(state, data) {
-      state.videos = data;
-    },
-    setVideo(state, data) {
-      state.video = data;
-    },
+  video(state) {
+    return state.video;
   },
-  actions: {
-    // data를 변경 ~= methods (비동기적)
-    getVideos(context, e) {
-      context.commit("setUserInput", e.target.value);
-      // 1. 입력된 검색어를 가지고,
-      const baseURL = "https://www.googleapis.com/youtube/v3/search";
-      const API_KEY = process.env.VUE_APP_YOUTUBE_API_KEY;
-      // 2. Youtube API에 요청을 보내어
-      axios
-        .get(baseURL, {
-          params: {
-            // key, part, q
-            key: API_KEY,
-            part: "snippet",
-            type: "video",
-            q: context.getters.userInput,
-            maxResults: 10,
-          },
-        })
-        .then((response) => {
-          context.commit("setVideos", response.data.items);
-        });
-      // 3. 검색어로 검색한 결과를 가져옴
-    },
+};
+
+const mutations = {
+  // data를 변경 ~= methods (동기적)
+  setUserInput(state, data) {
+    state.userInput = data;
   },
-  modules: {},
-});
+  setVideos(state, data) {
+    state.videos = data;
+  },
+  setVideo(state, data) {
+    state.video = data;
+  },
+};
+
+const actions = {
+  // data를 변경 ~= methods (비동기적)
+  getVideos(context, e) {
+    context.commit("setUserInput", e.target.value);
+    // 1. 입력된 검색어를 가지고,
+    const baseURL = "https://www.googleapis.com/youtube/v3/search";
+    const API_KEY = process.env.VUE_APP_YOUTUBE_API_KEY;
+    // 2. Youtube API에 요청을 보내어
+    axios
+      .get(baseURL, {
+        params: {
+          // key, part, q
+          key: API_KEY,
+          part: "snippet",
+          type: "video",
+          q: context.getters.userInput,
+          maxResults: 10,
+        },
+      })
+      .then((response) => {
+        context.commit("setVideos", response.data.items);
+      });
+    // 3. 검색어로 검색한 결과를 가져옴
+  },
+};
+
+export default {
+  namespaced: true,
+  state,
+  getters,
+  mutations,
+  actions,
+};
