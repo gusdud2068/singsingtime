@@ -28,7 +28,7 @@
       <v-spacer></v-spacer>
       <div style="width: 60%; padding-right: 20px">
         <div style="text-align: right">
-          <h4 v-show="state.token">{{ login_state.form.id }}님 환영합니다</h4>
+          <h4 v-show="state.token">{{ my_nickname }}님 환영합니다</h4>
         </div>
         <div style="display: flex; width: 100%">
           <v-text-field
@@ -276,7 +276,7 @@
 </template>
 
 <script>
-import { reactive, onMounted } from "vue";
+import { reactive, onMounted, onUpdated } from "vue";
 import axios from "axios";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -309,6 +309,11 @@ export default {
       ],
     };
   },
+  computed: {
+        my_nickname(){
+            return useStore().getters["nicknameStore/getNickname"]
+        }
+    },
 
   watch: {
     group() {
@@ -316,12 +321,13 @@ export default {
     },
   },
   setup() {
-    // const store = useStore();
+    const store = useStore();
     const router = useRouter();
     const state = reactive({
       search: false,
       token: localStorage.getItem("jwt"),
     });
+
     const signup_state = reactive({
       form: {
         name: "",
@@ -418,7 +424,6 @@ export default {
     };
 
     // 로그인
-    const store = useStore();
     const clickLogin = function () {
       const user = {
         id: login_state.form.id,
@@ -428,54 +433,47 @@ export default {
         method: "post",
         url: "http://localhost:8080/api/v1/auth/login",
         data: user,
-      }).then((res) => {
-        alert("로그인 성공!");
-        // console.log(res);
-        console.log("submit");
-        // console.log("accessToken " + store.getters["accountStore/getToken"]);
-        state.token = res.data.accessToken;
-        store.dispatch("accountStore/loginAction", {
-          id: login_state.form.id,
-          password: login_state.form.password,
-          token: state.token,
-        });
-        localStorage.setItem("jwt", res.data.accessToken);
-        axios({
-          method: "get",
-          url: "http://localhost:8080/api/v1/Users/me",
-          // data: state.token,
-          // headers: {
-          //   Authrozation: res.data.accessToken,
-          // },
-          data: { Authrozation: res.data.accessToken },
-        })
-          .then((res) => {
-            console.log(res);
-            axios({
-              method: "get",
-              url: `http://localhost:8080/api/v1/users/me`,
-              headers: {
-                Authorization: `Token ${state.token}`,
-              },
-            })
-              .then((res) => {
-                console.log(res);
-              })
-              .catch((err) => {
-                alert(err);
-              });
-          })
-          .catch(() => {
-            alert("올바르지않은 아이디 혹은 비밀번호 입니다.");
+      })
+        .then((res) => {
+          alert("로그인 성공!");
+          // console.log(res);
+          console.log("submit");
+          // console.log("accessToken " + store.getters["accountStore/getToken"]);
+          state.token = res.data.accessToken;
+          store.dispatch("accountStore/loginAction", {
+            id: login_state.form.id,
+            password: login_state.form.password,
+            token: state.token,
           });
-        window.location.reload(true);
-      });
+          localStorage.setItem("jwt", res.data.accessToken);
+          axios({
+            method: "get",
+            url: `http://localhost:8080/api/v1/users/me`,
+            headers: {
+              Authorization: `Bearer ${state.token}`,
+            },
+          })
+            .then((res) => {
+              store.dispatch("nicknameStore/saveNickname", {
+                nickname : res.data.nickname,
+              });
+            })
+            .catch((err) => {
+              alert(err);
+            });
+            window.location.reload(true);
+        })
+        .catch(() => {
+          alert("올바르지않은 아이디 혹은 비밀번호 입니다.");
+        });
+      
     };
+
 
     //로그아웃
     const logout = function () {
       localStorage.removeItem("jwt");
-      localStorage.removeItem("nickname");
+      localStorage.removeItem("vuex");
       state.token = false;
       console.log(state.token);
       window.location.reload(true);
@@ -513,22 +511,6 @@ export default {
         });
     };
 
-    const getUserInfo = function () {
-      axios({
-        method: "get",
-        url: `http://localhost:8080/api/v1/users/me`,
-        headers: {
-          Authorization: `Token ${state.token}`,
-        },
-      })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          alert(err);
-        });
-    };
-
     const clickLogo = function () {
       if (router.name !== "ConferencesBox") {
         router.push("/");
@@ -542,9 +524,11 @@ export default {
     const search_thing = () => {
       state.search = false;
     };
+
     onMounted(() => {
       // console.log(loginForm.value)
     });
+
 
     return {
       search_hover,
@@ -557,7 +541,6 @@ export default {
       logout,
       id_check,
       nickname_check,
-      getUserInfo,
       search_thing,
       clickLogo,
     };
