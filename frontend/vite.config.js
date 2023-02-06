@@ -6,16 +6,14 @@ import vue from "@vitejs/plugin-vue";
 import vuetify from "vite-plugin-vuetify";
 // https://vitejs.dev/config/
 
-export default({mode}) => {
-  process.env = {...process.env, ...loadEnv(mode, process.cwd())};
+export default ({ mode }) => {
+  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
   return defineConfig({
-    plugins: [
-      vue(),vuetify({ autoImport: true }),
-      ],
+    plugins: [vue(), vuetify({ autoImport: true })],
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
       },
     },
   });
-}
+};

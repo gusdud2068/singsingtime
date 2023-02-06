@@ -26,7 +26,7 @@
         ></v-app-bar-nav-icon> 
       -->
       <v-spacer></v-spacer>
-      <div style="width: 60%; padding-right: 20px;">
+      <div style="width: 60%; padding-right: 20px">
         <div style="text-align: right">
           <h4 v-show="state.token">{{ state.user_id }}님 환영합니다</h4>
         </div>
@@ -39,10 +39,7 @@
             v-show="state.search"
             @keydown.enter="search_thing"
           ></v-text-field>
-          <div
-            style="width: 100%; height: 96px;"
-            v-show="!state.search"
-          ></div>
+          <div style="width: 100%; height: 96px" v-show="!state.search"></div>
           <v-btn
             @click="search_hover"
             class="inline"
@@ -131,7 +128,7 @@
                         required
                       ></v-text-field>
                     </v-col>
-                    <v-btn color="primary" style="margin-top: 10px"
+                    <v-btn color="primary" style="margin-top: 10px" @click="nickname_check"
                       >중복 확인</v-btn
                     >
                     <v-col
@@ -385,10 +382,11 @@ export default {
         nickname: this.user_nickname,
         genre: genre_string,
       };
+
       axios({
         method: "post",
         // url: "http://localhost:8080/api/v1/users/",
-        url: import.meta.env.VITE_APP_URL+"/api/v1/users/",
+        url: import.meta.env.VITE_APP_URL + "/api/v1/users/",
         data: user,
       })
         .then((res) => {
@@ -401,6 +399,33 @@ export default {
         })
         .catch((res) => {
           alert(res);
+        });
+    },
+    id_check () {
+      // console.log(state.form.id);
+      axios({
+        method: "get",
+        url: `http://localhost:8080/api/v1/users/id/${this.user_id}`,
+      })
+        .then((res) => {
+          console.log(res.data.message)
+          alert(res.data.message);
+        })
+        .catch((err) => {
+          alert(err.response.data.message);
+        });
+    },
+    nickname_check () {
+      axios({
+        method: "get",
+        url: `http://localhost:8080/api/v1/users/nickname/${this.user_nickname}`,
+      })
+      .then((res) => {
+          console.log(res.data.message)
+          alert(res.data.message);
+        })
+        .catch((err) => {
+          alert(err.response.data.message);
         });
     },
   },
@@ -456,75 +481,74 @@ export default {
         method: "post",
         url: "http://localhost:8080/api/v1/auth/login",
         data: user,
-      })
-        .then((res) => {
-          alert("로그인 성공!");
-          // console.log(res);
-          console.log("submit");
-          // store.dispatch("accountStore/loginAction", {
-          //   id: state.form.id,
-          //   password: state.form.password,
-          // });
-          // console.log("accessToken " + store.getters["accountStore/getToken"]);
-          console.log(res.data);
-          state.token = res.data.accessToken;
-          localStorage.setItem("jwt", res.data.accessToken);
-          localStorage.setItem("Id", state.form.id);
-          // localStorage.setItem("nickname", state.form.user_nickname);
-          axios({
-            method: "get",
-            url: "http://localhost:8080/api/v1/users/me",
-            // data: state.token,
-            // headers: {
-            //   Authrozation: res.data.accessToken,
-            // },
-            data: { Authrozation: res.data.accessToken },
-          })
-            .then((res) => {
-              console.log(res);
-            })
-            .catch(() => {
-              alert("올바르지않은 아이디 혹은 비밀번호 입니다.");
-            });
-          window.location.reload(true);
+      }).then((res) => {
+        alert("로그인 성공!");
+        // console.log(res);
+        console.log("submit");
+        // store.dispatch("accountStore/loginAction", {
+        //   id: state.form.id,
+        //   password: state.form.password,
+        // });
+        // console.log("accessToken " + store.getters["accountStore/getToken"]);
+        console.log(res.data);
+        state.token = res.data.accessToken;
+        localStorage.setItem("jwt", res.data.accessToken);
+        localStorage.setItem("Id", state.form.id);
+        // localStorage.setItem("nickname", state.form.user_nickname);
+        axios({
+          method: "get",
+          url: "http://localhost:8080/api/v1/Users/me",
+          // data: state.token,
+          // headers: {
+          //   Authrozation: res.data.accessToken,
+          // },
+          data: { Authrozation: res.data.accessToken },
         })
-
+          .then((res) => {
+            console.log(res);
+          })
+          .catch(() => {
+            alert("올바르지않은 아이디 혹은 비밀번호 입니다.");
+          });
+        window.location.reload(true);
+      });
       // 로그인 클릭 시 validate 체크 후 그 결과 값에 따라, 로그인 API 호출 또는 경고창 표시
     };
-    const id_check = function () {
-      const info = {
-        id: state.form.id,
-      };
-      // console.log(state.form.id);
-      axios({
-        method: "get",
-        url: `http://localhost:8080/api/v1/users/${state.form.id}`,
-        data: info,
-      })
-        .then(() => {
-          alert("아이디 중복체크 성공");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
+    // const id_check = function () {
+    //   const info = {
+    //     id: state.form.id,
+    //   };
+    //   // console.log(state.form.id);
+    //   axios({
+    //     method: "get",
+    //     url: `http://localhost:8080/api/v1/users/id/${state.form.id}`,
+    //     data: info,
+    //   })
+    //     .then((res) => {
+    //       alert(res);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // };
 
-    const nickname_check = function () {
-      const info = {
-        nickname: state.form.nickname,
-      };
-      axios({
-        method: "post",
-        url: "#",
-        data: info,
-      })
-        .then(() => {
-          alert("닉네임 중복체크 성공");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
+    // const nickname_check = function () {
+    //   const info = {
+    //     nickname: state.form.nickname,
+    //   };
+    //   axios({
+    //     method: "post",
+    //     url: "#",
+    //     data: info,
+    //   })
+    //     .then(() => {
+
+    //       alert("닉네임 중복체크 성공");
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // };
 
     return {
       search_hover,
@@ -533,8 +557,8 @@ export default {
       clickLogin,
       logout,
       clickLogo,
-      id_check,
-      nickname_check,
+      // id_check,
+      // nickname_check,
     };
   },
 };

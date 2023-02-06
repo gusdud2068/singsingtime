@@ -21,6 +21,7 @@
     "vue-coverflow": "^2.2.0",
     "vue-infinite-scroll": "^2.0.2",
     "vue-router": "^4.0.3",
+    "vue-session": "^1.0.0",
     "vue-video-player": "^6.0.0",
     "vue3-carousel": "^0.2.9",
     "vuetify": "^3.0.0-beta.0",
