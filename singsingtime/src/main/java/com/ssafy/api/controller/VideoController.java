@@ -23,7 +23,7 @@ import java.util.List;
 public class VideoController {
 
     @Autowired
-    VideoService videoService;
+    private VideoService videoService;
 
 //    @ResponseBody   // Long 타입을 리턴하고 싶은 경우 붙여야 함 (Long - 객체)
 //    @PostMapping(value="/diary/image",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

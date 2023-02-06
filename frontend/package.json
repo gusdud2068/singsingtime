@@ -6,7 +6,8 @@
     "serve": "vite preview",
     "build": "vite build",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "dev": "vite",
+    "dev": "vite --mode development",
+    "production": "vite --mode production",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -20,10 +21,12 @@
     "vue-coverflow": "^2.2.0",
     "vue-infinite-scroll": "^2.0.2",
     "vue-router": "^4.0.3",
+    "vue-session": "^1.0.0",
     "vue-video-player": "^6.0.0",
     "vue3-carousel": "^0.2.9",
     "vuetify": "^3.0.0-beta.0",
     "vuex": "^4.1.0",
+    "vuex-persistedstate": "^4.1.0",
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {

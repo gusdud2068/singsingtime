@@ -20,6 +20,8 @@ public class UserRegisterPostReq {
 	private String name;
 	@ApiModelProperty(name="유저 nickname", example="엘사")
 	private String nickname;
+	@ApiModelProperty(name="유저 email", example="change@ssafy.com")
+	private String email;
 	@ApiModelProperty(name="선호장르", example="발라드")
-	private String prefferedGenre;
+	private String genre;
 }

@@ -17,8 +17,8 @@ import java.time.LocalDateTime;
 public class Song extends BaseEntity{
     private String title;
     private String singer;
-    private LocalDateTime part1;
-    private LocalDateTime part2;
-    private LocalDateTime part3;
-    private LocalDateTime part4;
+    private int part1;
+    private int part2;
+    private int part3;
+    private int part4;
 }

@@ -1,13 +1,20 @@
 <template>
   <Modal ref="baseModal">
     <div class="content-container">
-      <h1>방 만들기</h1>
-      <v-text-field
-        v-model="state.conferencename"
-        label="방 이름"
-      ></v-text-field>
+      <img
+        class="logo"
+        src="../../assets/images/login_logo.png"
+        style="width: 220px; margin-bottom: 5px"
+      />
+      <h4>방 만들기</h4>
+      <div style="padding-top: 10px; padding-bottom: 10px">
+        <v-text-field
+          v-model="state.conferencename"
+          label="방 이름"
+        ></v-text-field>
+      </div>
     </div>
-    <div class="buttons-container">
+    <div class="buttons-container" style="float: right">
       <button class="btn confirm" @click="confirm">확인</button>
       <button class="btn cancel" @click="cancel">취소</button>
     </div>

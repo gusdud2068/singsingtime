@@ -21,5 +21,5 @@ public class UserUpdatePatchReq {
 	@ApiModelProperty(name="유저 email", example="change@ssafy.com")
 	private String email;
 	@ApiModelProperty(name="유저 선호장르", example="트로트")
-	private String prefferedGenre;
+	private String genre;
 }

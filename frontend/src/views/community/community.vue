@@ -62,7 +62,7 @@
                 ></textarea>
               </v-col>
               <div class="custom-file">
-                <v-file-input id="customFile" @change="changeFile" />
+                <v-file-input id="customFile" @change="changeFile" label= "비디오를 업로드 하세요." style="width:530px; padding-left: 10px;"/>
                 <label class="custom-file-label" for="customFile">{{
                   state.form.video.name
                 }}</label>

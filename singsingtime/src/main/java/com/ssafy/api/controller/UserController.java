@@ -1,11 +1,15 @@
 package com.ssafy.api.controller;
 
+import com.ssafy.api.request.MySongAddPostReq;
+import com.ssafy.api.request.SongRegisterPostReq;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.request.UserUpdatePatchReq;
 import com.ssafy.api.response.UserRes;
+import com.ssafy.api.service.SongService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
+import com.ssafy.db.entity.Song;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.UserRepository;
 import io.swagger.annotations.*;
@@ -16,22 +20,23 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.List;
+
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
  */
 @Api(value = "유저 API", tags = {"User"})
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/users")
 public class UserController {
 	
 	@Autowired
-	UserService userService;
+	private UserService userService;
 
 	@Autowired
-	UserRepository userRepository;
-
+	private SongService songService;
 	@Autowired
-	PasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder;
 
 	@PostMapping()
 	@ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.") 
@@ -71,13 +76,13 @@ public class UserController {
 	}
 
 
-	@GetMapping("/{userId}")
+	@GetMapping("/id/{userId}")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "사용 가능한 ID 입니다."),
 			@ApiResponse(code = 409, message = "이미 존재하는 사용자 ID 입니다.")
 	})
 	public ResponseEntity<? extends BaseResponseBody> checkIDDuplication(@PathVariable String userId){
-
+		System.out.println("id check 80");
 		if(userService.checkUserID(userId) > 0){
 			return ResponseEntity.status(409).body(BaseResponseBody.of(409, "이미 존재하는 사용자 ID 입니다."));
 		}
@@ -86,7 +91,7 @@ public class UserController {
 		}
 	}
 
-	@GetMapping("/{nickname}")
+	@GetMapping("/nickname/{nickname}")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "사용 가능한 닉네임 입니다."),
 			@ApiResponse(code = 409, message = "이미 존재하는 닉네임 입니다.")
@@ -120,11 +125,44 @@ public class UserController {
 			@ApiResponse(code = 200, message = "Success"),
 	})
 	public ResponseEntity<? extends BaseResponseBody> delete(@PathVariable String userId){
-		System.out.println("con 116 userId = " + userId);
 		userService.deleteUser(userId);
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
 
+	@PostMapping("/songs")
+	public ResponseEntity<? extends BaseResponseBody> registerSong(@RequestBody SongRegisterPostReq registerInfo){
+		songService.registerSong(registerInfo);
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+	}
+	@GetMapping("/songs")
+	public ResponseEntity<List<Song>> getAllSongList(){
+		List<Song> songList =songService.getAllSongList();
+		return ResponseEntity.status(200).body(songList);
+	}
 
+	@PostMapping("me/songs")
+	public ResponseEntity<? extends BaseResponseBody> addMySongList(@ApiIgnore Authentication authentication, @RequestBody MySongAddPostReq addInfo){
+		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+		String userId = userDetails.getUsername();
+		songService.addMySong(userId, addInfo);
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+	}
+	@GetMapping("me/songs")
+	public ResponseEntity<List<Song>> getMySongList(@ApiIgnore Authentication authentication){
+		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+		String userId = userDetails.getUsername();
+		User user = userService.getUserByUserId(userId);
+		// fk 필요해서 getId 사용
+		List<Song> songList = songService.getMySongList(user.getId());
+		return ResponseEntity.status(200).body(songList);
+	}
 
+	@DeleteMapping("me/songs/{userSongId}")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "Success"),
+	})
+	public ResponseEntity<? extends BaseResponseBody> deleteMySong(@PathVariable Long userSongId){
+		songService.deleteMySong(userSongId);
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+	}
 }

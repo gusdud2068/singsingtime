@@ -15,9 +15,9 @@
                 <p class="item_name"><b>랭킹</b></p>
               </v-col>
               <v-col col="2">
-                <p class="item_value">장덕김범수</p>
-                <p class="item_value">8회</p>
-                <p class="item_value">12등</p>
+                <p class="item_value">{{ state.nickname }}</p>
+                <p class="item_value">{{ state.championCnt }}</p>
+                <p class="item_value">{{ state.userRank }}</p>
               </v-col>
             </v-row>
           </v-col>
@@ -84,6 +84,11 @@
 </template>
 
 <script>
+import axios from "axios";
+import { onMounted } from "vue";
+// import { useStore } from "vuex";
+import { reactive } from "vue";
+
 export default {
   name: "MypageBox",
   data: () => ({
@@ -91,6 +96,44 @@ export default {
     file_name: "파일을 선택하세요.",
     message: "Hello, world",
   }),
+  setup() {
+    const state = reactive({
+      nickname: "",
+      championCnt: "",
+      userRank : ""
+    });
+
+    onMounted(() => {
+      // console.log(state.form.id);
+
+      const token = localStorage.getItem("jwt");
+      axios({
+        method: "get",
+        url: `http://localhost:8080/api/v1/users/me`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          state.nickname = res.data.nickname;
+          state.championCnt = res.data.championCnt;
+          state.userRank = res.data.userRank;
+          // console.log(nickname)
+          // return nickname
+        })
+        .catch((err) => {
+          // console.log(token)
+          alert(err);
+        });
+    });
+
+    return {
+      // getUserInfo,
+      // form,
+      state,
+    };
+  },
 };
 </script>
 
