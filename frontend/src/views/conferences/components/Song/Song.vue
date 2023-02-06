@@ -60,7 +60,7 @@ export default {
       };
 
       fetch(
-        `https://www.googleapis.com/youtube/v3/search?key=AIzaSyCyNFFAe-El_cL9j6Qi3uSrma_HDYU8c3Q&part=snippet&type=video&q=${params.q}`
+        `https://www.googleapis.com/youtube/v3/search?key=AIzaSyBGF5ljIuwHbPn27YSImtkkgk8KooR8q7I&part=snippet&type=video&q=${params.q}`
       )
         .then((res) => {
           console.log(this.videos);
