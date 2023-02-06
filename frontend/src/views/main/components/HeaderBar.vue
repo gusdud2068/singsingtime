@@ -28,7 +28,7 @@
       <v-spacer></v-spacer>
       <div style="width: 60%; padding-right: 20px">
         <div style="text-align: right">
-          <h4 v-show="state.token">{{ my_nickname }}님 환영합니다</h4>
+          <h4 v-show="state.token">{{ user_nickname.nickname }}님 환영합니다</h4>
         </div>
         <div style="display: flex; width: 100%">
           <v-text-field
@@ -424,6 +424,9 @@ export default {
     };
 
     // 로그인
+    const user_nickname = reactive({
+      nickname : store.getters["nicknameStore/getNickname"],
+    })
     const clickLogin = function () {
       const user = {
         id: login_state.form.id,
@@ -445,6 +448,7 @@ export default {
             password: login_state.form.password,
             token: state.token,
           });
+          console.log(2222222)
           localStorage.setItem("jwt", res.data.accessToken);
           axios({
             method: "get",
@@ -457,6 +461,8 @@ export default {
               store.dispatch("nicknameStore/saveNickname", {
                 nickname: res.data.nickname,
               });
+              console.log(res)
+
             })
             .catch((err) => {
               alert(err);
@@ -534,6 +540,7 @@ export default {
       login_state,
       rule,
       save,
+      user_nickname,
       clickLogin,
       logout,
       id_check,
