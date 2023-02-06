@@ -36,7 +36,7 @@
                 class="plus"
                 @click="add_dialog = true"
               >
-                +
+
               </v-btn>
             </template>
             <v-card>
