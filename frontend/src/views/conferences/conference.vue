@@ -201,7 +201,7 @@ props:{
 
     async createSession(sessionId) {
       const response = await axios.post(
-        APPLICATION_SERVER_URL + "api/sessions",
+        APPLICATION_SERVER_URL + "api/v1/openvidu/sessions",
         { customSessionId: sessionId },
         {
           headers: { "Content-Type": "application/json" },
@@ -212,7 +212,7 @@ props:{
 
     async createToken(sessionId) {
       const response = await axios.post(
-        APPLICATION_SERVER_URL + "api/sessions/" + sessionId + "/connections",
+        APPLICATION_SERVER_URL + "api/v1/openvidu/sessions/" + sessionId + "/connections",
         {},
         {
           headers: { "Content-Type": "application/json" },
