@@ -39,9 +39,9 @@ import Song from "./components/Song/Song.vue";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-const APPLICATION_SERVER_URL =
-  process.env.NODE_ENV === "production" ? "" : "https://i8c105.p.ssafy.io/";
-
+// const APPLICATION_SERVER_URL =
+//   process.env.NODE_ENV === "production" ? "https://i8c105.p.ssafy.io/" : "";
+//   import.meta.env.VITE_APP_URL === ""
 
 export default {
   name: "App",
@@ -200,7 +200,7 @@ props:{
 
     async createSession(sessionId) {
       const response = await axios.post(
-        APPLICATION_SERVER_URL + "api/v1/openvidu/sessions",
+        import.meta.env.VITE_APP_URL + "api/v1/openvidu/sessions",
         { customSessionId: sessionId },
         {
           headers: { "Content-Type": "application/json" },
@@ -211,7 +211,7 @@ props:{
 
     async createToken(sessionId) {
       const response = await axios.post(
-        APPLICATION_SERVER_URL + "api/v1/openvidu/sessions/" + sessionId + "/connections",
+        import.meta.env.VITE_APP_URL + "api/v1/openvidu/sessions/" + sessionId + "/connections",
         {},
         {
           headers: { "Content-Type": "application/json" },
