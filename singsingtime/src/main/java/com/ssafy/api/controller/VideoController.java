@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173, http://localhost:8080, http://localhost:4443", allowedHeaders = "*")
 @RequestMapping("/videos")
 public class VideoController {
 
@@ -48,19 +47,18 @@ public class VideoController {
         videoService.uploadVideo(file, videoReq, userId);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
-
-    @GetMapping("/search/{keyword}")
-    public ResponseEntity<List<Video>> searchVideo(@PathVariable String keyword) {
-        List<Video> videoList = videoService.searchVideo(keyword);
-        return ResponseEntity.status(200).body(videoList);
-    }
-
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<? extends BaseResponseBody> updateVideo(@RequestParam(value="video") MultipartFile file, VideoUpdatePatchReq videoReq, Authentication auth) throws IOException {
         SsafyUserDetails userDetails = (SsafyUserDetails)auth.getDetails();
         String userId = userDetails.getUsername();
         videoService.updateVideo(file, videoReq, userId);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    @GetMapping("/search/{keyword}")
+    public ResponseEntity<List<Video>> searchVideo(@PathVariable String keyword) {
+        List<Video> videoList = videoService.searchVideo(keyword);
+        return ResponseEntity.status(200).body(videoList);
     }
 
     @GetMapping("/sort/daily")
