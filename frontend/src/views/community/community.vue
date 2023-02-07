@@ -220,6 +220,8 @@ export default {
       this.token = localStorage.getItem("jwt")
       const formData = new FormData();
       formData.append("video", this.video.target.files[0]);
+      formData.append("title", this.state.form.title);
+      formData.append("context", this.state.form.context);
 
       axios({
         method: "post",
@@ -228,7 +230,7 @@ export default {
         data: formData,
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzc2FmeTEyMzQiLCJpc3MiOiJzc2FmeS5jb20iLCJleHAiOjE2NzcwMzIwNzYsImlhdCI6MTY3NTczNjA3Nn0.if8Y76vBF4ZIzqvG4XhuNc6-GhholC5XVNvkK8auajIaUiErb2etbGeWf4O5maL6Q41xiigMADsg9V6dikxYwQ",
+          Authorization: `Bearer ${this.token}`
         },
       })
         .then((res) => {
