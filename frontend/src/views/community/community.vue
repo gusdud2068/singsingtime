@@ -174,7 +174,7 @@ export default {
       console.log(111);
       axios({
         method: "post",
-        url: "https://i8c105.p.ssafy.io:8080/diary/video",
+        url: "https://i8c105.p.ssafy.io/diary/video",
         data: info,
         headers: {
           "Content-Type": "multipart/form-data",
@@ -219,7 +219,7 @@ export default {
 
       axios({
         method: "post",
-        url: "https://i8c105.p.ssafy.io:8080/diary/video",
+        url: "https://i8c105.p.ssafy.io/diary/video",
         data: formData,
         headers: {
           "Content-Type": "multipart/form-data",
