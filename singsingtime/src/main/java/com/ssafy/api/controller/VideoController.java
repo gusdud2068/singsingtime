@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
+@CrossOrigin(origins = "http://localhost:5173, http://localhost:8080, http://localhost:4443", allowedHeaders = "*")
 @RequestMapping("/videos")
 public class VideoController {
 
