@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.VideoRegisterPostReq;
+import com.ssafy.api.request.VideoUpdatePatchReq;
 import com.ssafy.db.entity.Diary;
 import com.ssafy.db.entity.Video;
 import org.springframework.stereotype.Service;
@@ -11,8 +12,10 @@ import java.util.List;
 
 
 public interface VideoService {
-    public void uploadVideo(MultipartFile file, VideoRegisterPostReq videoRegisterPostReq, String userId) throws IOException;
+    void uploadVideo(MultipartFile file, VideoRegisterPostReq videoReq, String userId) throws IOException;
     List<Video> getAllVideo();
 
     List<Video> searchVideo(String keyword);
+
+    void updateVideo(MultipartFile file, VideoUpdatePatchReq videoReq, String userId) throws IOException;
 }

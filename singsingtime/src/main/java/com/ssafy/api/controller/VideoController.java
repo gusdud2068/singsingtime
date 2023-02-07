@@ -3,6 +3,7 @@ package com.ssafy.api.controller;
 //import com.ssafy.api.service.DiaryService;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.request.VideoRegisterPostReq;
+import com.ssafy.api.request.VideoUpdatePatchReq;
 import com.ssafy.api.service.VideoService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
@@ -40,17 +41,25 @@ public class VideoController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<? extends BaseResponseBody> uploadVideo(@RequestParam(value="video") MultipartFile file, VideoRegisterPostReq videoRegisterPostReq, Authentication authentication) throws IOException {
-        SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+    public ResponseEntity<? extends BaseResponseBody> uploadVideo(@RequestParam(value="video") MultipartFile file, VideoRegisterPostReq videoReq, Authentication auth) throws IOException {
+        SsafyUserDetails userDetails = (SsafyUserDetails)auth.getDetails();
         String userId = userDetails.getUsername();
-        videoService.uploadVideo(file, videoRegisterPostReq, userId);
+        videoService.uploadVideo(file, videoReq, userId);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
-    @GetMapping("/{keyword}")
+    @GetMapping("/search/{keyword}")
     public ResponseEntity<List<Video>> searchVideo(@PathVariable String keyword) {
         List<Video> videoList = videoService.searchVideo(keyword);
         return ResponseEntity.status(200).body(videoList);
+    }
+
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<? extends BaseResponseBody> updateVideo(@RequestParam(value="video") MultipartFile file, VideoUpdatePatchReq videoReq, Authentication auth) throws IOException {
+        SsafyUserDetails userDetails = (SsafyUserDetails)auth.getDetails();
+        String userId = userDetails.getUsername();
+        videoService.updateVideo(file, videoReq, userId);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
     @GetMapping("/sort/daily")

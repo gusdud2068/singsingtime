@@ -7,10 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,16 +32,4 @@ public class User extends BaseEntity {
     private int championCnt;
     private String genre;
     private int userRank;
-
-//    @Builder
-//    public User(String UserId, String password, String nickname, int championCnt,
-//    String preferedGenre,int userRank){
-//        this.userId = userId;
-//        this.password =password;
-//        this.nickname=nickname;
-//        this.championCnt=championCnt;
-//        this.preferedGenre=preferedGenre;
-//        this.userRank=userRank;
-//    }
-//    private String role;
 }
