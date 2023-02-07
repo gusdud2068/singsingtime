@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.VideoRegisterPostReq;
+import com.ssafy.api.request.VideoUpdatePatchReq;
 import com.ssafy.db.entity.Video;
 import com.ssafy.db.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,19 @@ public class VideoServiceImpl implements VideoService{
         return videoRepository.findByTitleContains(keyword);
     }
 
+    @Override
+    public void updateVideo(MultipartFile file, VideoUpdatePatchReq videoReq, String userId) throws IOException {
+        Video video = videoRepository.getVideoById(videoReq.getVideoId());
+        video.setUserId(userId);
+        video.setTitle(videoReq.getTitle());
+        video.setDescription(videoReq.getContext());
+        if(!file.isEmpty()) {
+            String storedFileName = s3Uploader.upload(file,"images");
+            video.setUrl(storedFileName);
+        }
+        videoRepository.save(video);
+    }
+
     @Autowired
     private S3Uploader s3Uploader;
 
@@ -34,12 +48,11 @@ public class VideoServiceImpl implements VideoService{
     }
 
     @Override @Transactional
-    public void uploadVideo(MultipartFile file, VideoRegisterPostReq videoRegisterPostReq, String userId) throws IOException {
-//        System.out.println("Diary service saveDiary");
+    public void uploadVideo(MultipartFile file, VideoRegisterPostReq videoReq, String userId) throws IOException {
         Video video = new Video();
         video.setUserId(userId);
-        video.setTitle(videoRegisterPostReq.getTitle());
-        video.setDescription(videoRegisterPostReq.getContext());
+        video.setTitle(videoReq.getTitle());
+        video.setDescription(videoReq.getContext());
         if(!file.isEmpty()) {
             String storedFileName = s3Uploader.upload(file,"images");
             video.setUrl(storedFileName);
