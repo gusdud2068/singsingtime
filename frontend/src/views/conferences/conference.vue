@@ -40,9 +40,8 @@ import Song from "./components/Song/Song.vue";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const APPLICATION_SERVER_URL =
-  process.env.NODE_ENV === "production" ? "" : "http://localhost:8080/";
+  process.env.NODE_ENV === "production" ? "" : "https://i8c105.p.ssafy.io:8080/";
 
-// const APPLICATION_SERVER_URL = "http://localhost:5000/";
 
 export default {
   name: "App",
