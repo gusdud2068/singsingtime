@@ -7,7 +7,6 @@ import { loadFonts } from "./plugins/webfontloader";
 import infiniteScroll from "vue-infinite-scroll";
 
 loadFonts();
-
 createApp(App)
   .use(router)
   .use(infiniteScroll)
