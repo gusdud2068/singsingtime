@@ -3,8 +3,7 @@
     <iframe
       :src="`https://www.youtube.com/embed/${videoId}?autoplay=1`"
       frameborder="0"
-      width="500"
-      height="300"
+      style="width: 500px; height: 300px"
       allow="autoplay"
     ></iframe>
     <!-- <h5>{{ video.snippet.title | stringUnescape }}</h5> -->
@@ -30,6 +29,7 @@ export default {
       const id = event.data.slice(1, -1);
       console.log("session에서 받은 id : " + id);
       this.videoId = id;
+      console.log(id);
       this.video = true;
     });
   },

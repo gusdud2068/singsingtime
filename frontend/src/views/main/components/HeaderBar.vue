@@ -235,6 +235,7 @@
                   <v-text-field
                     label="아이디"
                     v-model="login_state.form.id"
+                    @keyup.enter="(login_dialog = false), clickLogin()"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
@@ -243,6 +244,7 @@
                     type="password"
                     v-model="login_state.form.password"
                     required
+                    @keyup.enter="(login_dialog = false), clickLogin()"
                   ></v-text-field>
                 </v-col>
               </v-row>

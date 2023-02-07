@@ -15,5 +15,8 @@ export default ({ mode }) => {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
       },
     },
+    server: {
+      Proxy: "Http://localhost:8080",
+    },
   });
 };

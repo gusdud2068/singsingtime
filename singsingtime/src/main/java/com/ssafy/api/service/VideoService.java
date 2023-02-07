@@ -7,12 +7,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 
 public interface VideoService {
-//    public Long keepDiary(MultipartFile image, Diary diary) throws IOException;
+    public void uploadVideo(MultipartFile file, VideoRegisterPostReq videoRegisterPostReq, String userId) throws IOException;
+    List<Video> getAllVideo();
 
-    public void uploadVideo(MultipartFile file, VideoRegisterPostReq videoRegisterPostReq) throws IOException;
-
-
+    List<Video> searchVideo(String keyword);
 }

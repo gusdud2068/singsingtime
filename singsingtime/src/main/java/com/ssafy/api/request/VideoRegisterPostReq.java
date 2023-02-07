@@ -12,8 +12,6 @@ import lombok.Setter;
 @Setter
 @ApiModel("VideoRegisterPostRequest")
 public class VideoRegisterPostReq {
-	@ApiModelProperty(name="비디오 ID", example="ssafy_web")
-	private String id;
 	@ApiModelProperty(name="비디오 title", example="김싸피")
 	private String title;
 	@ApiModelProperty(name="비디오 context", example="엘사")

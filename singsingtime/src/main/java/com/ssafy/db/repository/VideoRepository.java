@@ -21,5 +21,6 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
 
     @Query(value = "SELECT * FROM Video WHERE created_at BETWEEN DATE_ADD(NOW(), INTERVAL -1 WEEK) AND NOW();", nativeQuery = true)
     List<Video> getWeeklyVideo();
-    
+
+    List<Video> findByTitleContains(String keyword);
 }
