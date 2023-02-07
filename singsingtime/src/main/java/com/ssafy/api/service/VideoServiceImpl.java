@@ -40,6 +40,26 @@ public class VideoServiceImpl implements VideoService{
         videoRepository.save(video);
     }
 
+    @Transactional
+    @Override
+    public Video getDetailVideo(Long videoId) {
+        Video video = videoRepository.getVideoById(videoId);
+        video.setViewCnt(video.getViewCnt() + 1);
+        return video;
+    }
+
+    @Override
+    public void deleteVideo(Long videoId) {
+        videoRepository.deleteById(videoId);
+    }
+
+    @Override
+    public void addLikesCnt(Long videoId) {
+        Video video = videoRepository.getVideoById(videoId);
+        video.setLikeCnt(video.getLikeCnt() + 1);
+        videoRepository.save(video);
+    }
+
     @Autowired
     private S3Uploader s3Uploader;
 

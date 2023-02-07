@@ -18,6 +18,6 @@ public class Video extends BaseEntity {
     private String description;
     private String url;
     private int likeCnt;
-
+    private int viewCnt;
     private String userId;
 }

@@ -55,6 +55,24 @@ public class VideoController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
+    @GetMapping("/{videoId}")
+    public ResponseEntity<Video> getDetailVideo(@PathVariable Long videoId) {
+        Video video = videoService.getDetailVideo(videoId);
+        return ResponseEntity.status(200).body(video);
+    }
+
+    @DeleteMapping ("/{videoId}")
+    public ResponseEntity<? extends BaseResponseBody> deleteVideo(@PathVariable Long videoId){
+        videoService.deleteVideo(videoId);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    @PutMapping ("/likes/{videoId}")
+    public ResponseEntity<? extends BaseResponseBody> addLikesCnt(@PathVariable Long videoId){
+        videoService.addLikesCnt(videoId);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
     @GetMapping("/search/{keyword}")
     public ResponseEntity<List<Video>> searchVideo(@PathVariable String keyword) {
         List<Video> videoList = videoService.searchVideo(keyword);
