@@ -416,7 +416,7 @@ export default {
 
       axios({
         method: "put",
-        url: `http://localhost:8080/api/v1/users/${state.id}`,
+        url: import.meta.env.VITE_APP_URL + `/api/v1/users/${state.id}`,
         // url: import.meta.env.VITE_APP_URL + "/api/v1/users/",
         data: user,
       })
@@ -447,7 +447,7 @@ export default {
     const userDelete = function () {
       axios({
         method: "delete",
-        url: `http://localhost:8080/api/v1/users/${state.id}`,
+        url: import.meta.env.VITE_APP_URL + `/api/v1/users/${state.id}`,
         // url: import.meta.env.VITE_APP_URL + "/api/v1/users/",
       })
         .then((res) => {
