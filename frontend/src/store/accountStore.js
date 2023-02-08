@@ -20,6 +20,9 @@ const getters = {
   getNickname: (state) => {
     return state.nickname;
   },
+  getAll: (state) => {
+    return state;
+  }
 };
 
 const mutations = {
