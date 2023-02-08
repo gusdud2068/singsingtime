@@ -32,4 +32,10 @@ public interface VideoService {
     void deleteReply(String userId, Long replyId);
 
     void addReplyLikesCnt(Long replyId);
+
+    List<Video> getMyVideo(Long id);
+
+    List<Video> getDailyVideo();
+
+    List<Video> getWeeklyVideo();
 }

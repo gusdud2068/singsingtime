@@ -8,13 +8,13 @@ import java.util.List;
 
 @Repository
 public interface VideoRepository extends JpaRepository<Video, Long> {
-    List<Video> getVideoByUserId(String userId);
+    List<Video> findAllById(Long id);
     Video getVideoById(Long videoId);
 
-    @Query(value = "SELECT * FROM Video  WHERE created_at BETWEEN DATE_ADD(NOW(), INTERVAL -1 DAY) and now();", nativeQuery = true)
+    @Query(value = "SELECT * FROM Video  WHERE created_at BETWEEN DATE_ADD(NOW(), INTERVAL -1 DAY) and now() ORDER BY view_cnt desc LIMIT 10;", nativeQuery = true)
     List<Video> getDailyVideo();
 
-    @Query(value = "SELECT * FROM Video WHERE created_at BETWEEN DATE_ADD(NOW(), INTERVAL -1 WEEK) AND NOW();", nativeQuery = true)
+    @Query(value = "SELECT * FROM Video WHERE created_at BETWEEN DATE_ADD(NOW(), INTERVAL -1 WEEK) AND NOW() ORDER BY view_cnt desc LIMIT 10;", nativeQuery = true)
     List<Video> getWeeklyVideo();
 
     List<Video> findByTitleContains(String keyword);

@@ -438,7 +438,7 @@ export default {
       } else {
         axios({
           method: "post",
-          url: "http://localhost:8080/api/v1/users/",
+          url: import.meta.env.VITE_APP_URL + "/api/v1/users/",
           // url: import.meta.env.VITE_APP_URL + "/api/v1/users/",
           data: user,
           // headers: {
@@ -577,7 +577,7 @@ export default {
       if (state.token) {
         axios({
           method: "get",
-          url: `http://localhost:8080/api/v1/users/me`,
+          url: import.meta.env.VITE_APP_URL + `/api/v1/users/me`,
           headers: {
             Authorization: `Bearer ${state.token}`,
           },
