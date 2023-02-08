@@ -109,6 +109,24 @@ public class VideoServiceImpl implements VideoService{
         reply.setLikeCnt(reply.getLikeCnt() + 1);
     }
 
+    @Override
+    public List<Video> getMyVideo(Long id) {
+        List<Video> myVideoList = videoRepository.findAllById(id);
+        return myVideoList;
+    }
+
+    @Override
+    public List<Video> getDailyVideo() {
+        List<Video> dailyVideoList = videoRepository.getDailyVideo();
+        return dailyVideoList;
+    }
+
+    @Override
+    public List<Video> getWeeklyVideo() {
+        List<Video> weeklyVideoList = videoRepository.getWeeklyVideo();
+        return weeklyVideoList;
+    }
+
     @Autowired
     private S3Uploader s3Uploader;
 
