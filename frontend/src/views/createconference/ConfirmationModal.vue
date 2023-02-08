@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="buttons-container" style="float: right">
-      <button class="btn confirm" @click="confirm" >확인</button>
+      <button class="btn confirm" @click="confirm">확인</button>
       <button class="btn cancel" @click="cancel">취소</button>
     </div>
   </Modal>

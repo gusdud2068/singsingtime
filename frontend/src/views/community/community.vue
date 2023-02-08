@@ -6,6 +6,7 @@
         hide-details
         placeholder="검색"
         single-line
+        v-model="state.searchkeyword"
         @keydown.enter="community_search_thing"
         class="commu_search"
       ></v-text-field>
@@ -15,6 +16,7 @@
       variant="text"
       icon="mdi-magnify"
       style="margin-top: 20px"
+      @click="searchstart()"
     ></v-btn>
 
     <v-dialog v-model="content_dialog" max-width="600px">
@@ -62,7 +64,12 @@
                 ></textarea>
               </v-col>
               <div class="custom-file">
-                <v-file-input id="customFile" @change="changeFile" label= "비디오를 업로드 하세요." style="width:530px; padding-left: 10px;"/>
+                <v-file-input
+                  id="customFile"
+                  @change="changeFile"
+                  label="비디오를 업로드 하세요."
+                  style="width: 530px; padding-left: 10px"
+                />
                 <label class="custom-file-label" for="customFile">{{
                   state.form.video.name
                 }}</label>
@@ -89,12 +96,41 @@
 
   <ul class="infinite-list">
     <li
-      v-for="i in video_list"
+      v-for="i in state.content_list"
       class="infinite-list-item"
       @click="clickContent(i)"
       :key="i"
     >
-      <ContentBox />
+      <v-col>
+        <v-hover v-slot="{ isHovering, props }">
+          <v-card
+            class="video_content"
+            :elevation="isHovering ? 12 : 2"
+            :class="{ 'on-hover': isHovering }"
+            v-bind="props"
+          >
+            <v-img src="https://images.unsplash.com/photo-1429514513361-8fa32282fd5f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3264&q=80" height="225px" cover>
+              <v-card-title
+                class="
+                  text-h6 text-black
+                  d-flex
+                  flex-column
+                  justify-space-between
+                "
+                style="padding: 0px; height: 100%"
+              >
+                <p class="song_info" align="start">{{ i.id }}</p>
+                <div class="d-flex justify-space-between info_box">
+                  <div class="champion_info">제목: {{ i.description}}</div>
+                  <div class="view_info">{{ i.title }}</div>
+                </div>
+              </v-card-title>
+            </v-img>
+          </v-card>
+          <p align="right">{{ i.userId }}님의 게시물</p>
+        </v-hover>
+      </v-col>
+      <!-- <ContentBox /> -->
     </li>
     <div class="text-center">
       <v-pagination
@@ -107,15 +143,15 @@
 </template>
 
 <script>
-import ContentBox from "./component/content.vue";
-import { reactive } from "vue";
+// import ContentBox from "./component/content.vue";
+import { onMounted, reactive, ref, toRaw } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 
 export default {
   name: "CommunityBox",
   components: {
-    ContentBox,
+    // ContentBox,
   },
   data() {
     return {
@@ -132,6 +168,7 @@ export default {
     const state = reactive({
       count: 54,
       page: 1,
+      searchkeyword: "",
       community_search: false,
       token: localStorage.getItem("jwt"),
       form: {
@@ -140,6 +177,8 @@ export default {
         context: "",
         video: "",
       },
+      content_list: [],
+      // bundle_content : [],
     });
 
     const max_page = parseInt(state.count / 12) + 1;
@@ -163,37 +202,99 @@ export default {
     const community_search_thing = () => {
       state.community_search = false;
     };
+    // const uploadVideo = function () {
+    //   axios({
+    //     method: "get",
+    //     url: "http://localhost:8080/api/v1/videos",
+    //   })
+    //     .then((res) => {
+    //       alert("비디오 디테일!");
+    //       // console.log(res)
+    //       state.content_list = res.data;
+    //       // const count = res.data.length;
+    //       for (let i = 0; i < res.data.lenth; i++) {
+    //         const content = reactive({
+    //           title: res.data[i].title,
+    //           id: res.data[i].id,
+    //           description: res.data[i].description,
+    //         });
+    //         state.content_list.push(content);
+    //         // console.log(content)
+    //       }
+    //       console.log(state.content_list);
+    //     })
+    //     .catch((err) => {
+    //       console.log("비디오 디테일 실패");
+    //       console.log(state.form.video);
+    //       // console.log(state.form.video.proxy);
+    //       console.log(err);
+    //     });
+    // };
+    // const procy = function () {
+    //   const bundle_content = toRaw(state.content_list);
+    //   console.log(bundle_content);
+    //   // const test = [bundle_content];
+    //   const test2 = [];
+    //   for (let i = 0; i < bundle_content.length; i++) {
+    //     test2.push(bundle_content[i].id);
+    //   }
+    //   console.log(typeof test2);
+    //   return { test2, bundle_content };
+    // };
 
-    const uploadVideo = function () {
-      const info = {
-        id: state.form.id,
-        title: state.form.title,
-        context: state.form.context,
-        video: state.form.video,
-      };
-      console.log(info.video);
-      console.log(111);
+    const searchfinish = false;
+    const searchstart = function () {
+      // 검색버튼 눌렀을때 실행
+      if (state.searchkeyword == "") {
+        alert("키워드가 없습니다!");
+      } else {
+        console.log(state.searchkeyword);
+        axios({
+          method: "POST",
+          url: `http://localhost:8080/api/v1/videos/search/${state.searchkeyword}`,
+        })
+          .then((res) => {
+            console.log(res);
+            contentlist = res.data;
+            searchcnt = contentlist[Object.keys(contentlist).length - 1].cnt;
+            contentlist.pop();
+            alert("검색완료!");
+            searchfinish = true;
+            state.searchkeyword = "";
+          })
+          .catch((err) => {
+            alert(err);
+          });
+      }
+    };
+    onMounted(() => {
       axios({
-        method: "post",
-        url: "https://i8c105.p.ssafy.io/diary/video",
+        method: "get",
+        url: "http://localhost:8080/api/v1/videos",
 
-        data: info,
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${state.token}`,
-        },
       })
         .then((res) => {
-          alert("비디오 업로드 성공!");
-          console.log(res);
+          console.log(res)
+          state.content_list = res.data;
+          // const count = res.data.length;
+          for (let i = 0; i < res.data.lenth; i++) {
+            const content = reactive({
+              title: res.data[i].title,
+              id: res.data[i].id,
+              description: res.data[i].description,
+            });
+            state.content_list.push(content);
+            // console.log(content)
+          }
+          console.log(state.content_list);
         })
         .catch((err) => {
-          console.log("비디오 업로드 실패");
+          console.log("비디오 디테일 실패");
           console.log(state.form.video);
           // console.log(state.form.video.proxy);
           console.log(err);
         });
-    };
+    })
     return {
       state,
       load,
@@ -201,7 +302,10 @@ export default {
       max_page,
       video_list,
       community_search_thing,
-      uploadVideo,
+      // uploadVideo,
+      searchstart,
+      searchfinish,
+      // procy,
     };
   },
   methods: {
@@ -217,32 +321,37 @@ export default {
       return this.video_list;
     },
     async submit() {
-      this.token = localStorage.getItem("jwt")
-      const formData = new FormData();
-      formData.append("video", this.video.target.files[0]);
-      formData.append("title", this.state.form.title);
-      formData.append("context", this.state.form.context);
-
-      axios({
-        method: "post",
-        url: "https://i8c105.p.ssafy.io/diary/video",
-
-        data: formData,
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${this.token}`
-        },
-      })
-        .then((res) => {
-          alert("비디오 업로드 성공!");
-          console.log(res);
+      if (!this.state.form.title || !this.state.form.context || !this.video.target.files[0]) {
+        alert("내용을 모두 입력해주세요")
+      } else {
+        this.token = localStorage.getItem("jwt");
+        const formData = new FormData();
+        formData.append("video", this.video.target.files[0]);
+        formData.append("title", this.state.form.title);
+        formData.append("context", this.state.form.context);
+  
+        axios({
+          method: "post",
+          url: "http://localhost:8080/api/v1/videos",
+          data: formData,
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${this.token}`,
+          },
         })
-        .catch((err) => {
-          console.log("비디오 업로드 실패");
-          // console.log(state.form.video);
-          console.log(this.video.target.files[0]);
-          console.log(err);
-        });
+          .then((res) => {
+            alert("비디오 업로드 성공!");
+            console.log(res);
+            window.location.reload(true)
+          })
+          .catch((err) => {
+            console.log("비디오 업로드 실패");
+            // console.log(state.form.video);
+            console.log(this.video.target.files[0]);
+            console.log(err);
+          });
+          // router.push("/community");
+      }
     },
     changeFile(file) {
       this.video = file;
@@ -291,5 +400,37 @@ textarea {
 .commu_search {
   margin-top: 15px;
   margin-bottom: 10px;
+}
+.video_content {
+  transition: opacity 0.4s ease-in-out;
+}
+
+.video_content:not(.on-hover) {
+  opacity: 0.6;
+}
+
+.show-btns {
+  color: rgba(255, 255, 255, 1) !important;
+}
+
+.song_info {
+  color: white;
+  font-size: 15px;
+  padding-left: 10px;
+  margin: 0px;
+}
+
+.info_box {
+  color: white;
+  font-size: 12px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.champion_info {
+  margin-left: 10px;
+}
+
+.view_info {
+  margin-right: 10px;
 }
 </style>

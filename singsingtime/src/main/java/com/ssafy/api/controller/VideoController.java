@@ -1,15 +1,12 @@
 package com.ssafy.api.controller;
 
 //import com.ssafy.api.service.DiaryService;
-import com.ssafy.api.request.UserRegisterPostReq;
+import com.ssafy.api.request.*;
 import com.ssafy.api.request.VideoRegisterPostReq;
 import com.ssafy.api.request.VideoUpdatePatchReq;
 import com.ssafy.api.service.VideoService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
-import com.ssafy.db.entity.Diary;
-import com.ssafy.db.entity.Song;
-import com.ssafy.db.entity.User;
 import com.ssafy.db.entity.Video;
 import com.ssafy.db.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
@@ -30,9 +26,6 @@ public class VideoController {
 
     @Autowired
     private VideoService videoService;
-    @Autowired
-
-    VideoRepository videoRepository;
 
     @GetMapping()
     public ResponseEntity<List<Video>> getAllVideo(){
@@ -79,32 +72,36 @@ public class VideoController {
         return ResponseEntity.status(200).body(videoList);
     }
 
-    @GetMapping("/sort/daily")
-    public ResponseEntity<List<Video>> getDailyVideo(){
-        List<Video> list = videoRepository.getDailyVideo();
-        for(Video video : list){
-            System.out.println("daily video = " + video);
-        }
-        return new ResponseEntity<List<Video>>(list, HttpStatus.OK);
+
+    @PostMapping("/replys")
+    public ResponseEntity<? extends BaseResponseBody> createReply(Authentication auth, @RequestBody ReplyCreatePostReq replyReq) {
+        SsafyUserDetails userDetails = (SsafyUserDetails)auth.getDetails();
+        String userId = userDetails.getUsername();
+        videoService.createReply(userId, replyReq);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
-    @GetMapping("/sort/weekly")
-    public ResponseEntity<List<Video>> getWeeklyVideo(){
-        List<Video> list = videoRepository.getWeeklyVideo();
-        for(Video video : list){
-            System.out.println("weekly video = " + video);
-        }
-        return new ResponseEntity<List<Video>>(list, HttpStatus.OK);
+    @PutMapping("/replys")
+    public ResponseEntity<? extends BaseResponseBody> updateReply(Authentication auth, @RequestBody ReplyUpdatePutReq replyReq) {
+        SsafyUserDetails userDetails = (SsafyUserDetails)auth.getDetails();
+        String userId = userDetails.getUsername();
+        videoService.updateReply(userId, replyReq);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
-
-    @GetMapping("/sort/myvideo/{userId}")
-    public ResponseEntity<List<Video>> getMyVideo(@PathVariable String userId){
-        List<Video> list = videoRepository.getVideoByUserId(userId);
-        for(Video video : list){
-            System.out.println("my video = " + video);
-        }
-        return new ResponseEntity<List<Video>>(list, HttpStatus.OK);
+    @DeleteMapping("/replys/{replyId}")
+    public ResponseEntity<? extends BaseResponseBody> deleteReply(Authentication auth, @PathVariable Long replyId) {
+        SsafyUserDetails userDetails = (SsafyUserDetails)auth.getDetails();
+        String userId = userDetails.getUsername();
+        videoService.deleteReply(userId, replyId);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
+
+    @PutMapping("/replys/likes/{replyId}")
+    public ResponseEntity<? extends BaseResponseBody> addReplyLikesCnt(@PathVariable Long replyId) {
+        videoService.addReplyLikesCnt(replyId);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
 
 }

@@ -17,7 +17,6 @@ public class Playroom extends BaseEntity {
     private LocalDateTime callStartTime;
 
     private LocalDateTime callEndTime;
-
     @Unique
     private int sessionId;
 
@@ -27,12 +26,14 @@ public class Playroom extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ownerId")
     private User user;
-
+    @Column(name="status")
+    @Enumerated(EnumType.STRING)
+    private PlayroomStatus playroomStatus;
     private String thumbnailUrl;
     private String title;
     private String curPlay;
     private int userCnt;
-    private int challengerCnt;
+    private int winCnt;
     private String champion;
     private String challenger;
     private int recommendCnt;
@@ -42,6 +43,7 @@ public class Playroom extends BaseEntity {
         this.sessionId=sessionId;
         this.title=title;
         this.user=user;
+        this.setPlayroomStatus(PlayroomStatus.STANDBY);
     }
 
 }

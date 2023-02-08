@@ -48,7 +48,7 @@ export default {
     SongDetail,
   },
   created() {
-    console.log(this.play)
+    console.log(this.play);
     console.log("이건언제됨");
     this.mainStreamManager = this.publisher;
     console.log("song에서 this.videoId : " + this.videoId);

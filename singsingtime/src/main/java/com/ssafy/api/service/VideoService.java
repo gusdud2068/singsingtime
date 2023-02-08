@@ -1,10 +1,10 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.ReplyCreatePostReq;
+import com.ssafy.api.request.ReplyUpdatePutReq;
 import com.ssafy.api.request.VideoRegisterPostReq;
 import com.ssafy.api.request.VideoUpdatePatchReq;
-import com.ssafy.db.entity.Diary;
 import com.ssafy.db.entity.Video;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -24,4 +24,12 @@ public interface VideoService {
     void deleteVideo(Long videoId);
 
     void addLikesCnt(Long videoId);
+
+    void createReply(String userId, ReplyCreatePostReq replyReq);
+
+    void updateReply(String userId, ReplyUpdatePutReq replyReq);
+
+    void deleteReply(String userId, Long replyId);
+
+    void addReplyLikesCnt(Long replyId);
 }
