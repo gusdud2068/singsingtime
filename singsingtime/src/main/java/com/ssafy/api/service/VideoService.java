@@ -1,5 +1,7 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.ReplyCreatePostReq;
+import com.ssafy.api.request.ReplyUpdatePutReq;
 import com.ssafy.api.request.VideoRegisterPostReq;
 import com.ssafy.api.request.VideoUpdatePatchReq;
 import com.ssafy.db.entity.Video;
@@ -22,4 +24,12 @@ public interface VideoService {
     void deleteVideo(Long videoId);
 
     void addLikesCnt(Long videoId);
+
+    void createReply(String userId, ReplyCreatePostReq replyReq);
+
+    void updateReply(String userId, ReplyUpdatePutReq replyReq);
+
+    void deleteReply(String userId, Long replyId);
+
+    void addReplyLikesCnt(Long replyId);
 }
