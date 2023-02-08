@@ -3,6 +3,8 @@ package com.ssafy;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -20,7 +22,7 @@ public class SingsingtimeApplication {
     public HttpMessageConverter<String> responseBodyConverter() {
         return new StringHttpMessageConverter(StandardCharsets.UTF_8);
     }
-
+    @Order(Ordered.HIGHEST_PRECEDENCE)
     @Bean
     public CharacterEncodingFilter characterEncodingFilter() {
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();

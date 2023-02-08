@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(value = "인증 API", tags = {"Auth."})
 @RestController
-@CrossOrigin(origins = "http://localhost:5173, http://localhost:8080", allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/auth")
 public class AuthController {
 	@Autowired

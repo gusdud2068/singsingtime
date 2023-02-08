@@ -1,15 +1,11 @@
 package com.ssafy.api.controller;
 
 //import com.ssafy.api.service.DiaryService;
-import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.request.VideoRegisterPostReq;
 import com.ssafy.api.request.VideoUpdatePatchReq;
 import com.ssafy.api.service.VideoService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
-import com.ssafy.db.entity.Diary;
-import com.ssafy.db.entity.Song;
-import com.ssafy.db.entity.User;
 import com.ssafy.db.entity.Video;
 import com.ssafy.db.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
