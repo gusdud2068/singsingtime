@@ -61,9 +61,13 @@ public class VideoServiceImpl implements VideoService{
         return video;
     }
 
+    @Transactional
     @Override
-    public void deleteVideo(Long videoId) {
-        videoRepository.deleteById(videoId);
+    public void deleteVideo(Long videoId, String userId) {
+        Video video = videoRepository.findById(videoId).orElseThrow(()-> new NoSuchElementException());
+        if(video.getUser().getUserId().equals(userId)){
+            videoRepository.deleteById(videoId);
+        }
     }
 
     @Transactional
@@ -84,7 +88,6 @@ public class VideoServiceImpl implements VideoService{
                 .build();
         replyRepository.save(reply);
     }
-
     @Transactional
     @Override
     public void updateReply(String userId, ReplyUpdatePutReq replyReq) {
@@ -93,7 +96,7 @@ public class VideoServiceImpl implements VideoService{
             reply.setContext(replyReq.getContext());
         }
     }
-
+    @Transactional
     @Override
     public void deleteReply(String userId, Long replyId) {
         Reply reply = replyRepository.findById(replyId).orElseThrow(()-> new NoSuchElementException());
