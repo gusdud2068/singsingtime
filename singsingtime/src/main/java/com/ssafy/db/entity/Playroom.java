@@ -4,15 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.checkerframework.common.aliasing.qual.Unique;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -20,10 +17,14 @@ public class Playroom extends BaseEntity {
     private LocalDateTime callStartTime;
 
     private LocalDateTime callEndTime;
+
+    @Unique
+    private int sessionId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "genreId")
     private Genre genre;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ownerId")
     private User user;
 
@@ -35,4 +36,12 @@ public class Playroom extends BaseEntity {
     private String champion;
     private String challenger;
     private int recommendCnt;
+
+    @Builder
+    public Playroom(int sessionId, String title, User user){
+        this.sessionId=sessionId;
+        this.title=title;
+        this.user=user;
+    }
+
 }

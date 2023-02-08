@@ -18,4 +18,10 @@ public interface VideoService {
     List<Video> searchVideo(String keyword);
 
     void updateVideo(MultipartFile file, VideoUpdatePatchReq videoReq, String userId) throws IOException;
+
+    Video getDetailVideo(Long videoId);
+
+    void deleteVideo(Long videoId);
+
+    void addLikesCnt(Long videoId);
 }
