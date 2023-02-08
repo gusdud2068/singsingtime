@@ -36,7 +36,6 @@
                 class="plus"
                 @click="add_dialog = true"
               >
-
               </v-btn>
             </template>
             <v-card>
@@ -100,7 +99,7 @@ export default {
     const state = reactive({
       nickname: "",
       championCnt: "",
-      userRank : ""
+      userRank: "",
     });
 
     onMounted(() => {
