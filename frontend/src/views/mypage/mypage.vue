@@ -245,10 +245,7 @@
                 class="plus"
                 @click="add_dialog = true"
               >
-<<<<<<< HEAD
                 +
-=======
->>>>>>> 49a0c0223d88138047923057fcdc21b2cc2344b3
               </v-btn>
             </template>
             <v-card>
@@ -321,10 +318,7 @@ export default {
       nickname: "",
       championCnt: "",
       userRank: "",
-<<<<<<< HEAD
       user_dialog: false,
-=======
->>>>>>> 49a0c0223d88138047923057fcdc21b2cc2344b3
     });
 
     // store 연결해서 가져온 유저 데이터
