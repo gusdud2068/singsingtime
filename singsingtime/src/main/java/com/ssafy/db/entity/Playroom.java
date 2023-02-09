@@ -18,7 +18,7 @@ public class Playroom extends BaseEntity {
 
     private LocalDateTime callEndTime;
     @Unique
-    private int sessionId;
+    private String sessionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "genreId")
@@ -39,10 +39,12 @@ public class Playroom extends BaseEntity {
     private int recommendCnt;
 
     @Builder
-    public Playroom(int sessionId, String title, User user){
+    public Playroom(String sessionId, String title, String champion, int userCnt, User user){
         this.sessionId=sessionId;
-        this.title=title;
-        this.user=user;
+        this.title= title;
+        this.champion = user.getUserId();
+        this.userCnt = 1;
+        this.user= user;
         this.setPlayroomStatus(PlayroomStatus.STANDBY);
     }
 

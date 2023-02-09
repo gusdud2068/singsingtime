@@ -6,12 +6,17 @@
 
     <ul class="infinite-list">
       <li
-        v-for="i in state.count"
-        @click="clickConference(i)"
+        v-for="playroom in playrooms"
+        @click="clickConference(playroom.title)"
         class="infinite-list-item"
-        :key="i"
+        :key="playroom.title"
       >
         <conference />
+        <div class="roominfo">
+          <p>방 제목 : {{ playroom.title }}</p>
+          <p>인원수 : {{ playroom.userCnt }}/{{ 6 }}</p>
+          <p>챔피언 : {{ playroom.champion }}</p>
+        </div>
       </li>
     </ul>
   </div>
@@ -54,16 +59,21 @@
 import Conference from "./components/conference.vue";
 import Highlight from "./components/highlight.vue";
 import { reactive } from "vue";
+import axios from "axios";
 // import { createStore } from "vuex";
 
 export default {
   name: "HomeBox",
-
   components: {
     Conference,
     Highlight,
   },
 
+  data() {
+    return {
+      playrooms: [],
+    };
+  },
   setup() {
     // const store = createStore();
     const state = reactive({
@@ -82,8 +92,28 @@ export default {
       //   params: { Id: id},
       // });
     };
-
     return { state, load, clickConference };
+  },
+
+  created() {
+    this.getPlayroom();
+  },
+  methods: {
+    getPlayroom() {
+      axios({
+        method: "get",
+        url: import.meta.env.VITE_APP_URL + "/api/v1/playrooms",
+      })
+        .then((res) => {
+          console.log(33333333333);
+          console.log(res);
+          this.playrooms = res.data;
+        })
+        .catch((err) => {
+          console.log("플레이룸 불러오기 실패");
+          console.log(err);
+        });
+    },
   },
 };
 </script>

@@ -7,13 +7,17 @@ import com.ssafy.db.repository.PlayroomRepository;
 import com.ssafy.db.repository.UserRepository;
 import com.ssafy.db.repository.UserSongRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.*;
+
+import com.ssafy.db.entity.Playroom;
+import com.ssafy.db.repository.PlayroomRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +41,7 @@ public class PlayroomServiceImpl implements PlayroomService{
     }
 
     @Override
-    public List<Song> getChampionSongList(int sessionId) {
+    public List<Song> getChampionSongList(String sessionId) {
         Playroom playroom = playroomRepository.findBySessionId(sessionId).get();
 
         String championId = playroom.getChampion();
@@ -51,22 +55,22 @@ public class PlayroomServiceImpl implements PlayroomService{
         return championSongList;
     }
 
-    @Override
-    public void createRoom(PlayroomCreateReq playroomCreateReq) {
-        User user = userRepository.findById(playroomCreateReq.getOwnerId()).orElseThrow(()->new NoSuchElementException());
-        System.out.println("playroomCreateReq.getTitle() 57= " + playroomCreateReq.getTitle());
-        System.out.println("playroomCreateReq.getSessionId() = " + playroomCreateReq.getSessionId());
-        Playroom playroom = new Playroom(playroomCreateReq.getSessionId(),playroomCreateReq.getTitle(),user);
-
-        playroomRepository.save(playroom);
-        return ;
-    }
+//    @Override
+//    public void createRoom(PlayroomCreateReq playroomCreateReq) {
+//        User user = userRepository.findById(playroomCreateReq.getOwnerId()).orElseThrow(()->new NoSuchElementException());
+//        System.out.println("playroomCreateReq.getTitle() 57= " + playroomCreateReq.getTitle());
+//        System.out.println("playroomCreateReq.getSessionId() = " + playroomCreateReq.getSessionId());
+//        Playroom playroom = new Playroom(playroomCreateReq.getSessionId(),playroomCreateReq.getTitle(),user);
+//
+//        playroomRepository.save(playroom);
+//        return ;
+//    }
 
     @Transactional
     @Override
     public void startSong(PlayroomStatusReq playroomStatusReq) {
         String title = playroomStatusReq.getTitle();
-        int sessionId = playroomStatusReq.getSessionId();
+        String sessionId = playroomStatusReq.getSessionId();
 
         Playroom playroom = playroomRepository.findBySessionId(sessionId).orElseThrow(()->new NoSuchElementException());
         playroom.setCurPlay(title);
@@ -81,7 +85,7 @@ public class PlayroomServiceImpl implements PlayroomService{
     public PlayroomStatusRes endSong(PlayroomStatusReq playroomStatusReq) {
         System.out.println("playroomStatusReq.getChampionId() = " + playroomStatusReq.getChampionId());
         System.out.println("playroomStatusReq.getSessionId() = " + playroomStatusReq.getSessionId());
-        int sessionId = playroomStatusReq.getSessionId();
+        String sessionId = playroomStatusReq.getSessionId();
         String newChampion = playroomStatusReq.getChampionId();
         Playroom curPlayroom = playroomRepository.findBySessionId(sessionId).get();
         curPlayroom.setCurPlay(null);
@@ -107,5 +111,23 @@ public class PlayroomServiceImpl implements PlayroomService{
         return playroomStatusRes;
     }
 
-}
+    @Override
+    public int checkPlayRoom(Map<String, Object> params) {
+        String sessionId = (String) params.get("customSessionId");
+        System.out.println("sessionId = " + sessionId);
+        Optional<Playroom> playroom = playroomRepository.findBySessionId(sessionId);
+        return playroom.isPresent() ? 1 : 0;
+    }
 
+    @Override
+    public void createPlayRoom(Map<String, Object> params, User user) {
+        String sessionId = (String) params.get("customSessionId");
+        System.out.println("sessionId = " + sessionId);
+        Playroom playroom = Playroom.builder()
+                .user(user)
+                .title(sessionId)
+                .sessionId(sessionId)
+                .build();
+        playroomRepository.save(playroom);
+    }
+}

@@ -9,7 +9,5 @@ import lombok.Setter;
 @Setter
 @ApiModel("PlayroomReq")
 public class PlayroomCreateReq {
-    private int sessionId;
-    private String title;
-    private long ownerId;
+    private String customSessionId;
 }

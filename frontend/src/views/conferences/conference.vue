@@ -149,6 +149,7 @@ props:{
       // Join form
       mySessionId: this.$route.params.Id,
       myUserName: localStorage.name,
+      token: null, // jwt토큰, 오픈비두 세션 접속용 getToken 파라미터랑 다름, this.token으로 구분
     };
   },
   computed: {
@@ -334,15 +335,21 @@ props:{
      */
     async getToken(mySessionId) {
       const sessionId = await this.createSession(mySessionId);
+      console.log("디버깅1")
+      console.log(sessionId)
       return await this.createToken(sessionId);
     },
 
     async createSession(sessionId) {
+      this.token = localStorage.getItem("jwt");
       const response = await axios.post(
         import.meta.env.VITE_APP_URL + "/api/v1/openvidu/sessions",
         { customSessionId: sessionId },
         {
-          headers: { "Content-Type": "application/json" },
+          headers: { 
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.token}`,
+          },
         }
       );
       return response.data; // The sessionId
