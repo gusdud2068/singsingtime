@@ -1,9 +1,9 @@
 <template>
-  <div v-if="video" class="p-4">
+  <div v-if="video" >
     <iframe
       :src="`https://www.youtube.com/embed/${videoId}?autoplay=1`"
       frameborder="0"
-      style="width: 500px; height: 300px"
+      style="width: 700px; height: 500px"
       allow="autoplay"
     ></iframe>
     <!-- <h5>{{ video.snippet.title | stringUnescape }}</h5> -->

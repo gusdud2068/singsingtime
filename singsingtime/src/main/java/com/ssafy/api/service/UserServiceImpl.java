@@ -49,12 +49,12 @@ public class UserServiceImpl implements UserService {
 		User user = new User();
 		// 디비에 유저 정보 조회 (userId 를 통한 조회).
 		try{
-//			user = userRepositorySupport.findUserByUserId(userId).get();
 			user = userRepository.findByUserId(userId).get();
 		}
 		catch (NoSuchElementException e) {
 			user = null;
 		}
+//		User user = userRepository.findByUserId(userId).orElseThrow(()->new NoSuchElementException());
 		return user;
 	}
 
@@ -74,8 +74,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void deleteUser(String userId) {
-		Optional<User> selectedUser = userRepository.findByUserId(userId);
-		userRepository.delete(selectedUser.get());
+		User user = userRepository.findByUserId(userId).orElseThrow(()-> new NoSuchElementException());
+		userRepository.delete(user);
 	}
 
 	@Override

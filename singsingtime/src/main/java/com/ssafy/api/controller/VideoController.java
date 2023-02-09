@@ -74,16 +74,18 @@ public class VideoController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
+    @DeleteMapping ("/{videoId}")
+    public ResponseEntity<? extends BaseResponseBody> deleteVideo(@PathVariable Long videoId, Authentication auth){
+        SsafyUserDetails userDetails = (SsafyUserDetails)auth.getDetails();
+        String userId = userDetails.getUsername();
+        videoService.deleteVideo(videoId, userId);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
     @GetMapping("/{videoId}")
     public ResponseEntity<Video> getDetailVideo(@PathVariable Long videoId) {
         Video video = videoService.getDetailVideo(videoId);
         return ResponseEntity.status(200).body(video);
-    }
-
-    @DeleteMapping ("/{videoId}")
-    public ResponseEntity<? extends BaseResponseBody> deleteVideo(@PathVariable Long videoId){
-        videoService.deleteVideo(videoId);
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
     @PutMapping ("/likes/{videoId}")

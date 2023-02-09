@@ -21,7 +21,7 @@ public interface VideoService {
 
     Video getDetailVideo(Long videoId);
 
-    void deleteVideo(Long videoId);
+    void deleteVideo(Long videoId, String userId);
 
     void addLikesCnt(Long videoId);
 

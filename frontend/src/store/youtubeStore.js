@@ -5,6 +5,7 @@ const state = {
   userInput: "",
   videos: [],
   video: {},
+  open:false,
 };
 
 const getters = {
