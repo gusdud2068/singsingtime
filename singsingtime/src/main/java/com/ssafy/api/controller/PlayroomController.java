@@ -9,14 +9,12 @@ import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.db.entity.Playroom;
 import com.ssafy.db.entity.Song;
 import com.ssafy.db.entity.User;
-import com.ssafy.db.entity.Video;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
-
 import java.util.List;
 
 @RestController
@@ -29,7 +27,7 @@ public class PlayroomController {
     @Autowired
     UserService userService;
     // 방 목록 조회
-    @GetMapping("/")
+    @GetMapping()
     public ResponseEntity<List<Playroom>> getRoomInfo() {
         List<Playroom> list = playroomService.getPlayroom();
         return new ResponseEntity(list, HttpStatus.OK);
@@ -48,26 +46,26 @@ public class PlayroomController {
      * @return List<Song>
      */
     @GetMapping("/playlist/{sessionId}")
-    public ResponseEntity<List<Playroom>> getChampionSongList(@PathVariable int sessionId) {
+    public ResponseEntity<List<Playroom>> getChampionSongList(@PathVariable String sessionId) {
 
         List<Song> list = playroomService.getChampionSongList(sessionId);
         return new ResponseEntity(list, HttpStatus.OK);
     }
 
-    @PostMapping("/createroom")
-    public ResponseEntity<String> createRoom(@RequestBody PlayroomCreateReq playroomCreateReq, @ApiIgnore Authentication authentication) {
-        int sessionId = playroomCreateReq.getSessionId();
-        System.out.println("sessionId = " + sessionId);
-        String title = playroomCreateReq.getTitle();
-        System.out.println("title = " + title);
-        SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-        String userId = userDetails.getUsername();
-        User user = userService.getUserByUserId(userId);
-        long ownerId = user.getId();
-        playroomCreateReq.setOwnerId(ownerId);
-        playroomService.createRoom(playroomCreateReq);
-        return new ResponseEntity("방 생성 성공!",HttpStatus.OK);
-    }
+//    @PostMapping("/createroom")
+//    public ResponseEntity<String> createRoom(@RequestBody PlayroomCreateReq playroomCreateReq, @ApiIgnore Authentication authentication) {
+//        int sessionId = playroomCreateReq.getSessionId();
+//        System.out.println("sessionId = " + sessionId);
+//        String title = playroomCreateReq.getTitle();
+//        System.out.println("title = " + title);
+//        SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+//        String userId = userDetails.getUsername();
+//        User user = userService.getUserByUserId(userId);
+//        long ownerId = user.getId();
+//        playroomCreateReq.setOwnerId(ownerId);
+//        playroomService.createRoom(playroomCreateReq);
+//        return new ResponseEntity("방 생성 성공!",HttpStatus.OK);
+//    }
     @PutMapping("/start-song")
     public ResponseEntity<String> startSong(@RequestBody PlayroomStatusReq playroomStatusReq){
 
@@ -82,5 +80,10 @@ public class PlayroomController {
 
         PlayroomStatusRes playroomStatusRes =playroomService.endSong(playroomStatusReq);
         return new ResponseEntity<>(playroomStatusRes,HttpStatus.OK);
+    }
+    @PostMapping("/")
+    public ResponseEntity<List<Playroom>> createRoom() {
+        List<Playroom> list = playroomService.getPlayroom();
+        return new ResponseEntity(list, HttpStatus.OK);
     }
 }

@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Data
 public class PlayroomStatusReq {
-    int sessionId;
+    String sessionId;
     String championId;
     String title;
 //    String singer;

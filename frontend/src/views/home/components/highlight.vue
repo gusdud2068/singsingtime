@@ -69,7 +69,7 @@ export default defineComponent({
         url: import.meta.env.VITE_APP_URL + "/api/v1/videos/daily-video",
       })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           state.highlights.push(res.data);
           // console.log(state.highlights[0][0].url)
           })

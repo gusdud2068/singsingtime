@@ -10,6 +10,5 @@ import java.util.Optional;
 public interface PlayroomRepository  extends JpaRepository<Playroom, Long> {
     List<Playroom> findByTitle(String title);
 
-    Optional<Playroom> findBySessionId(int sessionId);
-
+    Optional<Playroom> findBySessionId(String sessionId);
 }
