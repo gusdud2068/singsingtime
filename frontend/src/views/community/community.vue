@@ -259,7 +259,7 @@ export default {
             searchcnt = contentlist[Object.keys(contentlist).length - 1].cnt;
             contentlist.pop();
             alert("검색완료!");
-            searchfinish = true;
+            // searchfinish = true;
             state.searchkeyword = "";
           })
           .catch((err) => {
