@@ -1218,6 +1218,7 @@ Caused by: java.net.SocketException: Network is unreachable: connect
 2023-02-09 14:50:45.604 DEBUG 18116 --- [http-nio-127.0.0.1-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [text/plain, */*, text/plain, */*, text/plain, */*, application/json, application/*+json, application/json, application/*+json, application/cbor]
 2023-02-09 14:50:45.604 DEBUG 18116 --- [http-nio-127.0.0.1-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["ws://localhost:4443?sessionId=1&token=tok_Dc9G59qmdoExsqFk"]
 2023-02-09 14:50:45.604 DEBUG 18116 --- [http-nio-127.0.0.1-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+<<<<<<< HEAD
 2023-02-09 15:47:49.178 DEBUG 18116 --- [http-nio-127.0.0.1-8080-exec-8] o.s.web.servlet.DispatcherServlet        : POST "/api/v1/openvidu/sessions", parameters={}
 2023-02-09 15:47:49.179 DEBUG 18116 --- [http-nio-127.0.0.1-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.OpenviduController#initializeSession(Map)
 2023-02-09 15:47:49.180 DEBUG 18116 --- [http-nio-127.0.0.1-8080-exec-8] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [{customSessionId=1}]
@@ -1282,3 +1283,6 @@ Caused by: java.net.SocketException: Network is unreachable: connect
 2023-02-09 15:59:23.216 DEBUG 18116 --- [http-nio-127.0.0.1-8080-exec-9] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [{}]
 2023-02-09 15:59:23.223 DEBUG 18116 --- [http-nio-127.0.0.1-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [text/plain, */*, text/plain, */*, text/plain, */*, application/json, application/*+json, application/json, application/*+json, application/cbor]
 2023-02-09 15:59:23.223 DEBUG 18116 --- [http-nio-127.0.0.1-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["ws://localhost:4443?sessionId=1&token=tok_MMJBpqSgd8uk0upD"]
+2023-02-09 15:59:23.225 DEBUG 18116 --- [http-nio-127.0.0.1-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+=======
+>>>>>>> 5542705ef2c174d12c9aaebf2cc17935031a414d

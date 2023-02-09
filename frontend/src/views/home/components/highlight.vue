@@ -6,20 +6,20 @@
     :wrap-around="true"
     :transition="500"
   >
-    <slide v-for="slide in 5" :key="slide">
+    <slide v-for="slide in state.highlights[0]" :key="slide">
       <v-col class="carousel_item" @click="clickContent(slide)">
         <div class="text-h6">
-          오늘의 {{ slide }}번째 영상<v-icon color="red">mdi-heart</v-icon>
+          오늘의 {{ slide.id }}번째 영상<v-icon color="red">mdi-heart</v-icon>
         </div>
         <video
-          src="https://sstvideo.s3.ap-northeast-2.amazonaws.com/images/test.mp4"
+          :src="slide.url"
           width="300"
           height="200"
           disabled
         ></video>
         <v-row align="end" justify="space-between" style="padding: 10px">
-          <div class="text-h6" style="margin-left: 20px">View 1,332</div>
-          <div class="text-h6" style="margin-right: 20px">782 UP</div>
+          <div class="text-h6" style="margin-left: 20px">{{ slide.viewCnt }}</div>
+          <div class="text-h6" style="margin-right: 20px">{{ slide.likeCnt }}</div>
         </v-row>
       </v-col>
     </slide>
@@ -33,9 +33,11 @@
 
 <script>
 import { defineComponent } from "vue";
+import { reactive, onMounted } from "vue";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import { useRouter } from "vue-router";
+import axios from "axios";
 
 export default defineComponent({
   name: "HighlightBox",
@@ -51,13 +53,33 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
+    const state = reactive({
+      highlights:[],
+    });
     const clickContent = function (id) {
       router.push({
         name: "ContentsBox",
         params: { Id: "highlight" + id },
       });
     };
-    return { clickContent };
+
+    onMounted(() => {
+      axios({
+        method: "get",
+        url: import.meta.env.VITE_APP_URL + "/api/v1/videos/daily-video",
+      })
+        .then((res) => {
+          console.log(res);
+          state.highlights.push(res.data);
+          // console.log(state.highlights[0][0].url)
+          })
+        .catch((err) => {
+          console.log(err);
+        });
+      
+    });
+    return { clickContent, state };
+
   },
 });
 </script>
