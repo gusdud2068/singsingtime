@@ -3,18 +3,21 @@
     <v-row>
       <v-col lg="7">
         <h3 align="start" style="margin-left: 80px">
-          <b>어제자 광주 김범수 대결 영상 ㄷㄷ</b>
+          <!-- <b>{{title}}</b> -->
+          <b style="margin-left: 0px;">제목 : {{ state.title }}</b>
         </h3>
         <video
-          src="../../assets/video/test.mp4"
+          :src="state.video"
           width="700"
           height="500"
           autoplay
+          style="margin-bottom:20px"
         ></video>
+        
         <v-row justify="space-between">
-          <p style="margin-left: 80px">3,201 View</p>
+          <p style="margin-left: 80px">{{ state.viewCnt }}View</p>
           <p style="margin-right: 80px">
-            219
+            {{ state.likeCnt }}
             <button @click="activeBtn" v-if="!state.heartcheck" class="active">
               <v-icon>mdi-heart-outline</v-icon>
             </button>
@@ -46,25 +49,70 @@
 </template>
 
 <script>
-import { reactive } from "vue";
+import { onMounted, reactive} from "vue";
+import axios from "axios";
+import { useStore } from "vuex";
 
 export default {
   name: "ContentsBox",
-  data() {
-    return {
-      comment: "",
-    };
-  },
-  setup() {
+  setup(){
+    const store = useStore();
     const state = reactive({
       heartcheck: false,
+      keyId: "",
+      title : "",
+      description:"",
+      usernickname:"",
+      video:"",
+      likeCnt:"",
+      viewCnt:"",
     });
     const activeBtn = () => {
       state.heartcheck = !state.heartcheck;
     };
+    // const info = () =>{
+    //   axios({
+    //     method: "get",
+    //     url: "http://localhost:8080//api/v1/videos/{videoId}",
+    //     params : this.id
+    //   }).then((res) => {
+    //     this.title = res.data.title
+    //     this.user = res.data.user
+    //     this.description = res.data.description
+    //   }).catch((err) => {
+    //     if (err.message.indexOf('Network Error') > -1) {
+    //       alert('네트워크가 원활하지 않습니다.\n잠시 후 다시 시도해주세요.')
+    //     }
+    //   })
+
+    onMounted(() => {
+      const getid = localStorage.getItem('page')
+      
+
+      axios({
+        method: "get",
+        url: `http://localhost:8080/api/v1/videos/${getid}`
+        // url: import.meta.env.VITE_APP_URL + `api/v1/videos/${state.keyId}`,
+      })
+        .then((res) => {
+          console.log(res); 
+          state.title = res.data.title
+          state.description = res.data.description
+          state.usernickname = res.data.user.nickname
+          state.video=res.data.url
+          state.likeCnt=res.data.likeCnt
+          state.viewCnt=res.data.viewCnt
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
     return {
       state,
+      store,
       activeBtn,
+      // changes,
+      // getid,
     };
   },
 };

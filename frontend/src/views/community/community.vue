@@ -98,7 +98,7 @@
     <li
       v-for="i in state.content_list"
       class="infinite-list-item"
-      @click="clickContent(i)"
+      @click="clickContent(i.id)"
       :key="i"
     >
       <v-col>
@@ -146,6 +146,7 @@
 // import ContentBox from "./component/content.vue";
 import { onMounted, reactive, ref, toRaw } from "vue";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 import axios from "axios";
 
 export default {
@@ -192,7 +193,12 @@ export default {
       state.count += 4;
     };
 
+    const store = useStore();
     const clickContent = function (id) {
+      localStorage.setItem('page', id)
+      store.dispatch("contentStore/pageAction", {
+            contentId: id,
+          });
       router.push({
         name: "ContentsBox",
         params: { Id: id },
