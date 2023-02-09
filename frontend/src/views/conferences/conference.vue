@@ -1,6 +1,7 @@
 <template>
   <div id="main-container" class="container">
     <div style="color:white; display: flex; justify-content: space-between;">
+      <Chatting/>
       <div style="margin-left: 50%;">
         <h1>{{ this.mySessionId }}</h1>
       </div>
@@ -87,6 +88,8 @@ import { ref } from "vue";
 import { mapGetters } from "vuex";
 import Modal from "./components/Modal.vue";
 import SongDetail from "./components/SongDetail.vue";
+import Chatting from "./Chatting.vue";
+
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 const API_KEY = "AIzaSyBGF5ljIuwHbPn27YSImtkkgk8KooR8q7I";
@@ -98,7 +101,8 @@ export default {
   components: {
     UserVideo,
     Modal,
-    SongDetail
+    SongDetail,
+    Chatting,
   },
 props:{
   id:"",
