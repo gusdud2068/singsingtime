@@ -91,7 +91,7 @@ export default {
 
       axios({
         method: "get",
-        url: `https://i8c105.p.ssafy.io:8080/api/v1/videos/${getid}`
+        url: import.meta.env.VITE_APP_URL+`/api/v1/videos/${getid}`
         // url: import.meta.env.VITE_APP_URL + `api/v1/videos/${state.keyId}`,
       })
         .then((res) => {
