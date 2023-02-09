@@ -4,6 +4,13 @@
     <div>
       <p>{{ clientData }}</p>
     </div>
+    <input
+          class="btn btn-large btn-primary"
+          type="button"
+          id="buttonAudioDisabled"
+          @click="disableAudio"
+          value="음소거"
+        />
   </div>
 </template>
 
@@ -33,6 +40,9 @@ export default {
       const { connection } = this.streamManager.stream;
       return JSON.parse(connection.data);
     },
+    disableAudio() {
+      this.streamManager.stream.publishAudio(false);
+    }
   },
 };
 </script>
