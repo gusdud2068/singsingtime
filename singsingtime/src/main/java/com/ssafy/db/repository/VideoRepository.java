@@ -11,10 +11,10 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
     List<Video> findAllById(Long id);
     Video getVideoById(Long videoId);
 
-    @Query(value = "SELECT * FROM Video  WHERE created_at BETWEEN DATE_ADD(NOW(), INTERVAL -1 DAY) and now() ORDER BY view_cnt desc LIMIT 5;", nativeQuery = true)
+    @Query(value = "SELECT * FROM video  WHERE created_at BETWEEN DATE_ADD(NOW(), INTERVAL -1 DAY) and now() ORDER BY view_cnt desc LIMIT 5;", nativeQuery = true)
     List<Video> getDailyVideo();
 
-    @Query(value = "SELECT * FROM Video WHERE created_at BETWEEN DATE_ADD(NOW(), INTERVAL -1 WEEK) AND NOW() ORDER BY view_cnt desc LIMIT 5;", nativeQuery = true)
+    @Query(value = "SELECT * FROM video WHERE created_at BETWEEN DATE_ADD(NOW(), INTERVAL -1 WEEK) AND NOW() ORDER BY view_cnt desc LIMIT 5;", nativeQuery = true)
     List<Video> getWeeklyVideo();
 
     List<Video> findByTitleContains(String keyword);
