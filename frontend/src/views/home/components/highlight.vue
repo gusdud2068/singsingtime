@@ -57,9 +57,12 @@ export default defineComponent({
       highlights:[],
     });
     const clickContent = function (id) {
+      console.log("id: " + id.id)
+      localStorage.setItem('page',id.id)
+      const gopage = localStorage.getItem('page')
       router.push({
         name: "ContentsBox",
-        params: { Id: "highlight" + id },
+        params: { Id: gopage },
       });
     };
 

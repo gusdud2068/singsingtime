@@ -1,11 +1,11 @@
 <template>
-  <v-row @click="addPickList">
-    <v-col align="start" class="song_info">{{ song.title }}</v-col>
-    <v-col align="center" class="song_info">{{ song.singer }}</v-col>
-    <v-col v-show="!state.pick" align="end" class="song_info"
+  <v-row @click="addPickList" justify="space-between" style="width:550px;" >
+    <v-col align="start" class="song_info" style="color:black;">{{ song.title }}</v-col>
+    <v-col align="center" class="song_info" style="color:black;">{{ song.singer }}</v-col>
+    <v-col v-show="!state.pick" align="end" class="song_info" style="color:black;"
       ><v-icon>mdi-checkbox-blank-outline</v-icon></v-col
     >
-    <v-col v-show="state.pick" align="end" class="song_info"
+    <v-col v-show="state.pick" align="end" class="song_info" style="color:black;"
       ><v-icon>mdi-checkbox-marked</v-icon></v-col
     >
   </v-row>
@@ -13,7 +13,7 @@
 
 <script>
 // import axios from "axios";
-import { reactive } from "vue";
+import { onMounted, reactive } from "vue";
 import { useStore } from "vuex";
 
 export default {

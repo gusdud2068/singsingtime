@@ -31,6 +31,7 @@
           업로드
         </v-btn>
       </template>
+
       <v-card>
         <v-card-title>
           <img
@@ -94,6 +95,7 @@
     </v-dialog>
   </v-row>
 
+
   <ul class="infinite-list">
     <li
       v-for="i in state.content_list"
@@ -109,7 +111,7 @@
             :class="{ 'on-hover': isHovering }"
             v-bind="props"
           >
-            <v-img src="https://images.unsplash.com/photo-1429514513361-8fa32282fd5f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3264&q=80" height="225px" cover>
+            <v-img src="https://picsum.photos/200" height="225px" cover>
               <v-card-title
                 class="
                   text-h6 text-black
@@ -127,7 +129,7 @@
               </v-card-title>
             </v-img>
           </v-card>
-          <p align="right">{{ i.userId }}님의 게시물</p>
+          <p align="right">{{ i.user.nickname }}님의 게시물</p>
         </v-hover>
       </v-col>
       <!-- <ContentBox /> -->
@@ -153,6 +155,7 @@ export default {
   name: "CommunityBox",
   components: {
     // ContentBox,
+
   },
   data() {
     return {

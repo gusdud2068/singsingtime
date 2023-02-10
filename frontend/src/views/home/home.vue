@@ -18,7 +18,7 @@
           <p>챔피언 : {{ playroom.champion }}</p>
         </div>
       </li>
-    </ul>
+    </ul>너 팀
   </div>
 </template>
 <style>
