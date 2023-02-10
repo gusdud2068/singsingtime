@@ -338,7 +338,7 @@ export default {
   
         axios({
           method: "post",
-          url: import.meta.env.VITE_APP_URL+":8080/api/v1/videos",
+          url:"http://i8c105.p.ssafy.io:8080/api/v1/videos",
           data: formData,
           headers: {
             "Content-Type": "multipart/form-data",
