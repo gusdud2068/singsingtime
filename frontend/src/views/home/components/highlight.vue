@@ -1,25 +1,25 @@
 <template>
-  <h2><b>Today's Highlight</b></h2>
+<div class="back">
+  <h2 style="margin-top:0px; padding-top:20px; color:white;"><b>Today's Highlight</b></h2>
   <carousel
     class=""
-    :items-to-show="3.95"
+    :items-to-show="2.6 "
     :wrap-around="true"
     :transition="500"
   >
     <slide v-for="slide in state.highlights[0]" :key="slide">
       <v-col class="carousel_item" @click="clickContent(slide)">
-        <div class="text-h6">
+        <!-- <div class="text-h6">
           오늘의 {{ slide.id }}번째 영상<v-icon color="red">mdi-heart</v-icon>
-        </div>
-        <video
-          :src="slide.url"
-          width="300"
-          height="200"
-          disabled
-        ></video>
+        </div> -->
+        <video :src="slide.url" width="300" height="200" disabled></video>
         <v-row align="end" justify="space-between" style="padding: 10px">
-          <div class="text-h6" style="margin-left: 20px">{{ slide.viewCnt }}</div>
-          <div class="text-h6" style="margin-right: 20px">{{ slide.likeCnt }}</div>
+          <v-row justify="center" style="margin-top:2px;font-size:16px; color:white;">
+            {{ slide.title }}
+          </v-row>
+          <!-- <div class="text-h6" style="margin-right: 20px">
+            {{ slide.likeCnt }}
+          </div> -->
         </v-row>
       </v-col>
     </slide>
@@ -29,6 +29,7 @@
       <pagination />
     </template>
   </carousel>
+  </div>
 </template>
 
 <script>
@@ -54,12 +55,12 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const state = reactive({
-      highlights:[],
+      highlights: [],
     });
     const clickContent = function (id) {
-      console.log("id: " + id.id)
-      localStorage.setItem('page',id.id)
-      const gopage = localStorage.getItem('page')
+      // console.log("id: " + id.id)
+      localStorage.setItem("page", id.id);
+      const gopage = localStorage.getItem("page");
       router.push({
         name: "ContentsBox",
         params: { Id: gopage },
@@ -72,22 +73,27 @@ export default defineComponent({
         url: import.meta.env.VITE_APP_URL + "/api/v1/videos/daily-video",
       })
         .then((res) => {
-          // console.log(res);
+          console.log(res);
+          // console.log(
+          //   "하이라이틑ㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌ"
+          // );
           state.highlights.push(res.data);
           // console.log(state.highlights[0][0].url)
-          })
+        })
         .catch((err) => {
           console.log(err);
         });
-      
     });
     return { clickContent, state };
-
   },
 });
 </script>
 
 <style scoped>
+.back{
+  background-color: rgba(57, 73, 171, 0.7)
+}
+
 .carousel__slide {
   padding: 5px;
 }
@@ -136,9 +142,8 @@ export default defineComponent({
 .carousel_item {
   margin: 0;
   width: 500px;
-  height: 300px;
+  height: 350px;
   padding: 10px;
   padding-bottom: 40px;
-  background-color: skyblue;
 }
 </style>
