@@ -1,8 +1,8 @@
 <template>
   <v-row justify="space-between">
-    <v-col align="center">{{ mysong.title }}</v-col>
+    <v-col align="start">{{ mysong.title }}</v-col>
     <v-col align="center">{{ mysong.singer }}</v-col>
-    <v-col align="center">{{ mysong.singer }}</v-col>
+    <v-col align="end">X</v-col>
   </v-row>
 </template>
 

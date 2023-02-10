@@ -30,17 +30,16 @@ export default {
     onMounted(() => {
       axios({
         method: "get",
-        url: import.meta.env.VITE_APP_URL + "/api/v1/users/me/songs",
+        url: import.meta.env.VITE_APP_URL + "/api/v1/users/my-page/songs",
         headers: {
           Authorization: `Bearer ${state.token}`,
         },
       })
         .then((res) => {
         //   console.log(res.data);
-          console.log("가져오기 성공");
+          // console.log("가져오기 성공");
           state.mysongs = res.data
-          console.log(state.mysongs)
-          // url 바꿔야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+          // console.log(state.mysongs)
         })
         .catch((err) => {
           console.log(err);

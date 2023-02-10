@@ -1,7 +1,7 @@
 <template>
-  <v-row @click="addPickList">
+  <v-row @click="addPickList" style="width:560px;;">
     <v-col align="start" class="song_info">{{ song.title }}</v-col>
-    <v-col align="center" class="song_info">{{ song.singer }}</v-col>
+    <v-col align="center" class="song_info" >{{ song.singer }}</v-col>
     <v-col v-show="!state.pick" align="end" class="song_info"
       ><v-icon>mdi-checkbox-blank-outline</v-icon></v-col
     >
