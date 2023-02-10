@@ -5,6 +5,9 @@
         <h1>{{ this.mySessionId }}</h1>
       </div>
       <div>
+        <div>{{playroom.title}}</div>
+        <div>{{playroom.champion}}</div>
+
         <input
         class="btn btn-large btn-danger"
         type="button"
@@ -150,6 +153,7 @@ props:{
       mySessionId: this.$route.params.Id,
       myUserName: localStorage.name,
       token: null, // jwt토큰, 오픈비두 세션 접속용 getToken 파라미터랑 다름, this.token으로 구분
+      sessionInfo: null,
     };
   },
   computed: {
@@ -162,8 +166,11 @@ props:{
     ...mapGetters(["video"]),
   },
   created() {
+    
+    // console.log(playroom+"그냥");
     this.joinSession();
     this.getname();
+    this.getSessionInfo();
   },
   methods: {
     onSelectVideo: function (video) {
@@ -317,7 +324,19 @@ props:{
       if (this.mainStreamManager === stream) return;
       this.mainStreamManager = stream;
     },
-
+    getSessionInfo(){
+      axios({
+        method:"get",
+        url: import.meta.env.VITE_APP_URL+ `api/v1/playrooms/${this.mySessionId}`,
+      })
+      .then((res)=>{
+        console.log(res.data);
+        this.sessionInfo= res.data;
+      })
+      .catch((err) => {
+            alert(err);
+          });
+    },
     /**
      * --------------------------------------------
      * GETTING A TOKEN FROM YOUR APPLICATION SERVER
