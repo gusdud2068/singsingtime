@@ -31,3 +31,4 @@ public class Video extends BaseEntity {
     private List<Reply> replys;
 
 }
+    

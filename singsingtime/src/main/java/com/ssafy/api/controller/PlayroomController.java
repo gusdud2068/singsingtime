@@ -33,8 +33,15 @@ public class PlayroomController {
         return new ResponseEntity(list, HttpStatus.OK);
     }
 
+    // 방 상세 정보 조회
+    @GetMapping("/{sessionId}")
+    public ResponseEntity<Playroom> getRoomDetailInfo(@PathVariable String sessionId) {
+        Playroom playroom = playroomService.getPlayroomDetail(sessionId);
+        return new ResponseEntity(playroom, HttpStatus.OK);
+    }
+
     // 노래 제목으로 방 목록 조회
-    @GetMapping("/{keyword}")
+    @GetMapping("/search/{keyword}")
     public ResponseEntity<List<Playroom>> getRoomInfoByKeyword(@PathVariable String keyword) {
         List<Playroom> list = playroomService.getPlayroomByTitle(keyword);
         return new ResponseEntity(list, HttpStatus.OK);

@@ -1,15 +1,13 @@
 <template>
   <div id="main-container" class="container">
-    <div style="color:white; display: flex; justify-content: space-between;">
-      <div style="margin-left: 50%;">
-        <h1>{{ this.mySessionId }}</h1>
-      </div>
+    <div style="color: white; display: flex; justify-content: space-between">
+      <div style="margin-left: 50%"></div>
       <div>
         <input
-        class="btn btn-large btn-danger"
-        type="button"
-        @click="isShow"
-        value="노래"
+          class="btn btn-large btn-danger"
+          type="button"
+          @click="isShow"
+          value="노래"
         />
         <input
           class="btn btn-large btn-danger"
@@ -20,34 +18,37 @@
         />
       </div>
     </div>
-    <Modal ref="baseModal"  v-if="!this.selectedVideo">
-    <div style="text-align: center; ">
-      <v-card
-    class="mx-auto black"
-    max-width="500"
-  >
-    <v-list dark>
-        <h3 type="button" @click="afterselect()" style="margin: 10px; margin-right: 20px; text-align: right;">X</h3>
-        <h1>노래목록</h1>
-        <hr>
-      <v-list-item-group v-model="model">
-        <v-list-item
-          v-for="(item) in items"
-          @click="onSelectVideo(item), afterselect()"
-        >
-            <v-list-item-title v-text="item.icon"></v-list-item-title>
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
-  </v-card>
-    </div>
-  </Modal>
+    <Modal ref="baseModal" v-if="!this.selectedVideo">
+      <div style="text-align: center">
+        <v-card class="mx-auto black" max-width="500">
+          <v-list dark>
+            <h3
+              type="button"
+              @click="afterselect()"
+              style="margin: 10px; margin-right: 20px; text-align: right"
+            >
+              X
+            </h3>
+            <h1>노래목록</h1>
+            <hr />
+            <v-list-item-group v-model="model">
+              <v-list-item
+                v-for="item in items"
+                @click="onSelectVideo(item), afterselect()"
+              >
+                <v-list-item-title v-text="item.icon"></v-list-item-title>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-card>
+      </div>
+    </Modal>
     <div class="participation">
       <div id="video-container" class="bigbox">
         <!-- <div id="video-container" class=""> -->
         <!-- 나 -->
         <div>
-          <div ></div>
+          <div></div>
           <div></div>
         </div>
         <div class="smallboxl">
@@ -60,14 +61,14 @@
           <SongDetail v-if="!this.selectedVideo" :session="session" />
         </div>
         <!-- 나 빼고 나머지 참가자들 -->
-      <div class="smallboxr">
-        <user-video
-          v-for="sub in subscribers"
-          :key="sub.stream.connection.connectionId"
-          :stream-manager="sub"
-          @click.native="updateMainVideoStreamManager(sub)"
-        />
-      </div>
+        <div class="smallboxr">
+          <user-video
+            v-for="sub in subscribers"
+            :key="sub.stream.connection.connectionId"
+            :stream-manager="sub"
+            @click.native="updateMainVideoStreamManager(sub)"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -82,10 +83,8 @@ import { mapGetters } from "vuex";
 import Modal from "./components/Modal.vue";
 import SongDetail from "./components/SongDetail.vue";
 
-
 axios.defaults.headers.post["Content-Type"] = "application/json";
 const API_KEY = "AIzaSyBGF5ljIuwHbPn27YSImtkkgk8KooR8q7I";
-
 
 export default {
   name: "App",
@@ -95,43 +94,43 @@ export default {
     Modal,
     SongDetail,
   },
-props:{
-  id:"",
-},
+  props: {
+    id: "",
+  },
   data() {
     return {
       items: [
         {
-          icon: '별이될께-디셈버',
-          text: 'JwH89XpCrnI',
+          icon: "별이될께-디셈버",
+          text: "JwH89XpCrnI",
         },
         {
-          icon: '출발-김동률',
-          text: 'N1B3jJzmdmM',
+          icon: "출발-김동률",
+          text: "N1B3jJzmdmM",
         },
         {
-          icon: '어제보다 오늘 더-김종국',
-          text: 'ICwHBPum4QY',
+          icon: "어제보다 오늘 더-김종국",
+          text: "ICwHBPum4QY",
         },
         {
-          icon: 'heartshaker-twice',
-          text: 'LPwUWNfMXJM',
+          icon: "heartshaker-twice",
+          text: "LPwUWNfMXJM",
         },
         {
-          icon: '홍연-안예은',
-          text: 'dxQm3HKwaYA',
+          icon: "홍연-안예은",
+          text: "dxQm3HKwaYA",
         },
         {
-          icon: '그대를 사랑하는 10가지 이유-이석훈',
-          text: 'VSs38DHeRPc',
+          icon: "그대를 사랑하는 10가지 이유-이석훈",
+          text: "VSs38DHeRPc",
         },
         {
-          icon: '라라라-sg워너비',
-          text: 'IExTwnAf1Zo',
+          icon: "라라라-sg워너비",
+          text: "IExTwnAf1Zo",
         },
         {
-          icon: '내사람-sg워너비',
-          text: 'hjIP6Tue8aI',
+          icon: "내사람-sg워너비",
+          text: "hjIP6Tue8aI",
         },
       ],
       inputValue: "",
@@ -150,6 +149,9 @@ props:{
       mySessionId: this.$route.params.Id,
       myUserName: localStorage.name,
       token: null, // jwt토큰, 오픈비두 세션 접속용 getToken 파라미터랑 다름, this.token으로 구분
+      sessionInfo: null,
+      champion: "",
+      championSongList: [],
     };
   },
   computed: {
@@ -162,8 +164,10 @@ props:{
     ...mapGetters(["video"]),
   },
   created() {
+    // console.log(playroom+"그냥");
     this.joinSession();
     this.getname();
+    this.getSessionInfo();
   },
   methods: {
     onSelectVideo: function (video) {
@@ -218,8 +222,8 @@ props:{
     onVideoSelect: function (video) {
       this.selectVideo = video;
     },
-    handleClick(){
-      this.$refs.Youtube[0].show()
+    handleClick() {
+      this.$refs.Youtube[0].show();
     },
     getname() {
       this.jwt = localStorage.getItem("jwt");
@@ -266,10 +270,10 @@ props:{
 
             // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
             // element: we will manage it on our own) and with the desired properties
-            let publisher = this.OV.initPublisher(undefined,{
+            let publisher = this.OV.initPublisher(undefined, {
               audioSource: undefined, // The source of audio. If undefined default microphone
               videoSource: undefined, // The source of video. If undefined default webcam
-              publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
+              publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
               publishVideo: true, // Whether you want to start publishing with your video enabled or not
               resolution: "640x480", // The resolution of your video
               frameRate: 30, // The frame rate of your video
@@ -317,7 +321,38 @@ props:{
       if (this.mainStreamManager === stream) return;
       this.mainStreamManager = stream;
     },
-
+    getSessionInfo() {
+      axios({
+        method: "get",
+        url:
+          import.meta.env.VITE_APP_URL +
+          `/api/v1/playrooms/${this.mySessionId}`,
+      })
+        .then((res) => {
+          console.log(1111111111);
+          console.log(res.data);
+          this.sessionInfo = res.data;
+          this.champion = res.data.champion;
+          this.getChampionList();
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    getChampionList() {
+      axios({
+        method: "get",
+        url:
+          import.meta.env.VITE_APP_URL +
+          `/api/v1/playrooms/playlist/${this.champion}`,
+      })
+        .then((res) => {
+          this.championSongList = res.data.songs;
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
     /**
      * --------------------------------------------
      * GETTING A TOKEN FROM YOUR APPLICATION SERVER
@@ -335,8 +370,8 @@ props:{
      */
     async getToken(mySessionId) {
       const sessionId = await this.createSession(mySessionId);
-      console.log("디버깅1")
-      console.log(sessionId)
+      console.log("디버깅1");
+      console.log(sessionId);
       return await this.createToken(sessionId);
     },
 
@@ -346,7 +381,7 @@ props:{
         import.meta.env.VITE_APP_URL + "/api/v1/openvidu/sessions",
         { customSessionId: sessionId },
         {
-          headers: { 
+          headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${this.token}`,
           },
@@ -357,7 +392,10 @@ props:{
 
     async createToken(sessionId) {
       const response = await axios.post(
-        import.meta.env.VITE_APP_URL + "/api/v1/openvidu/sessions/" + sessionId + "/connections",
+        import.meta.env.VITE_APP_URL +
+          "/api/v1/openvidu/sessions/" +
+          sessionId +
+          "/connections",
         {},
         {
           headers: { "Content-Type": "application/json" },
@@ -366,8 +404,7 @@ props:{
       return response.data; // The token
     },
   },
-  setup(){
-    
+  setup() {
     // 자식 컴포넌트를 핸들링하기 위한 ref
     const baseModal = ref(null);
     // Promise 객체를 핸들링하기 위한 ref
@@ -382,9 +419,9 @@ props:{
         resolvePromise.value = resolve;
       });
     };
-    const afterselect=()=>{
-      baseModal.value.close()
-    }
+    const afterselect = () => {
+      baseModal.value.close();
+    };
     const confirm = () => {
       baseModal.value.close();
       resolvePromise.value(true);
@@ -404,7 +441,7 @@ props:{
 };
 </script>
 <style>
-.bigbox{
+.bigbox {
   /* position: absolute; */
   display: flex;
   margin: auto;
@@ -414,7 +451,7 @@ props:{
   top: 0%;
   left:40%;
 } */
-.musicbox{
+.musicbox {
   top: 100%;
   left: -5%;
   width: 700px;
