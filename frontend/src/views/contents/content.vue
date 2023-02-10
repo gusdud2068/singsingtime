@@ -6,14 +6,19 @@
           <!-- <b>{{title}}</b> -->
           <b style="margin-left: 0px;">제목 : {{ state.title }}</b>
         </h3>
+        
+
         <video
           :src="state.video"
+          ref="videoPlayer"
           width="700"
           height="500"
-          autoplay
           style="margin-bottom:20px"
+          @click="play()"
+
         ></video>
-        
+        <!-- <button @click="play">play</button> -->
+
         <v-row justify="space-between">
           <p style="margin-left: 80px">{{ state.viewCnt }}View</p>
           <p style="margin-right: 80px">
@@ -27,7 +32,8 @@
           </p>
         </v-row>
       </v-col>
-      <v-col lg="4" class="comment_box">
+      <CommentsBox :replys="state.ordering"/>
+      <!-- <v-col lg="4" class="comment_box">
         <v-row>
           <h4><b>Comment</b></h4>
           <input
@@ -43,18 +49,40 @@
           <p style="margin-right: 10px">작성자</p>
         </v-row>
         <div class="comments_list"></div>
-      </v-col>
+      </v-col> -->
     </v-row>
   </div>
 </template>
 
 <script>
-import { onMounted, reactive} from "vue";
+import { onMounted, reactive, computed} from "vue";
+import CommentsBox from "./components/comments.vue";
 import axios from "axios";
 import { useStore } from "vuex";
+import _ from "lodash"
 
 export default {
   name: "ContentsBox",
+
+  components: {
+    CommentsBox,
+  },
+  data() {
+    return {
+      status:false,
+    }
+  },
+  methods: {
+    play() {
+      this.status = !this.status
+      if (this.status) {
+        this.$refs.videoPlayer.play();
+      }
+      else{
+        this.$refs.videoPlayer.pause();
+      }
+    },
+  },
   setup(){
     const store = useStore();
     const state = reactive({
@@ -66,24 +94,12 @@ export default {
       video:"",
       likeCnt:"",
       viewCnt:"",
+      replys:[],
+      ordering: [],
     });
     const activeBtn = () => {
       state.heartcheck = !state.heartcheck;
     };
-    // const info = () =>{
-    //   axios({
-    //     method: "get",
-    //     url: "http://localhost:8080//api/v1/videos/{videoId}",
-    //     params : this.id
-    //   }).then((res) => {
-    //     this.title = res.data.title
-    //     this.user = res.data.user
-    //     this.description = res.data.description
-    //   }).catch((err) => {
-    //     if (err.message.indexOf('Network Error') > -1) {
-    //       alert('네트워크가 원활하지 않습니다.\n잠시 후 다시 시도해주세요.')
-    //     }
-    //   })
 
     onMounted(() => {
       const getid = localStorage.getItem('page')
@@ -102,10 +118,14 @@ export default {
           state.video=res.data.url
           state.likeCnt=res.data.likeCnt
           state.viewCnt=res.data.viewCnt
+          state.replys=res.data.replys
         })
         .catch((err) => {
           console.log(err);
         });
+
+        state.ordering = computed(() => _.orderBy(state.replys,'createdDate','desc'))
+    
     });
     return {
       state,
@@ -119,27 +139,6 @@ export default {
 </script>
 
 <style>
-.comment_box {
-  margin-top: 80px;
-}
-
-.comment_inpupt {
-  border-bottom: 1px solid rgb(0, 0, 0);
-  margin-right: 10px;
-  margin-top: 10px;
-  height: 30px;
-  width: 85%;
-}
-
-.comment_create {
-  border-radius: 20px;
-}
-
-.comments_list {
-  margin-top: 10px;
-  width: 100%;
-  height: 70%;
-}
 .active {
   color: red;
 }
