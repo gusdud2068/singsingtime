@@ -12,6 +12,7 @@ import java.util.Map;
 
 public interface PlayroomService {
     public List<Playroom> getPlayroom();
+    Playroom getPlayroomDetail(String sessionId);
     public List<Playroom> getPlayroomByTitle(String keyword);
 
     public List<Song> getChampionSongList(String sessionId);
@@ -25,4 +26,5 @@ public interface PlayroomService {
     int checkPlayRoom(Map<String, Object> params);
 
     void createPlayRoom(Map<String, Object> params, User user);
+
 }

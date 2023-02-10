@@ -35,6 +35,12 @@ public class PlayroomServiceImpl implements PlayroomService{
     }
 
     @Override
+    public Playroom getPlayroomDetail(String sessionId) {
+        Playroom playroom = playroomRepository.findBySessionId(sessionId).orElseThrow(()->new NoSuchElementException());
+        return playroom;
+    }
+
+    @Override
     public List<Playroom> getPlayroomByTitle(String keyword) {
         List<Playroom> list = playroomRepository.findByTitle(keyword);
         return list;
