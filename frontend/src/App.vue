@@ -25,8 +25,11 @@ html {
 html::-webkit-scrollbar {
   width: 0;
   height: 0;
+
 }
 .v-application__wrap {
   min-height: fit-content;
+ 
 }
+
 </style>

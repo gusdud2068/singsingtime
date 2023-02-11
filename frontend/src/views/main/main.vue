@@ -1,7 +1,7 @@
 <template>
   <HeaderBar />
   <SideBar />
-  <FooterBar />
+  <FooterBar /> 
 </template>
 <script>
 import HeaderBar from "./components/HeaderBar.vue";

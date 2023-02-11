@@ -5,9 +5,9 @@
       :time="4 * 60 * 1000"
       v-slot="{ minutes, seconds }"
     >
-      <h3 :class="{ hurryup: minutes == 0 && seconds <= 30 }">
-        남은 투표 시간 : {{ minutes }} 분 {{ seconds }} 초
-      </h3>
+      <h4 :class="{ hurryup: minutes == 0 && seconds <= 30 }" style="margin-top:50px">
+        남은 투표 시간 : <h1>{{ minutes }} 분 {{ seconds }} 초 </h1>
+      </h4>
     </vue-countdown>
     <iframe
       :src="videoId"
@@ -56,4 +56,5 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style >
+</style>
