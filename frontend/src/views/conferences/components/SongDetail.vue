@@ -1,7 +1,7 @@
 <template>
   <div v-if="video" >
     <iframe
-      :src="`https://www.youtube.com/embed/${videoId}?autoplay=1`"
+      src="https://sstvideo.s3.ap-northeast-2.amazonaws.com/images/pexels-cottonbro-6127660.mp4"
       frameborder="0"
       style="width: 700px; height: 500px"
       allow="autoplay"
