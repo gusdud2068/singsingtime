@@ -12,20 +12,39 @@
       />
       <v-btn class="comment_create" @click="commentSubmit">+</v-btn>
     </v-row>
-    <v-row
-      justify="space-between"
-      style="margin-top: 20px"
-      v-for="reply in replys"
-      :key="reply"
-    >
-      <p style="margin-left: 5px">{{ reply.context }}</p>
-      <div>
-        <v-row>
-            <p style="margin-right: 10px; margin-top: 10px;">{{ reply.user.nickname }}</p>
-            <button v-show="reply.user.nickname == state.nickname" @click="commentDelete(reply.id)"><v-icon style="color:brown">mdi-close</v-icon></button>
+    <div style="margin-top: 0px">
+        <!-- <v-col> -->
+            <v-row
+            justify="space-between"
+            style="margin-top: 20px"
+            v-for="reply in replys"
+            :key="reply"
+            >
+    <!-- <div justify="space-between"
+            style="margin-top: 20px"
+            v-for="reply in replys"
+            :key="reply" -->
+        <v-col lg="8">
+          <p>{{ reply.context }}</p>
+        </v-col>
+
+        <div>
+          <v-row>
+            <p style="margin-right: 10px; margin-top: 25px">
+              {{ reply.user.nickname }}
+            </p>
+            <button
+              v-show="reply.user.nickname == state.nickname"
+              @click="commentDelete(reply.id)"
+            >
+              <v-icon style="color: brown; margin-top: 15px">mdi-close</v-icon>
+            </button>
         </v-row>
-      </div>
-    </v-row>
+    </div>
+<!-- </div> -->
+      </v-row>
+    <!-- </v-col> -->
+    </div>
     <div class="comments_list"></div>
   </v-col>
   <!-- </div> -->
@@ -89,7 +108,7 @@ export default {
       })
         .then((res) => {
           console.log(res);
-          window.location.reload(true)
+          window.location.reload(true);
         })
         .catch((err) => {
           console.log(err);
