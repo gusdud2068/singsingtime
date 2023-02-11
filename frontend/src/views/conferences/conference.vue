@@ -47,7 +47,7 @@
                 :key="championSong.title"
               >
                 <v-list-item-title
-                  >{{ championSong.title }} -
+                  >{{ championSong.title }}
                   {{ championSong.singer }}</v-list-item-title
                 >
               </v-list-item>
@@ -232,10 +232,10 @@ export default {
     console.log(this.subscribers);
   },
   methods: {
-    onSelectSong: function (video) {
+    onSelectSong: function (championSong) {
       this.session
         .signal({
-          data: JSON.stringify(video.text),
+          data: JSON.stringify(championSong.title),
           type: "song",
         })
         .then(() => {
@@ -434,7 +434,9 @@ export default {
           `/api/v1/playrooms/playlist/${this.mySessionId}`,
       })
         .then((res) => {
+          
           this.championSongList = res.data;
+          console.log(res.data);
         })
         .catch((err) => {
           alert(err);
