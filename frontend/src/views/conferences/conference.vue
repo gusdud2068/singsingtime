@@ -1,8 +1,12 @@
 <template>
-  <div id="main-container" class="container">
-    <div style="color: white; display: flex; justify-content: space-between">
-      <div style="margin-left: 50%"></div>
+  <div id="main-container" class="container" :class="{ musicOn : this.selectedVideo == true}">
+    <div style="color: white; display: flex; justify-content: space-between;padding-bottom: 50px;">
+      <div style="margin-left: 40%">
+      <h2>지금 <img src='../../assets/images/champion.gif' style="width:50px"><span style="color:red;">
+        챔피언</span><img src='../../assets/images/champion.gif' style="width:50px">에게 도전하세요!
+    </h2></div>
       <div>
+        
         <input
           class="btn btn-large btn-danger"
           type="button"
@@ -64,7 +68,8 @@
 
         <div class="smallboxl">
           <!--스몰박스 left, 노래화면 왼쪽. 여기에 스트림매니저로 챔피언을 넘겨줘야함-->
-          <v-card color="primary">챔피언</v-card>
+          <v-card style="padding:5px;font-size: 20px;" color="primary"><img src='../../assets/images/sparkling.gif' style="width:20px"><span style="color:white">챔피언</span> <img src='../../assets/images/sparkling.gif' style="width:20px"></v-card>
+
           <user-video
             :stream-manager="championStreamManager"
             @click.native="updateMainVideoStreamManager(championStreamManager)"
@@ -86,9 +91,9 @@
         </div> -->
 
         <!--비디오 위치 테스트용으로 퍼블리셔 넣어놓음 -->
-        <div class="smallboxr">
-          <!--스몰박스 right, 노래화면 오른쪽, 여기에 챌린져가 들어가야 함-->
-          <v-card color="secondary">도전자</v-card>
+        <div class="smallboxl">
+          <!--스몰박스 left, 노래화면 왼쪽. 여기에 스트림매니저로 챔피언을 넘겨줘야함-->
+          <v-card style="padding:5px;font-size: 20px;" color="green" ><img src='../../assets/images/sparkling.gif' style="width:20px"> <span style="color:white">도전자 </span><img src='../../assets/images/sparkling.gif' style="width:20px"></v-card>
           <user-video
             :stream-manager="challengerStreamManager"
             @click.native="
@@ -106,8 +111,8 @@
       value="대결 신청"
     />
     <!-- 관중들 들어갈 자리 -->
-    <v-card class="audiences" color="success" style="width: 200px"
-      >관람객</v-card
+    <v-card class="audiences" color="#3232FF" style="width: 200px"
+      ><h3 style="color:white">관람객</h3></v-card
     >
     <div class="smallboxb">
       <!--스몰박스 right, 노래화면 오른쪽-->
@@ -601,10 +606,9 @@ export default {
   margin: auto;
   padding: 0;
 }
-/* .smallboxl{
-  top: 0%;
-  left:40%;
-} */
+.smallboxl{
+  width: 300px;
+}
 .musicbox {
   top: 100%;
   left: -5%;
@@ -621,8 +625,21 @@ export default {
   height: 100%;
   width: 100vw;
   background-color: black;
+  background-image: url('../../assets/images/sparkle-star.gif') ;
+  background-size: 400px;
+  background-repeat: repeat;
   color: white;
   padding: 20px;
+}
+.musicOn{
+  height: 100%;
+  width: 100vw;
+  background-color: black;
+  background-image: url('../../assets/images/back.gif');
+  background-size: 1200px;
+  color: white;
+  padding: 20px;
+
 }
 .hurryup {
   color: red;

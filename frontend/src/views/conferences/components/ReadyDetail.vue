@@ -1,8 +1,6 @@
 <template>
   <div>
-    <h2>
-      지금 챔피언에게 도전하세요!
-    </h2>
+   
     <iframe
       src="https://sstvideo.s3.ap-northeast-2.amazonaws.com/images/readyVideo.mp4"
       frameborder="0"
@@ -29,4 +27,6 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style>
+
+</style>
