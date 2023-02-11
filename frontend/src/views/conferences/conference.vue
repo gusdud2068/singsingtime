@@ -34,7 +34,7 @@
             <v-list-item-group v-model="model">
               <v-list-item
                 v-for="item in items"
-                @click="onSelectVideo(item), afterselect()"
+                @click="afterselect(),onSelectVideo(item)"
               >
                 <v-list-item-title v-text="item.icon"></v-list-item-title>
               </v-list-item>
@@ -43,33 +43,69 @@
         </v-card>
       </div>
     </Modal>
+
+    <!--대결 시작 전 -->
+    <h2 style="margin-bottom: 20px" v-if="!this.readyVideo">지금 챔피언에게 도전하세요!</h2> 
+    <!-- 대결 시작 후 투표시간 카운트할때 사용하면 될듯! -->
+    <vue-countdown v-if="!this.selectedVideo && this.readyVideo" :time="4 * 60 * 1000" v-slot="{ minutes, seconds }">
+      <h3 :class="{hurryup: minutes == 0 && seconds <= 30}">남은 투표 시간 : {{ minutes }} 분  {{ seconds }} 초</h3>
+    </vue-countdown> 
+
     <div class="participation">
       <div id="video-container" class="bigbox">
         <!-- <div id="video-container" class=""> -->
         <!-- 나 -->
-        <div>
-          <div></div>
-          <div></div>
-        </div>
+
         <div class="smallboxl">
+          <!--스몰박스 left, 노래화면 왼쪽. 여기에 스트림매니저로 챔피언을 넘겨줘야함-->
           <user-video
             :stream-manager="publisher"
             @click.native="updateMainVideoStreamManager(publisher)"
           />
         </div>
+        <v-btn>투표</v-btn>
         <div class="musicbox">
           <SongDetail v-if="!this.selectedVideo" :session="session" />
+          <video
+            v-if="!this.readyVideo"
+            src="../../assets/video/readyVideo.mp4"
+            autoplay
+            loop
+            style="border: 0px"
+          ></video>
+          <!--대결이 끝나면 다시 readyVideo가 재생되게 해야함-->
         </div>
-        <!-- 나 빼고 나머지 참가자들 -->
-        <div class="smallboxr">
+
+        <!--스몰박스 right, 노래화면 오른쪽, 여기에 챌린져가 들어가야 함-->
+        <!-- <div class="smallboxr"> 
           <user-video
-            v-for="sub in subscribers"
-            :key="sub.stream.connection.connectionId"
-            :stream-manager="sub"
-            @click.native="updateMainVideoStreamManager(sub)"
+            <user-video
+            :stream-manager="challenger" 
+            @click.native="updateMainVideoStreamManager(challenger)"
+          />
+          />
+        </div> -->
+
+        <!--비디오 위치 테스트용으로 퍼블리셔 넣어놓음 -->
+        <div class="smallboxr">
+          <!--스몰박스 left, 노래화면 왼쪽. 여기에 스트림매니저로 챔피언을 넘겨줘야함-->
+          <user-video
+            :stream-manager="publisher"
+            @click.native="updateMainVideoStreamManager(publisher)"
           />
         </div>
       </div>
+    </div>
+
+    <!-- 관중들 들어갈 자리 -->
+    <div class="smallboxb">
+      <!--스몰박스 right, 노래화면 오른쪽-->
+      <user-video
+        v-for="sub in subscribers"
+        :key="sub.stream.connection.connectionId"
+        :stream-manager="sub"
+        @click.native="updateMainVideoStreamManager(sub)"
+      />
     </div>
   </div>
 </template>
@@ -82,6 +118,7 @@ import { ref } from "vue";
 import { mapGetters } from "vuex";
 import Modal from "./components/Modal.vue";
 import SongDetail from "./components/SongDetail.vue";
+import VueCountdown from "@chenfengyuan/vue-countdown";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 const API_KEY = "AIzaSyBGF5ljIuwHbPn27YSImtkkgk8KooR8q7I";
@@ -93,6 +130,7 @@ export default {
     UserVideo,
     Modal,
     SongDetail,
+    VueCountdown,
   },
   props: {
     id: "",
@@ -147,11 +185,12 @@ export default {
       subscribers: [],
       // Join form
       mySessionId: this.$route.params.Id,
-      myUserName: localStorage.name,
+      myUserName: localStorage.getItem("nickname"),
       token: null, // jwt토큰, 오픈비두 세션 접속용 getToken 파라미터랑 다름, this.token으로 구분
       sessionInfo: null,
       champion: "",
       championSongList: [],
+      readyVideo: false,
     };
   },
   computed: {
@@ -168,6 +207,8 @@ export default {
     this.joinSession();
     this.getname();
     this.getSessionInfo();
+    console.log("====================================================");
+    console.log(this.subscribers);
   },
   methods: {
     onSelectVideo: function (video) {
@@ -178,6 +219,7 @@ export default {
         })
         .then(() => {
           console.log("노래방 시그널 전송");
+          this.readyVideo = true;
           // console.log(video.id.videoId)
         })
         .catch((err) => {
@@ -219,6 +261,7 @@ export default {
         });
       console.log(this.videos);
     },
+
     onVideoSelect: function (video) {
       this.selectVideo = video;
     },
@@ -227,6 +270,9 @@ export default {
     },
     getname() {
       this.jwt = localStorage.getItem("jwt");
+      console.log(
+        "get name==================================================="
+      );
       console.log(this.name);
     },
     joinSession() {
@@ -245,10 +291,12 @@ export default {
       });
 
       // On every Stream destroyed...
+      // 흠 세션이 파괴될때? 그냥 모두를 한번에 나가게 하면되는거 아닌가??
+      // 스트림매니저가 각각을 부르는 명칭 아닌가..? 한명만 있는건가?
       this.session.on("streamDestroyed", ({ stream }) => {
-        const index = this.subscribers.indexOf(stream.streamManager, 0);
+        const index = this.subscribers.indexOf(stream.streamManager, 0); // 이 세션의 구독자중에서 스트림매니저의 위치 찾기
         if (index >= 0) {
-          this.subscribers.splice(index, 1);
+          this.subscribers.splice(index, 1); // 찾은 스트림매니저의 위치를 통해 구독자에서 제거
         }
       });
 
@@ -260,6 +308,7 @@ export default {
       // --- 4) Connect to the session with a valid user token ---
 
       // Get a token from the OpenVidu deployment
+      // 유저토큰이 아니구 세션토큰!
       this.getToken(this.mySessionId).then((token) => {
         // First param is the token. Second param can be retrieved by every user on event
         // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
@@ -329,7 +378,7 @@ export default {
           `/api/v1/playrooms/${this.mySessionId}`,
       })
         .then((res) => {
-          console.log(1111111111);
+          // console.log(1111111111);
           console.log(res.data);
           this.sessionInfo = res.data;
           this.champion = res.data.champion;
@@ -426,7 +475,7 @@ export default {
       baseModal.value.close();
       resolvePromise.value(true);
       const url = "#/conferences/" + this.store.state.conferencename + "/";
-      window.open(url);
+      window.open(url); // 새로운 창에서 플레이룸 오픈
       this.store.state.conferencename = "";
     };
 
@@ -447,6 +496,16 @@ export default {
   margin: auto;
   padding: 0;
 }
+.smallboxb {
+  position: absolute;
+  display: flex;
+  justify-content: space-around;
+  margin-left: 100px;
+  margin-right: 200px;
+  width: 100%;
+  margin: auto;
+  padding: 0;
+}
 /* .smallboxl{
   top: 0%;
   left:40%;
@@ -455,6 +514,9 @@ export default {
   top: 100%;
   left: -5%;
   width: 700px;
+  margin-left: 50px;
+  margin-right: 50px;
+  border: 0px;
 }
 /* .smallboxr{
   bottom: -30%;
@@ -466,6 +528,9 @@ export default {
   background-color: black;
   color: white;
   padding: 20px;
+}
+.hurryup{
+  color: red;
 }
 .play {
   display: flex;
