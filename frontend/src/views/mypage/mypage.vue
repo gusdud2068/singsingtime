@@ -555,6 +555,7 @@ export default {
         })
           .then((res) => {
             console.log(res);
+            window.location.reload(true);
           })
           .catch((err) => {
             console.log(err);

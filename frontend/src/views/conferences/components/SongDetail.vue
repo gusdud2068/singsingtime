@@ -1,8 +1,8 @@
 <template>
-  <div v-if="video">
+  <div>
     <vue-countdown
       v-if="!this.selectedVideo"
-      :time="4 * 60 * 1000"
+      :time="songTime * 1000"
       v-slot="{ minutes, seconds }"
     >
       <h4 :class="{ hurryup: minutes == 0 && seconds <= 30 }" style="margin-top:50px">
@@ -20,6 +20,7 @@
 </template>
 <script>
 import VueCountdown from "@chenfengyuan/vue-countdown";
+import { eventNames } from "process";
 
 export default {
   name: "SongDetail",
@@ -30,6 +31,9 @@ export default {
     return {
       videoId: undefined,
       video: false,
+      songTime: 0,
+      TimeCounter: 0,
+      Timer:null,
     };
   },
   props: {
@@ -39,19 +43,40 @@ export default {
   created() {
     this.video = false;
     console.log();
-    this.session.on("signal:song", (event) => {
-      console.log("여기서 노래 한개 정보 받기");
-      console.log(event.data);
+    this.session.on("signal:songTitle", (event) => {
+      console.log("노래 제목은 " + event.data);
       const id = event.data.slice(1, -1);
-      console.log("session에서 받은 id : " + id);
       this.videoId =
         "https://sstvideo.s3.ap-northeast-2.amazonaws.com/images/" +
         id +
         ".mp4";
-      console.log(11111111111111111111111);
-      console.log(id);
       this.video = true;
     });
+    this.session.on("signal:songTime", (event) => {
+      this.songTime = event.data;
+      console.log("노래 시간은 " + event.data);
+    });
+    
+  },
+  updated() {
+    this.timerStart();
+  },
+  methods: {
+    timerStart: function() {
+      // 1초에 한번씩 start 호출
+      this.TimeCounter = this.songTime;
+      var interval = setInterval(() => {
+        this.TimeCounter-=0.5; //1초씩 감소
+        console.log("시간 : "+this.TimeCounter);
+        if (this.TimeCounter <= 0) this.timerStop(interval);
+      }, 1000);
+      return interval;
+    },
+    timerStop: function(Timer) {
+      clearInterval(Timer);
+      this.$emit('endGame', true)
+      // console.log("게임 끝~~~~~~~~~~~~~~~~")
+    },
   },
 };
 </script>
