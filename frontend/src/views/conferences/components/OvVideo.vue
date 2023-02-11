@@ -17,6 +17,7 @@ export default {
 </script>
 <style>
 .live {
-  width: 200px;
+  width: 300px;
+  margin-right: 2rem;
 }
 </style>

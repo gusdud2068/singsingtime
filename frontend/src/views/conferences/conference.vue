@@ -79,6 +79,8 @@
 
         <div class="smallboxl">
           <!--스몰박스 left, 노래화면 왼쪽. 여기에 스트림매니저로 챔피언을 넘겨줘야함-->
+          <v-card color="primary">챔피언</v-card>
+
           <user-video
             :stream-manager="publisher"
             @click.native="updateMainVideoStreamManager(publisher)"
@@ -99,7 +101,6 @@
 
         <!--스몰박스 right, 노래화면 오른쪽, 여기에 챌린져가 들어가야 함-->
         <!-- <div class="smallboxr"> 
-          <user-video
             <user-video
             :stream-manager="challenger" 
             @click.native="updateMainVideoStreamManager(challenger)"
@@ -109,7 +110,8 @@
 
         <!--비디오 위치 테스트용으로 퍼블리셔 넣어놓음 -->
         <div class="smallboxr">
-          <!--스몰박스 left, 노래화면 왼쪽. 여기에 스트림매니저로 챔피언을 넘겨줘야함-->
+          <!--스몰박스 right, 노래화면 오른쪽, 여기에 챌린져가 들어가야 함-->
+          <v-card color="secondary">도전자</v-card>
           <user-video
             :stream-manager="publisher"
             @click.native="updateMainVideoStreamManager(publisher)"
@@ -119,6 +121,9 @@
     </div>
 
     <!-- 관중들 들어갈 자리 -->
+    <v-card class="audiences" color="success" style="width: 200px"
+      >관람객</v-card
+    >
     <div class="smallboxb">
       <!--스몰박스 right, 노래화면 오른쪽-->
       <user-video
@@ -434,7 +439,6 @@ export default {
           `/api/v1/playrooms/playlist/${this.mySessionId}`,
       })
         .then((res) => {
-          
           this.championSongList = res.data;
           console.log(res.data);
         })
@@ -536,13 +540,21 @@ export default {
   margin: auto;
   padding: 0;
 }
+.audiences {
+  width: 10%;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
 .smallboxb {
-  position: absolute;
+  /* position: absolute; */
   display: flex;
-  justify-content: space-around;
-  margin-left: 100px;
+  justify-content: center;
+  align-items: center;
+  /* justify-content: space-around; */
+  margin-left: 200px;
   margin-right: 200px;
-  width: 100%;
+  width: 60%;
   margin: auto;
   padding: 0;
 }
