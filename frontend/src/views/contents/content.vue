@@ -86,13 +86,13 @@ export default {
   setup(){
     const store = useStore();
     const state = reactive({
-      heartcheck: localStorage.getItem("like"),
+      heartcheck: false,
       keyId: "",
       title : "",
       description:"",
       usernickname:"",
       video:"",
-      likeCnt:localStorage.getItem("likes"),
+      likeCnt:"",
       viewCnt:"",
       replys:[],
       ordering: [],
