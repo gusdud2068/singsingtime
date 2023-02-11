@@ -265,7 +265,11 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="state.login_dialog = false">
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="state.login_dialog = false"
+            >
               Close
             </v-btn>
             <v-btn
@@ -348,8 +352,8 @@ export default {
         password_confirm: "",
         nickname: "",
         genre: "",
-        idCheck : false,
-        nicknameCheck : false,
+        idCheck: false,
+        nicknameCheck: false,
       },
     });
     const login_state = reactive({
@@ -426,14 +430,20 @@ export default {
         genre: genre_string,
       };
 
-      if (!user.name || !user.id || !user.email || !user.password || !user.nickname ) {
-        alert('필수 입력란을 모두 입력해주세요.')
+      if (
+        !user.name ||
+        !user.id ||
+        !user.email ||
+        !user.password ||
+        !user.nickname
+      ) {
+        alert("필수 입력란을 모두 입력해주세요.");
         state.signup_dialog = true;
-      } else if (!signup_state.form.idCheck){
-        alert('아이디 중복체크를 진행해주세요')
+      } else if (!signup_state.form.idCheck) {
+        alert("아이디 중복체크를 진행해주세요");
         state.signup_dialog = true;
       } else if (!signup_state.form.nicknameCheck) {
-        alert('닉네임 중복체크를 진행해주세요')
+        alert("닉네임 중복체크를 진행해주세요");
         state.signup_dialog = true;
       } else {
         axios({
@@ -460,7 +470,6 @@ export default {
             alert(err);
           });
       }
-
     };
 
     // 로그인
@@ -479,6 +488,8 @@ export default {
           // console.log(res);
           // console.log("submit");
           // console.log("accessToken " + store.getters["accountStore/getToken"]);
+          console.log(3333333222222222);
+
           state.token = res.data.accessToken;
           store.dispatch("accountStore/loginAction", {
             id: login_state.form.id,
@@ -486,10 +497,12 @@ export default {
             token: state.token,
           });
           // console.log(2222222);
+          localStorage.setItem("userId", login_state.form.id);
           localStorage.setItem("jwt", res.data.accessToken);
+          // console.log(localStorage.getItem("userId"));
           axios({
             method: "get",
-            url: import.meta.env.VITE_APP_URL+"/api/v1/users/my-page",
+            url: import.meta.env.VITE_APP_URL + "/api/v1/users/my-page",
             headers: {
               Authorization: `Bearer ${state.token}`,
             },
@@ -498,12 +511,11 @@ export default {
               store.dispatch("accountStore/saveNickname", {
                 nickname: res.data.nickname,
               });
-              console.log(3333333);
-              localStorage.setItem("nickname", res.data.nickname);
+              localStorage.setItem("nickname", res.data.userId);
             })
             .catch((err) => {
               alert(err);
-              login_state.form.id= "";
+              login_state.form.id = "";
               login_state.form.password = "";
             });
           window.location.reload(true);
@@ -519,6 +531,7 @@ export default {
       localStorage.removeItem("jwt");
       localStorage.removeItem("vuex");
       localStorage.removeItem("nickname");
+      localStorage.removeItem("likes");
       state.token = false;
       console.log(state.token);
       window.location.reload(true);
@@ -530,11 +543,13 @@ export default {
       // console.log(state.form.id);
       axios({
         method: "get",
-        url: import.meta.env.VITE_APP_URL+`/api/v1/users/id/${signup_state.form.id}`,
+        url:
+          import.meta.env.VITE_APP_URL +
+          `/api/v1/users/id/${signup_state.form.id}`,
       })
         .then((res) => {
           // console.log(res.data.message);
-          signup_state.form.idCheck = true
+          signup_state.form.idCheck = true;
           alert(res.data.message);
         })
         .catch((err) => {
@@ -546,11 +561,13 @@ export default {
     const nickname_check = function () {
       axios({
         method: "get",
-        url: import.meta.env.VITE_APP_URL+`/api/v1/users/nickname/${signup_state.form.nickname}`,
+        url:
+          import.meta.env.VITE_APP_URL +
+          `/api/v1/users/nickname/${signup_state.form.nickname}`,
       })
         .then((res) => {
           // console.log(res.data.message);
-          signup_state.form.nicknameCheck = true
+          signup_state.form.nicknameCheck = true;
           alert(res.data.message);
         })
         .catch((err) => {
@@ -577,7 +594,7 @@ export default {
       if (state.token) {
         axios({
           method: "get",
-          url: import.meta.env.VITE_APP_URL+"/api/v1/users/my-page",
+          url: import.meta.env.VITE_APP_URL + "/api/v1/users/my-page",
           // url: "http://localhost:8080/api/v1/users/my-page",
           headers: {
             Authorization: `Bearer ${state.token}`,
