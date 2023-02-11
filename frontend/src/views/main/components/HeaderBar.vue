@@ -519,6 +519,7 @@ export default {
       localStorage.removeItem("jwt");
       localStorage.removeItem("vuex");
       localStorage.removeItem("nickname");
+      localStorage.removeItem("likes");
       state.token = false;
       console.log(state.token);
       window.location.reload(true);

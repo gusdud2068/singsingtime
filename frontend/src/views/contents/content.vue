@@ -23,11 +23,11 @@
           <p style="margin-left: 80px">{{ state.viewCnt }}View</p>
           <p style="margin-right: 80px">
             {{ state.likeCnt }}
-            <button @click="activeBtn" v-if="state.heartcheck" class="active">
-              <v-icon>mdi-heart-outline</v-icon>
-            </button>
-            <button @click="activeBtn" v-if="!state.heartcheck" class="active">
+            <button @click="activeBtn" v-if="state.heartcheck == 'true'" class="active">
               <v-icon>mdi-heart</v-icon>
+            </button>
+            <button @click="activeBtn" v-else-if="state.heartcheck != 'true'" class="active">
+              <v-icon>mdi-heart-outline</v-icon>
             </button>
           </p>
         </v-row>
@@ -86,7 +86,7 @@ export default {
   setup(){
     const store = useStore();
     const state = reactive({
-      heartcheck: false,
+      heartcheck: localStorage.getItem('likes'),
       keyId: "",
       title : "",
       description:"",
@@ -101,6 +101,8 @@ export default {
     
     const activeBtn = () => {
       state.heartcheck = !state.heartcheck;
+      localStorage.setItem('likes', 'true')
+
       axios({
         method: "put",
         url: import.meta.env.VITE_APP_URL+`/api/v1/videos/likes/${videoId}`,
