@@ -108,10 +108,15 @@
             @endGame="endGame"
           />
           <v-row v-if="this.finish" justify="center">
+            <v-col>
             <h1 style="color: orange">
               {{ this.winner }}
-            </h1>
-            <h1>의 승리입니다!!</h1>
+            <span style="color:white">
+            의 승리입니다!!</span></h1>
+            <img
+            src="../../assets/images/pang.gif"
+            style="width: 300px"
+          /></v-col>
           </v-row>
           <ReadyDetail v-if="this.readyVideo && !this.selectedVideo" />
         </div>
@@ -153,6 +158,7 @@
       type="button"
       @click="challenge(myUserId)"
       value="대결 신청"
+      style="margin-top:20px;margin-bottom:20px"
     />
     <!-- 관중들 들어갈 자리 -->
     <v-card class="audiences" color="#3232FF" style="width: 200px"
