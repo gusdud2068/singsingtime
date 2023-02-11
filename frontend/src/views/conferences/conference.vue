@@ -18,7 +18,7 @@
         />
       </div>
     </div>
-    <Modal ref="baseModal" v-if="!this.selectedVideo">
+    <Modal ref="baseModal">
       <div style="text-align: center">
         <v-card class="mx-auto black" max-width="500">
           <v-list dark>
@@ -57,21 +57,6 @@
       </div>
     </Modal>
 
-    <!--대결 시작 전 -->
-    <h2 style="margin-bottom: 20px" v-if="!this.readyVideo">
-      지금 챔피언에게 도전하세요!
-    </h2>
-    <!-- 대결 시작 후 투표시간 카운트할때 사용하면 될듯! -->
-    <vue-countdown
-      v-if="!this.selectedVideo && this.readyVideo"
-      :time="4 * 60 * 1000"
-      v-slot="{ minutes, seconds }"
-    >
-      <h3 :class="{ hurryup: minutes == 0 && seconds <= 30 }">
-        남은 투표 시간 : {{ minutes }} 분 {{ seconds }} 초
-      </h3>
-    </vue-countdown>
-
     <div class="participation">
       <div id="video-container" class="bigbox">
         <!-- <div id="video-container" class=""> -->
@@ -88,15 +73,8 @@
         </div>
         <v-btn>투표</v-btn>
         <div class="musicbox">
-          <SongDetail v-if="!this.selectedVideo" :session="session" />
-          <video
-            v-if="!this.readyVideo"
-            src="../../assets/video/readyVideo.mp4"
-            autoplay
-            loop
-            style="border: 0px"
-          ></video>
-          <!--대결이 끝나면 다시 readyVideo가 재생되게 해야함-->
+          <SongDetail v-if="this.selectedVideo" :session="session" />
+          <ReadyDetail v-if="this.readyVideo && !this.selectedVideo" />
         </div>
 
         <!--스몰박스 right, 노래화면 오른쪽, 여기에 챌린져가 들어가야 함-->
@@ -144,7 +122,7 @@ import { ref } from "vue";
 import { mapGetters } from "vuex";
 import Modal from "./components/Modal.vue";
 import SongDetail from "./components/SongDetail.vue";
-import VueCountdown from "@chenfengyuan/vue-countdown";
+import ReadyDetail from './components/ReadyDetail.vue'
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 const API_KEY = "AIzaSyBGF5ljIuwHbPn27YSImtkkgk8KooR8q7I";
@@ -155,8 +133,8 @@ export default {
   components: {
     UserVideo,
     Modal,
-    SongDetail,
-    VueCountdown,
+    SongDetail, 
+    ReadyDetail,
   },
   props: {
     id: "",
@@ -217,6 +195,7 @@ export default {
       champion: "",
       championSongList: [],
       readyVideo: false,
+      ready: false,
     };
   },
   computed: {
@@ -236,8 +215,32 @@ export default {
     console.log("====================================================");
     console.log(this.subscribers);
   },
+  mounted() {
+    // this.getReadyVideo();
+    // this.ready = !this.ready;
+  },
+  updated() {
+    this.getReadyVideo();
+  },
   methods: {
-    onSelectSong: function (championSong) {
+    getReadyVideo: function () {
+      this.session
+        .signal({
+          type: "ready",
+        })
+        .then(() => {
+          this.readyVideo = true;
+          console.log("레디화면 시그널 전송")
+        })
+        .catch((err) => {
+          console.log("레디화면 전송 실패 ㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜ")
+          console.log(err)
+        } )
+    },
+    onSelectVideo: function (video) {
+      this.readyVideo = false;
+      this.selectedVideo = true;
+      console.log(this.readyVideo);
       this.session
         .signal({
           data: JSON.stringify(championSong.title),
@@ -245,7 +248,6 @@ export default {
         })
         .then(() => {
           console.log("노래방 시그널 전송");
-          this.readyVideo = true;
           // console.log(video.id.videoId)
         })
         .catch((err) => {
@@ -389,7 +391,7 @@ export default {
             );
           });
       });
-
+      
       window.addEventListener("beforeunload", this.leaveSession);
     },
 
