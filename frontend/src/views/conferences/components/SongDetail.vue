@@ -1,5 +1,5 @@
 <template>
-  <div v-if="video" >
+  <div v-if="video">
     <iframe
       src="https://sstvideo.s3.ap-northeast-2.amazonaws.com/images/pexels-cottonbro-6127660.mp4"
       frameborder="0"

@@ -4,7 +4,7 @@
       <v-col lg="7">
         <h3 align="start" style="margin-left: 80px">
           <!-- <b>{{title}}</b> -->
-          <b style="margin-left: 0px;">제목 : {{ state.title }}</b>
+          <b style="margin-left: 0px">제목 : {{ state.title }}</b>
         </h3>
         
 
@@ -23,10 +23,10 @@
           <p style="margin-left: 80px">{{ state.viewCnt }}View</p>
           <p style="margin-right: 80px">
             {{ state.likeCnt }}
-            <button @click="activeBtn" v-if="!state.heartcheck" class="active">
+            <button @click="activeBtn" v-if="state.heartcheck" class="active">
               <v-icon>mdi-heart-outline</v-icon>
             </button>
-            <button @click="activeBtn" v-if="state.heartcheck" class="active">
+            <button @click="activeBtn" v-if="!state.heartcheck" class="active">
               <v-icon>mdi-heart</v-icon>
             </button>
           </p>
@@ -97,14 +97,27 @@ export default {
       replys:[],
       ordering: [],
     });
+    const videoId = localStorage.getItem('page')
+    
     const activeBtn = () => {
       state.heartcheck = !state.heartcheck;
+      axios({
+        method: "put",
+        url: import.meta.env.VITE_APP_URL+`/api/v1/videos/likes/${videoId}`,
+      })
+        .then((res) => {
+          console.log(res); 
+          window.location.reload(true)
+    })
+        .catch((err) => {
+          console.log(err);
+          console.log("하트 안가는데..?"); 
+        });
+      
     };
 
     onMounted(() => {
       const getid = localStorage.getItem('page')
-      
-
       axios({
         method: "get",
         url: import.meta.env.VITE_APP_URL+`/api/v1/videos/${getid}`

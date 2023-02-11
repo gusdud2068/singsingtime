@@ -31,12 +31,25 @@
             </h3>
             <h1>노래목록</h1>
             <hr />
-            <v-list-item-group v-model="model">
+            <!-- <v-list-item-group v-model="model">
               <v-list-item
-                v-for="item in items"
-                @click="afterselect(),onSelectVideo(item)"
+                v-for="championSong in championSongList"
+                @click="afterselect(), onSelectVideo(item)"
               >
                 <v-list-item-title v-text="item.icon"></v-list-item-title>
+              </v-list-item>
+            </v-list-item-group> -->
+
+            <v-list-item-group v-model="model">
+              <v-list-item
+                v-for="championSong in championSongList"
+                @click="onSelectSong(championSong), afterselect()"
+                :key="championSong.title"
+              >
+                <v-list-item-title
+                  >{{ championSong.title }} -
+                  {{ championSong.singer }}</v-list-item-title
+                >
               </v-list-item>
             </v-list-item-group>
           </v-list>
@@ -45,11 +58,19 @@
     </Modal>
 
     <!--대결 시작 전 -->
-    <h2 style="margin-bottom: 20px" v-if="!this.readyVideo">지금 챔피언에게 도전하세요!</h2> 
+    <h2 style="margin-bottom: 20px" v-if="!this.readyVideo">
+      지금 챔피언에게 도전하세요!
+    </h2>
     <!-- 대결 시작 후 투표시간 카운트할때 사용하면 될듯! -->
-    <vue-countdown v-if="!this.selectedVideo && this.readyVideo" :time="4 * 60 * 1000" v-slot="{ minutes, seconds }">
-      <h3 :class="{hurryup: minutes == 0 && seconds <= 30}">남은 투표 시간 : {{ minutes }} 분  {{ seconds }} 초</h3>
-    </vue-countdown> 
+    <vue-countdown
+      v-if="!this.selectedVideo && this.readyVideo"
+      :time="4 * 60 * 1000"
+      v-slot="{ minutes, seconds }"
+    >
+      <h3 :class="{ hurryup: minutes == 0 && seconds <= 30 }">
+        남은 투표 시간 : {{ minutes }} 분 {{ seconds }} 초
+      </h3>
+    </vue-countdown>
 
     <div class="participation">
       <div id="video-container" class="bigbox">
@@ -211,7 +232,7 @@ export default {
     console.log(this.subscribers);
   },
   methods: {
-    onSelectVideo: function (video) {
+    onSelectSong: function (video) {
       this.session
         .signal({
           data: JSON.stringify(video.text),
@@ -228,6 +249,23 @@ export default {
         });
       console.log(this.$store.state.video);
     },
+    // onSelectVideo: function (video) {
+    //   this.session
+    //     .signal({
+    //       data: JSON.stringify(video.text),
+    //       type: "song",
+    //     })
+    //     .then(() => {
+    //       console.log("노래방 시그널 전송");
+    //       this.readyVideo = true;
+    //       // console.log(video.id.videoId)
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //       console.log("전송 에러");
+    //     });
+    //   console.log(this.$store.state.video);
+    // },
     onInputSearch: function (inputText) {
       console.log("데이터가 Search로부터 올라왔다.");
 
@@ -393,10 +431,10 @@ export default {
         method: "get",
         url:
           import.meta.env.VITE_APP_URL +
-          `/api/v1/playrooms/playlist/${this.champion}`,
+          `/api/v1/playrooms/playlist/${this.mySessionId}`,
       })
         .then((res) => {
-          this.championSongList = res.data.songs;
+          this.championSongList = res.data;
         })
         .catch((err) => {
           alert(err);
@@ -529,7 +567,7 @@ export default {
   color: white;
   padding: 20px;
 }
-.hurryup{
+.hurryup {
   color: red;
 }
 .play {

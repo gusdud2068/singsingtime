@@ -21,4 +21,5 @@ public class Song extends BaseEntity{
     private int part2;
     private int part3;
     private int part4;
+
 }
