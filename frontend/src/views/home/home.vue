@@ -50,6 +50,7 @@
   height: 8px;
   background-color: rgb(246, 246, 247); /* 또는 트랙에 추가한다 */
 }
+
 ::-webkit-scrollbar-thumb {
   background: rgb(130, 166, 215);
   border-radius: 10cm;

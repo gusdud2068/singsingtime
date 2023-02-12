@@ -1,6 +1,6 @@
 <template>
   <div class="footer" :class="{ dark: $route.name == 'ConferencesBox' }">
-    FooterBar
+    <span style="color:lightgrey">MADEBY.BEAKOHJOE's삼성사이다[SINGSINGTIME]</span>
   </div>
 </template>
 
@@ -12,6 +12,9 @@ export default {
 
 <style>
 .footer {
-  border: 1px solid black;
+  background-color: rgb(244, 247, 255);
+}
+.dark{
+ background-color: black;
 }
 </style>

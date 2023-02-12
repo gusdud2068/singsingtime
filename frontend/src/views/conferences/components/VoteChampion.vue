@@ -16,7 +16,7 @@
       allow="autoplay"
     ></iframe>
   </div> -->
-  <div>
+  <div style="margin-left:10px;margin-top: 2px;">
     <v-btn color="red" @click="pickChampion">
       투표하기
     </v-btn>
