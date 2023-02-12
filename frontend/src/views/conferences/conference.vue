@@ -54,7 +54,7 @@
               X
             </h3>
 
-            <h2>챔피언 {{ this.champion }} 님의</h2>
+            <h2>챔피언 {{ this.champion }}님의</h2>
             <h2>플레이리스트</h2>
 
             <hr />
@@ -94,13 +94,12 @@
 
             <v-list-item-group v-model="model">
               <v-list-item
-                v-for="(waitingUser, i) in waitingQueue"
+                v-for="(waitingUser, i) in sessionInfo.waitingQueue"
                 :key="waitingUser"
               >
-                <v-list-item-title v-if="i == 0">
-                  {{ i + 1 }}번 - {{ waitingUser }} (현재 도전자)
+                <v-list-item-title v-if="this.challenger!=''">
+                  {{ i + 1 }}번 - {{ sessionInfo.challenger }}(현재 도전자)
                 </v-list-item-title>
-
                 <v-list-item-title v-else>
                   {{ i + 1 }}번 - {{ waitingUser }}</v-list-item-title
                 >
@@ -151,14 +150,11 @@
             <v-col>
               <h1 style="color: orange">
                 {{ this.winner }}
-
                 <span style="color: white"> 의 승리입니다!!</span>
               </h1>
-
               <img src="../../assets/images/pang.gif" style="width: 300px"
             /></v-col>
           </v-row>
-
           <ReadyDetail v-if="this.readyVideo && !this.selectedVideo" />
         </div>
 
@@ -189,7 +185,6 @@
             <span style="color: white">도전자 </span
             ><img src="../../assets/images/sparkling.gif" style="width: 20px"
           /></v-card>
-
           <user-video
             :stream-manager="challengerStreamManager"
             @click.native="
@@ -232,7 +227,6 @@
     />
 
     <!-- 관중들 들어갈 자리 -->
-
     <v-card class="audiences" color="#3232FF" style="width: 200px"
       ><h3 style="color: white">관람객</h3></v-card
     >
@@ -272,7 +266,6 @@ const API_KEY = "AIzaSyBGF5ljIuwHbPn27YSImtkkgk8KooR8q7I";
 
 export default {
   name: "App",
-
   components: {
     UserVideo,
     Modal,
@@ -286,6 +279,12 @@ export default {
   },
   data() {
     return {
+      sessionInfo:{
+        waitingQueue:[],
+        challenger:"",
+        likeChampion: 0,
+        likeChallenger: 0,
+      },
       inputValue: "",
       videos: [],
       selectedVideo: "", // 선택한 비디오를 SongDetail.vue 로 보내고, 출력
@@ -303,7 +302,6 @@ export default {
       myUserName: localStorage.getItem("nickname"),
       myUserId: localStorage.getItem("userId"),
       token: null, // jwt토큰, 오픈비두 세션 접속용 getToken 파라미터랑 다름, this.token으로 구분
-      sessionInfo: null,
       champion: "",
       championSongList: [],
       readyVideo: false, // 미러볼 비디오 화면을 띄울지 결정할 변수
@@ -311,11 +309,11 @@ export default {
       voteBtnShow: false,
       test: false,
       finish: false,
-      likeChampion: 0,
-      likeChallenger: 0,
+      // likeChampion: 0,
+      // likeChallenger: 0,
       winner: "",
-      challenger: "",
-      waitingQueue: [],
+      // challenger: "",
+      // waitingQueue: [],
       members: [],
       championStreamManager: undefined,
       challengerStreamManager: undefined,
@@ -452,32 +450,70 @@ export default {
       this.session = this.OV.initSession();
 
       // --- 3) Specify the actions when events take place in the session ---
-
-      // 도전 이벤트 발생했을 때
-      this.session.on("signal:challenge", (event) => {
-        this.challenger = event.data;
-        // 방 멤버들 중 챔피언 유저의 화면 생성
+      // 중간에 다른 유저가 들어왔을 때 도전자 data받기
+      this.session.on("signal:enterNewUser",(event)=>{
+         this.sessionInfo.challenger = JSON.parse(event.data).challenger;
+        // 방 멤버들 중 도전자 유저의 화면 생성
+        console.log(this.members);
         for (let user of this.members) {
           if (
-            JSON.stringify(JSON.parse(user.stream.connection.data).clientId) ==
-            this.challenger
+            JSON.parse(user.stream.connection.data).clientId==
+            this.sessionInfo.challenger
           ) {
             this.challengerStreamManager = user;
+            console.log("467467");
           }
         }
-        this.waitingQueue.push(JSON.parse(this.challenger));
+      }),
+      // 도전 이벤트 발생했을 때
+      this.session.on("signal:challenge", (event) => {
+        console.log(JSON.parse(event.data).challenger);
+        this.sessionInfo.challenger = JSON.parse(event.data).challenger;
+        // 방 멤버들 중 도전자 유저의 화면 생성
+        console.log(this.members);
+        for (let user of this.members) {
+          if (
+            JSON.parse(user.stream.connection.data).clientId==
+            this.sessionInfo.challenger
+          ) {
+            this.challengerStreamManager = user;
+            console.log("467467");
+          }
+        }
+        this.sessionInfo.waitingQueue.push(this.sessionInfo.challenger);
       });
+      this.session.on("signal:sessionInfo",(event)=>{
+        console.log("이벤트발생시켜줘");
+        const originData = JSON.parse(event.data);
+        if(originData.challenger==""){
+        this.session.signal({
+          data: JSON.stringify(this.sessionInfo),
+          type: "enterNewUser",
+        });
+          return;
+        }else{
+          this.sessionInfo= originData;
+        }
+        console.log(originData);
+     });
 
       // On every new Stream received...
       this.session.on("streamCreated", ({ stream }) => {
         const subscriber = this.session.subscribe(stream);
-
-        // const all = computed(() => this.$store.getters["accountStore/getAll"]);
-        // const all = this.userInfo;
-        // console.log("aaaaaaaaaaaaaaaa222");
-        // console.log(all.id);
-
-        // console.log("aaaaaaaaaaaaaaaa");
+        console.log("스트림!");
+        const data = stream.connection.data;
+        console.log(subscriber);
+        const originInfo = JSON.stringify(this.sessionInfo);
+        console.log(originInfo);
+          this.session
+            .signal({
+              data: originInfo,
+              type: "sessionInfo",
+            })
+            .catch((err) => {
+              console.log(err);
+              console.log("전송 에러");
+            });
         this.subscribers.push(subscriber);
         this.members.push(subscriber);
       });
@@ -511,7 +547,6 @@ export default {
           })
           .then(() => {
             // --- 5) Get your own camera stream with the desired properties ---
-
             // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
             // element: we will manage it on our own) and with the desired properties
             let publisher = this.OV.initPublisher(undefined, {
@@ -531,9 +566,7 @@ export default {
             this.publisher = publisher;
 
             // --- 6) Publish your stream ---
-
             this.session.publish(this.publisher);
-
             this.getSessionInfo();
           })
           .catch((error) => {
@@ -559,7 +592,6 @@ export default {
       this.publisher = undefined;
       this.subscribers = [];
       this.OV = undefined;
-
       // Remove beforeunload listener
       window.removeEventListener("beforeunload", this.leaveSession);
     },
@@ -577,7 +609,7 @@ export default {
           `/api/v1/playrooms/${this.mySessionId}`,
       })
         .then((res) => {
-          this.sessionInfo = res.data;
+          // this.sessionInfo = res.data;
           this.champion = res.data.champion;
           this.getChampionList();
 
@@ -614,14 +646,14 @@ export default {
     endGame() {
       this.finish = true;
       // console.log("게임 종료!!!!!!!" + this.finish)
-      if (this.likeChampion >= this.likeChallenger) {
+      if (this.sessionInfo.likeChampion >= this.sessionInfo.likeChallenger) {
         this.winner = "챔피언";
       } else {
         this.winner = "도전자";
       }
-      this.likeChampion = 0;
-      this.likeChallenger = 0;
-      this.champion = this.winner == "챔피언" ? this.champion : this.challenger;
+      this.sessionInfo.likeChampion = 0;
+      this.sessionInfo.likeChallenger = 0;
+      this.champion = this.winner == "챔피언" ? this.champion : this.sessionInfo.challenger;
       axios({
         method: "put",
         url: import.meta.env.VITE_APP_URL + `/api/v1/playrooms/end-song`,
@@ -637,17 +669,14 @@ export default {
             this.champion + `님이 ${res.data.winCnt}연승을 달성하셨습니다!!!`
           );
           this.championSongList = res.data.championSongList;
-          this.challenger = this.dequeue();
-          this.challenger =
-            this.challenger === undefined ? "" : this.challenger;
+          this.sessonInfo.challenger = this.dequeue();
+            this.sessonInfo.challenger === undefined ? "" : this.sessonInfo.challenger;
 
           getSessionInfo();
-          // challenge();
-
-          console.log("다음도전자는:" + this.challenger);
-          if (this.challenger != "") {
+          console.log("다음도전자는:" + this.sessonInfo.challenger);
+          if (this.sessonInfo.challenger != "") {
             this.session.signal({
-              data: JSON.stringify(this.challenger),
+              data: JSON.stringify(this.sessonInfo.challenger),
               type: "challenge",
             });
           }
@@ -666,29 +695,29 @@ export default {
     },
     voteChampion() {
       this.voteBtnShow = false;
-      this.likeChampion += 1;
+      this.sessionInfo.likeChampion += 1;
     },
     voteChallenger() {
       this.voteBtnShow = false;
-      this.likeChallenger += 1;
+      this.sessionInfo.likeChallenger += 1;
     },
     challenge(myUserId) {
-      if (this.challenger == "") {
-        this.challenger = myUserId;
+      if (this.sessionInfo.challenger == "") {
+        this.sessionInfo.challenger = myUserId;
         // 방 멤버 중 대결신청 버튼 누른 유저의 화면 전파
 
         this.session.signal({
-          data: JSON.stringify(this.challenger),
+          data: JSON.stringify(this.sessionInfo),
           type: "challenge",
         });
 
         return;
       }
-      if (this.challenger == myUserId) {
+      if (this.sessionInfo.challenger == myUserId) {
         alert("이미 도전자입니다.");
         return;
       }
-      for (let userId of this.waitingQueue) {
+      for (let userId of this.sessionInfo.waitingQueue) {
         if (userId === myUserId) {
           alert("이미 신청하셨습니다!!");
           return;
@@ -696,14 +725,14 @@ export default {
       }
       enqueue(myUserId);
       console.log(111111113231232131);
-      console.log(this.waitingQueue);
+      console.log(this.sessionInfo.waitingQueue);
 
       const enqueue = (data) => {
-        if (this.waitingQueue) this.waitingQueue.push(data);
+        this.sessionInfo.waitingQueue.push(data);
       };
     },
     dequeue() {
-      return this.waitingQueue.shift();
+      return this.sessionInfo.waitingQueue.shift();
     },
     /**
      * --------------------------------------------
