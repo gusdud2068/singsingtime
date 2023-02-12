@@ -93,14 +93,16 @@
             <hr />
 
             <v-list-item-group v-model="model">
-              <!-- <v-list-item
+              <v-list-item
                 v-for="(waitingUser, i) in waitingQueue"
-                :key="waitingUser.userId"
-              > -->
-              <v-list-item v-for="(n, i) in 5" :key="i">
-                <v-list-item-title>
-                  <!-- {{ i }}번 - {{ waitingUser.userId }}</v-list-item-title -->
-                  {{ i }}번 - {{ n }}</v-list-item-title
+                :key="waitingUser"
+              >
+                <v-list-item-title v-if="i == 0">
+                  {{ i + 1 }}번 - {{ waitingUser }} (현재 도전자)
+                </v-list-item-title>
+
+                <v-list-item-title v-else>
+                  {{ i + 1 }}번 - {{ waitingUser }}</v-list-item-title
                 >
               </v-list-item>
             </v-list-item-group>
@@ -463,6 +465,7 @@ export default {
             this.challengerStreamManager = user;
           }
         }
+        this.waitingQueue.push(JSON.parse(this.challenger));
       });
 
       // On every new Stream received...
