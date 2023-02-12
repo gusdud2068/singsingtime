@@ -1,12 +1,13 @@
 <template>
   <div>
-   
-    <iframe
+    <video
       src="https://sstvideo.s3.ap-northeast-2.amazonaws.com/images/readyVideo.mp4"
+      class="readyVideo"
       frameborder="0"
-      style="width: 700px; height: 500px"
-      allow="autoplay; loop"
-    ></iframe>
+      style="width: 700px; height: 100%"
+      autoplay
+      loop
+    ></video>
   </div>
 </template>
 <script>
@@ -28,5 +29,4 @@ export default {
 </script>
 
 <style>
-
 </style>

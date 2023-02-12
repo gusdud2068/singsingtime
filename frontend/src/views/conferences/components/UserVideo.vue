@@ -24,8 +24,8 @@ export default {
 
   computed: {
     clientData() {
-      const { clientData } = this.getConnectionData();
-      return clientData;
+      const clientData = this.getConnectionData();
+      return clientData.clientNickname;
     },
   },
 
