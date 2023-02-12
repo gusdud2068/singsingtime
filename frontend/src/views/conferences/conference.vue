@@ -1,203 +1,168 @@
 <template>
-    <div id="main-container" class="container" :class="{ musicOn: this.selectedVideo == true }">
-        <div style="
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            padding-bottom: 50px;
-          ">
-            <div style="margin-left: 40%" v-if="this.readyVideo && !this.selectedVideo">
-                <h2>
-    
-                    지금
-    
-                    <img src="../../assets/images/champion.gif" style="width: 50px" /><span style="color: red"> 챔피언</span
-    
-              ><img
-    
-                src="../../assets/images/champion.gif"
-    
-                style="width: 50px"
-    
-              />에게 도전하세요!
-    
-            </h2>
-    
-          </div>
-    
-          <div>
-    
-            <input
-    
-              class="btn btn-large btn-danger"
-    
+  <div
+    id="main-container"
+    class="container"
+    :class="{ musicOn: this.selectedVideo == true }"
+  >
+    <div
+      style="
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 50px;
+      "
+    >
+      <div
+        style="margin-left: 40%"
+        v-if="this.readyVideo && !this.selectedVideo"
+      >
+        <h2>
+          지금
+
+          <img
+            src="../../assets/images/champion.gif"
+            style="width: 50px"
+          /><span style="color: red"> 챔피언</span
+          ><img
+            src="../../assets/images/champion.gif"
+            style="width: 50px"
+          />에게 도전하세요!
+        </h2>
+      </div>
+
+      <div>
+        <input
+          class="btn btn-large btn-danger"
+          type="button"
+          id="buttonLeaveSession"
+          @click="leaveSession"
+          value="나가기"
+          style="margin-right: 20px"
+        />
+      </div>
+    </div>
+
+    <Modal ref="championSongListModal">
+      <div style="text-align: center">
+        <v-card class="mx-auto black" max-width="500">
+          <v-list dark>
+            <h3
               type="button"
-    
-              @click="isShow"
-    
-              value="노래"
-    
-            />
-    
-            <input
-    
-              class="btn btn-large btn-danger"
-    
-              type="button"
-    
-              id="buttonLeaveSession"
-    
-              @click="leaveSession"
-    
-              value="나가기"
-    
-            />
-    
-          </div>
-    
-        </div>
-    
-        <Modal ref="baseModal">
-    
-          <div style="text-align: center">
-    
-            <v-card class="mx-auto black" max-width="500">
-    
-              <v-list dark>
-    
-                <h3
-    
-                  type="button"
-    
-                  @click="afterselect()"
-    
-                  style="margin: 10px; margin-right: 20px; text-align: right"
-    
+              @click="closeChampionSongListModal()"
+              style="margin: 10px; margin-right: 20px; text-align: right"
+            >
+              X
+            </h3>
+
+            <h2>챔피언 {{ this.champion }} 님의</h2>
+            <h2>플레이리스트</h2>
+
+            <hr />
+            <v-list-item-group v-model="model">
+              <v-list-item
+                v-for="championSong in championSongList"
+                @click="
+                  onSelectVideo(championSong), closeChampionSongListModal()
+                "
+                :key="championSong.title"
+              >
+                <v-list-item-title
+                  >{{ championSong.title }}
+
+                  {{ championSong.singer }}</v-list-item-title
                 >
-    
-                  X
-    
-                </h3>
-    
-                <h1>노래목록</h1>
-    
-                <hr />
-    
-                <!-- <v-list-item-group v-model="model">
-    
-                  <v-list-item
-    
-                    v-for="championSong in championSongList"
-    
-                    @click="afterselect(), onSelectVideo(item)"
-    
-                  >
-    
-                    <v-list-item-title v-text="item.icon"></v-list-item-title>
-    
-                  </v-list-item>
-    
-                </v-list-item-group> -->
-    
-    
-    
-                <v-list-item-group v-model="model">
-    
-                  <v-list-item
-    
-                    v-for="championSong in championSongList"
-    
-                    @click="onSelectVideo(championSong), afterselect()"
-    
-                    :key="championSong.title"
-    
-                  >
-    
-                    <v-list-item-title
-    
-                      >{{ championSong.title }}
-    
-                      {{ championSong.singer }}</v-list-item-title
-    
-                    >
-    
-                  </v-list-item>
-    
-                </v-list-item-group>
-    
-              </v-list>
-    
-            </v-card>
-    
-          </div>
-    
-        </Modal>
-    
-    
-    
-        <div class="participation">
-    
-          <div id="video-container" class="bigbox">
-    
-            <!-- <div id="video-container" class=""> -->
-    
-            <!-- 나 -->
-    
-            <!-- <v-col> -->
-    
-            <div class="smallboxl">
-    
-              <!--스몰박스 left, 노래화면 왼쪽. 여기에 스트림매니저로 챔피언을 넘겨줘야함-->
-    
-              <v-card style="padding: 5px; font-size: 20px" color="primary"
-    
-                ><img
-    
-                  src="../../assets/images/sparkling.gif"
-    
-                  style="width: 20px" /><span style="color: white">챔피언</span>
-    
-                    <img src="../../assets/images/sparkling.gif" style="width: 20px" /></v-card>
-    
-    
-    
-                    <user-video :stream-manager="championStreamManager" @click.native="updateMainVideoStreamManager(championStreamManager)" />
-    
-            </div>
-    
-            <VoteChampion v-if="this.voteBtnShow" @voteChampion="voteChampion" />
-    
-            <!-- </v-col> -->
-    
-            <div class="musicbox">
-    
-                <SongDetail v-if="this.selectedVideo && !this.finish" :session="session" @endGame="endGame" />
-    
-                <v-row v-if="this.finish" justify="center">
-    
-                    <v-col>
-    
-                        <h1 style="color: orange">
-    
-                            {{ this.winner }}
-    
-                            <span style="color: white"> 의 승리입니다!!</span>
-    
-                        </h1>
-    
-                        <img src="../../assets/images/pang.gif" style="width: 300px" /></v-col>
-    
-                </v-row>
-    
-                <ReadyDetail v-if="this.readyVideo && !this.selectedVideo" />
-    
-            </div>
-    
-    
-    
-            <!--스몰박스 right, 노래화면 오른쪽, 여기에 챌린져가 들어가야 함-->
-    
-            <!-- <div class="smallboxr"> 
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-card>
+      </div>
+    </Modal>
+
+    <Modal ref="waitingQueueModal">
+      <div style="text-align: center">
+        <v-card class="mx-auto black" max-width="500">
+          <v-list dark>
+            <h3
+              type="button"
+              @click="closeWaitingQueueModal()"
+              style="margin: 10px; margin-right: 20px; text-align: right"
+            >
+              X
+            </h3>
+            <h2>현재 대기중인 도전자 목록</h2>
+            <hr />
+
+            <v-list-item-group v-model="model">
+              <!-- <v-list-item
+                v-for="(waitingUser, i) in waitingQueue"
+                :key="waitingUser.userId"
+              > -->
+              <v-list-item v-for="(n, i) in 5" :key="i">
+                <v-list-item-title>
+                  <!-- {{ i }}번 - {{ waitingUser.userId }}</v-list-item-title -->
+                  {{ i }}번 - {{ n }}</v-list-item-title
+                >
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-card>
+      </div>
+    </Modal>
+
+    <div class="participation">
+      <div id="video-container" class="bigbox">
+        <!-- <div id="video-container" class=""> -->
+
+        <!-- 나 -->
+
+        <!-- <v-col> -->
+
+        <div class="smallboxl">
+          <!--스몰박스 left, 노래화면 왼쪽. 여기에 스트림매니저로 챔피언을 넘겨줘야함-->
+
+          <v-card style="padding: 5px; font-size: 20px" color="primary"
+            ><img
+              src="../../assets/images/sparkling.gif"
+              style="width: 20px" /><span style="color: white">챔피언</span>
+
+            <img src="../../assets/images/sparkling.gif" style="width: 20px"
+          /></v-card>
+
+          <user-video
+            :stream-manager="championStreamManager"
+            @click.native="updateMainVideoStreamManager(championStreamManager)"
+          />
+        </div>
+
+        <VoteChampion v-if="this.voteBtnShow" @voteChampion="voteChampion" />
+
+        <!-- </v-col> -->
+
+        <div class="musicbox">
+          <SongDetail
+            v-if="this.selectedVideo && !this.finish"
+            :session="session"
+            @endGame="endGame"
+          />
+
+          <v-row v-if="this.finish" justify="center">
+            <v-col>
+              <h1 style="color: orange">
+                {{ this.winner }}
+
+                <span style="color: white"> 의 승리입니다!!</span>
+              </h1>
+
+              <img src="../../assets/images/pang.gif" style="width: 300px"
+            /></v-col>
+          </v-row>
+
+          <ReadyDetail v-if="this.readyVideo && !this.selectedVideo" />
+        </div>
+
+        <!--스몰박스 right, 노래화면 오른쪽, 여기에 챌린져가 들어가야 함-->
+
+        <!-- <div class="smallboxr"> 
     
                 <user-video
     
@@ -210,102 +175,82 @@
               />
     
             </div> -->
-    
-    
-    
-            <!--비디오 위치 테스트용으로 퍼블리셔 넣어놓음 -->
-    
-            <div class="smallboxl">
-    
-                <!--스몰박스 left, 노래화면 왼쪽. 여기에 스트림매니저로 챔피언을 넘겨줘야함-->
-    
-                <v-card style="padding: 5px; font-size: 20px" color="green"><img src="../../assets/images/sparkling.gif" style="width: 20px" />
-    
-                    <span style="color: white">도전자 </span
-    
-                ><img src="../../assets/images/sparkling.gif" style="width: 20px"
-    
-              /></v-card>
-    
-              <user-video
-    
-                :stream-manager="challengerStreamManager"
-    
-                @click.native="
-    
-                  updateMainVideoStreamManager(challengerStreamManager)
-    
-                "
-    
-              />
-    
-            </div>
-    
-            <VoteChallenger
-    
-              v-if="this.voteBtnShow"
-    
-              @voteChallenger="voteChallenger"
-    
-            />
-    
-            <!-- </v-col> -->
-    
-          </div>
-    
+
+        <!--비디오 위치 테스트용으로 퍼블리셔 넣어놓음 -->
+
+        <div class="smallboxl">
+          <!--스몰박스 left, 노래화면 왼쪽. 여기에 스트림매니저로 챔피언을 넘겨줘야함-->
+
+          <v-card style="padding: 5px; font-size: 20px" color="green"
+            ><img src="../../assets/images/sparkling.gif" style="width: 20px" />
+
+            <span style="color: white">도전자 </span
+            ><img src="../../assets/images/sparkling.gif" style="width: 20px"
+          /></v-card>
+
+          <user-video
+            :stream-manager="challengerStreamManager"
+            @click.native="
+              updateMainVideoStreamManager(challengerStreamManager)
+            "
+          />
         </div>
-    
-    
-    
-        <input
-    
-          class="btn btn-large btn-danger"
-    
-          type="button"
-    
-          @click="challenge(myUserId)"
-    
-          value="대결 신청"
-    
-          style="margin-top: 20px; margin-bottom: 20px"
-    
+
+        <VoteChallenger
+          v-if="this.voteBtnShow"
+          @voteChallenger="voteChallenger"
         />
-    
-        <!-- 관중들 들어갈 자리 -->
-    
-        <v-card class="audiences" color="#3232FF" style="width: 200px"
-    
-          ><h3 style="color: white">관람객</h3></v-card
-    
-        >
-    
-        <div class="smallboxb">
-    
-          <!--스몰박스 right, 노래화면 오른쪽-->
-    
-          <user-video
-    
-            :stream-manager="publisher"
-    
-            @click.native="updateMainVideoStreamManager(publisher)"
-    
-          />
-    
-          <user-video
-    
-            v-for="sub in subscribers"
-    
-            :key="sub.stream.connection.connectionId"
-    
-            :stream-manager="sub"
-    
-            @click.native="updateMainVideoStreamManager(sub)"
-    
-          />
-    
-        </div>
-    
+
+        <!-- </v-col> -->
       </div>
+    </div>
+
+    <input
+      class="btn btn-large btn-danger"
+      type="button"
+      @click="challenge(myUserId)"
+      value="대결 신청"
+      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
+    />
+
+    <input
+      class="btn btn-large btn-warning"
+      type="button"
+      @click="showChampionSongList"
+      value="도전 가능곡"
+      style="margin-right: 20px"
+    />
+
+    <input
+      class="btn btn-large btn-success"
+      type="button"
+      @click="showWaitingQueue"
+      value="도전자 목록"
+      style="margin-top: 20px; margin-bottom: 20px"
+    />
+
+    <!-- 관중들 들어갈 자리 -->
+
+    <v-card class="audiences" color="#3232FF" style="width: 200px"
+      ><h3 style="color: white">관람객</h3></v-card
+    >
+
+    <div class="smallboxb">
+      <!--스몰박스 right, 노래화면 오른쪽-->
+
+      <user-video
+        :stream-manager="publisher"
+        @click.native="updateMainVideoStreamManager(publisher)"
+      />
+
+      <user-video
+        v-for="sub in subscribers"
+        :key="sub.stream.connection.connectionId"
+        :stream-manager="sub"
+        @click.native="updateMainVideoStreamManager(sub)"
+      />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -324,558 +269,589 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 const API_KEY = "AIzaSyBGF5ljIuwHbPn27YSImtkkgk8KooR8q7I";
 
 export default {
-    name: "App",
+  name: "App",
 
-    components: {
-        UserVideo,
-        Modal,
-        SongDetail,
-        ReadyDetail,
-        VoteChallenger,
-        VoteChampion,
+  components: {
+    UserVideo,
+    Modal,
+    SongDetail,
+    ReadyDetail,
+    VoteChallenger,
+    VoteChampion,
+  },
+  props: {
+    id: "",
+  },
+  data() {
+    return {
+      inputValue: "",
+      videos: [],
+      selectedVideo: "", // 선택한 비디오를 SongDetail.vue 로 보내고, 출력
+      selectvideo: "",
+      showValue: false,
+      dialog: false,
+      // OpenVidu objects
+      OV: undefined,
+      session: undefined,
+      mainStreamManager: undefined,
+      publisher: undefined,
+      subscribers: [],
+      // Join form
+      mySessionId: this.$route.params.Id,
+      myUserName: localStorage.getItem("nickname"),
+      myUserId: localStorage.getItem("userId"),
+      token: null, // jwt토큰, 오픈비두 세션 접속용 getToken 파라미터랑 다름, this.token으로 구분
+      sessionInfo: null,
+      champion: "",
+      championSongList: [],
+      readyVideo: false, // 미러볼 비디오 화면을 띄울지 결정할 변수
+      ready: false,
+      voteBtnShow: false,
+      test: false,
+      finish: false,
+      likeChampion: 0,
+      likeChallenger: 0,
+      winner: "",
+      challenger: "",
+      waitingQueue: [],
+      members: [],
+      championStreamManager: undefined,
+      challengerStreamManager: undefined,
+    };
+  },
+  computed: {
+    movieVideo() {
+      return `https://www.youtube.com/embed/${this.$store.state.movieVideo.key}?autoplay=1`;
     },
-    props: {
-        id: "",
+    sessionId() {
+      return this.$route.params.Id;
     },
-    data() {
-        return {
-            inputValue: "",
-            videos: [],
-            selectedVideo: "", // 선택한 비디오를 SongDetail.vue 로 보내고, 출력
-            selectvideo: "",
-            showValue: false,
-            dialog: false,
-            // OpenVidu objects
-            OV: undefined,
-            session: undefined,
-            mainStreamManager: undefined,
-            publisher: undefined,
-            subscribers: [],
-            // Join form
-            mySessionId: this.$route.params.Id,
-            myUserName: localStorage.getItem("nickname"),
-            myUserId: localStorage.getItem("userId"),
-            token: null, // jwt토큰, 오픈비두 세션 접속용 getToken 파라미터랑 다름, this.token으로 구분
-            sessionInfo: null,
-            champion: "",
-            championSongList: [],
-            readyVideo: false, // 미러볼 비디오 화면을 띄울지 결정할 변수
-            ready: false,
-            voteBtnShow: false,
-            test: false,
-            finish: false,
-            likeChampion: 0,
-            likeChallenger: 0,
-            winner: "",
-            challenger: "",
-            waitingQueue: [],
-            members: [],
-            championStreamManager: undefined,
-            challengerStreamManager: undefined,
-        };
-    },
-    computed: {
-        movieVideo() {
-            return `https://www.youtube.com/embed/${this.$store.state.movieVideo.key}?autoplay=1`;
-        },
-        sessionId() {
-            return this.$route.params.Id;
-        },
 
-        ...mapGetters({
-            userInfo: "accountStore/getAll",
-        }),
+    ...mapGetters({
+      userInfo: "accountStore/getAll",
+    }),
 
-        ...mapGetters(["video"]),
+    ...mapGetters(["video"]),
+  },
+  created() {
+    // console.log(playroom+"그냥");
+    this.joinSession();
+    this.getname();
+    console.log("====================================================");
+    console.log(this.subscribers);
+  },
+  mounted() {
+    // this.getReadyVideo();
+    // this.ready = !this.ready;
+    this.test = !this.test;
+  },
+  updated() {
+    this.getReadyVideo();
+  },
+  methods: {
+    getReadyVideo: function () {
+      this.session
+        .signal({
+          type: "ready",
+        })
+        .then(() => {
+          this.readyVideo = true;
+          console.log("레디화면 시그널 전송");
+        })
+        .catch((err) => {
+          console.log(
+            "레디화면 전송 실패 ㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜ"
+          );
+          console.log(err);
+        });
     },
-    created() {
-        // console.log(playroom+"그냥");
-        this.joinSession();
-        this.getname();
-        console.log("====================================================");
-        console.log(this.subscribers);
+    onSelectVideo: function (championSong) {
+      this.readyVideo = false;
+      this.selectedVideo = true;
+      this.voteBtnShow = true;
+      this.finish = false;
+      console.log(this.readyVideo);
+      this.session
+        .signal({
+          data: JSON.stringify(championSong.title),
+          type: "songTitle",
+        })
+        // .signal({
+        //   data : championSong.id,
+        //   type: "songId",
+        // })
+        .then(() => {
+          console.log("노래방 시그널 전송");
+          // console.log(video.id.videoId)
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log("전송 에러");
+        });
+      this.session.signal({
+        // data: championSong.part4 + 10,
+        data: 5,
+        type: "songTime",
+      });
+      console.log(this.$store.state.video);
     },
-    mounted() {
-        // this.getReadyVideo();
-        // this.ready = !this.ready;
-        this.test = !this.test;
+    onInputSearch: function (inputText) {
+      console.log("데이터가 Search로부터 올라왔다.");
+
+      this.showValue = true;
+      console.log(inputText);
+      this.inputValue = inputText;
+      // part(필수), key(필수), q(검색어), type(video만) 매개 변수를 요청에 넣어서 보냄
+      const params = {
+        key: API_KEY,
+        part: "snippet",
+        type: "video",
+        q: "뮤즈온라인" + this.inputValue + "mr",
+      };
+
+      fetch(
+        `https://www.googleapis.com/youtube/v3/search?key=AIzaSyBGF5ljIuwHbPn27YSImtkkgk8KooR8q7I&part=snippet&type=video&q=${params.q}`
+      )
+        .then((res) => {
+          console.log(this.videos);
+          return res.json();
+        })
+        .then((data) => {
+          console.log("두번째 then");
+          console.log(data.items);
+          this.videos = data.items;
+          // console.log('두번째')
+          console.log(this.videos);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      console.log(this.videos);
     },
-    updated() {
-        this.getReadyVideo();
+
+    onVideoSelect: function (video) {
+      this.selectVideo = video;
     },
-    methods: {
-        getReadyVideo: function() {
-            this.session
-                .signal({
-                    type: "ready",
-                })
-                .then(() => {
-                    this.readyVideo = true;
-                    console.log("레디화면 시그널 전송");
-                })
-                .catch((err) => {
-                    console.log(
-                        "레디화면 전송 실패 ㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜ"
-                    );
-                    console.log(err);
-                });
-        },
-        onSelectVideo: function(championSong) {
-            this.readyVideo = false;
-            this.selectedVideo = true;
-            this.voteBtnShow = true;
-            this.finish = false;
-            console.log(this.readyVideo);
-            this.session
-                .signal({
-                    data: JSON.stringify(championSong.title),
-                    type: "songTitle",
-                })
-                // .signal({
-                //   data : championSong.id,
-                //   type: "songId",
-                // })
-                .then(() => {
-                    console.log("노래방 시그널 전송");
-                    // console.log(video.id.videoId)
-                })
-                .catch((err) => {
-                    console.log(err);
-                    console.log("전송 에러");
-                });
-            this.session.signal({
-                // data: championSong.part4 + 10,
-                data: 5,
-                type: "songTime",
+    handleClick() {
+      this.$refs.Youtube[0].show();
+    },
+    getname() {
+      this.jwt = localStorage.getItem("jwt");
+      console.log(
+        "get name==================================================="
+      );
+      console.log(this.name);
+    },
+    joinSession() {
+      // --- 1) Get an OpenVidu object ---
+      this.OV = new OpenVidu();
+
+      // --- 2) Init a session ---
+      this.session = this.OV.initSession();
+
+      // --- 3) Specify the actions when events take place in the session ---
+
+      // 도전 이벤트 발생했을 때
+      this.session.on("signal:challenge", (event) => {
+        this.challenger = event.data;
+        // 방 멤버들 중 챔피언 유저의 화면 생성
+        for (let user of this.members) {
+          if (
+            JSON.stringify(JSON.parse(user.stream.connection.data).clientId) ==
+            this.challenger
+          ) {
+            this.challengerStreamManager = user;
+          }
+        }
+      });
+
+      // On every new Stream received...
+      this.session.on("streamCreated", ({ stream }) => {
+        const subscriber = this.session.subscribe(stream);
+
+        // const all = computed(() => this.$store.getters["accountStore/getAll"]);
+        // const all = this.userInfo;
+        // console.log("aaaaaaaaaaaaaaaa222");
+        // console.log(all.id);
+
+        // console.log("aaaaaaaaaaaaaaaa");
+        this.subscribers.push(subscriber);
+        this.members.push(subscriber);
+      });
+
+      // On every Stream destroyed...
+      // 흠 세션이 파괴될때? 그냥 모두를 한번에 나가게 하면되는거 아닌가??
+      // 스트림매니저가 각각을 부르는 명칭 아닌가..? 한명만 있는건가?
+      this.session.on("streamDestroyed", ({ stream }) => {
+        const index = this.subscribers.indexOf(stream.streamManager, 0); // 이 세션의 구독자중에서 스트림매니저의 위치 찾기
+        if (index >= 0) {
+          this.subscribers.splice(index, 1); // 찾은 스트림매니저의 위치를 통해 구독자에서 제거
+        }
+      });
+
+      // On every asynchronous exception...
+      this.session.on("exception", ({ exception }) => {
+        console.warn(exception);
+      });
+
+      // --- 4) Connect to the session with a valid user token ---
+
+      // Get a token from the OpenVidu deployment
+      // 유저토큰이 아니구 세션토큰!
+      this.getToken(this.mySessionId).then((token) => {
+        // First param is the token. Second param can be retrieved by every user on event
+        // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
+        this.session
+          .connect(token, {
+            clientId: this.myUserId,
+            clientNickname: this.myUserName,
+          })
+          .then(() => {
+            // --- 5) Get your own camera stream with the desired properties ---
+
+            // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
+            // element: we will manage it on our own) and with the desired properties
+            let publisher = this.OV.initPublisher(undefined, {
+              audioSource: undefined, // The source of audio. If undefined default microphone
+              videoSource: undefined, // The source of video. If undefined default webcam
+              publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+              publishVideo: true, // Whether you want to start publishing with your video enabled or not
+              resolution: "640x480", // The resolution of your video
+              frameRate: 30, // The frame rate of your video
+              insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
+              mirror: false, // Whether to mirror your local video or not
             });
-            console.log(this.$store.state.video);
-        },
-        onInputSearch: function(inputText) {
-            console.log("데이터가 Search로부터 올라왔다.");
 
-            this.showValue = true;
-            console.log(inputText);
-            this.inputValue = inputText;
-            // part(필수), key(필수), q(검색어), type(video만) 매개 변수를 요청에 넣어서 보냄
-            const params = {
-                key: API_KEY,
-                part: "snippet",
-                type: "video",
-                q: "뮤즈온라인" + this.inputValue + "mr",
-            };
+            // Set the main video in the page to display our webcam and store our Publisher
+            this.mainStreamManager = publisher;
+            this.members.push(publisher);
+            this.publisher = publisher;
 
-            fetch(
-                    `https://www.googleapis.com/youtube/v3/search?key=AIzaSyBGF5ljIuwHbPn27YSImtkkgk8KooR8q7I&part=snippet&type=video&q=${params.q}`
-                )
-                .then((res) => {
-                    console.log(this.videos);
-                    return res.json();
-                })
-                .then((data) => {
-                    console.log("두번째 then");
-                    console.log(data.items);
-                    this.videos = data.items;
-                    // console.log('두번째')
-                    console.log(this.videos);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-            console.log(this.videos);
-        },
+            // --- 6) Publish your stream ---
 
-        onVideoSelect: function(video) {
-            this.selectVideo = video;
-        },
-        handleClick() {
-            this.$refs.Youtube[0].show();
-        },
-        getname() {
-            this.jwt = localStorage.getItem("jwt");
+            this.session.publish(this.publisher);
+
+            this.getSessionInfo();
+          })
+          .catch((error) => {
             console.log(
-                "get name==================================================="
+              "There was an error connecting to the session:",
+              error.code,
+              error.message
             );
-            console.log(this.name);
-        },
-        joinSession() {
-            // --- 1) Get an OpenVidu object ---
-            this.OV = new OpenVidu();
+          });
+      });
 
-            // --- 2) Init a session ---
-            this.session = this.OV.initSession();
-
-            // --- 3) Specify the actions when events take place in the session ---
-
-            // 도전 이벤트 발생했을 때
-            this.session.on("signal:challenge", (event) => {
-                this.challenger = event.data;
-                // 방 멤버들 중 챔피언 유저의 화면 생성
-                for (let user of this.members) {
-                    if (
-                        JSON.stringify(JSON.parse(user.stream.connection.data).clientId) ==
-                        this.challenger
-                    ) {
-                        this.challengerStreamManager = user;
-                    }
-                }
-            });
-
-            // On every new Stream received...
-            this.session.on("streamCreated", ({ stream }) => {
-                const subscriber = this.session.subscribe(stream);
-
-                // const all = computed(() => this.$store.getters["accountStore/getAll"]);
-                // const all = this.userInfo;
-                // console.log("aaaaaaaaaaaaaaaa222");
-                // console.log(all.id);
-
-                // console.log("aaaaaaaaaaaaaaaa");
-                this.subscribers.push(subscriber);
-                this.members.push(subscriber);
-            });
-
-            // On every Stream destroyed...
-            // 흠 세션이 파괴될때? 그냥 모두를 한번에 나가게 하면되는거 아닌가??
-            // 스트림매니저가 각각을 부르는 명칭 아닌가..? 한명만 있는건가?
-            this.session.on("streamDestroyed", ({ stream }) => {
-                const index = this.subscribers.indexOf(stream.streamManager, 0); // 이 세션의 구독자중에서 스트림매니저의 위치 찾기
-                if (index >= 0) {
-                    this.subscribers.splice(index, 1); // 찾은 스트림매니저의 위치를 통해 구독자에서 제거
-                }
-            });
-
-            // On every asynchronous exception...
-            this.session.on("exception", ({ exception }) => {
-                console.warn(exception);
-            });
-
-            // --- 4) Connect to the session with a valid user token ---
-
-            // Get a token from the OpenVidu deployment
-            // 유저토큰이 아니구 세션토큰!
-            this.getToken(this.mySessionId).then((token) => {
-                // First param is the token. Second param can be retrieved by every user on event
-                // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
-                this.session
-                    .connect(token, {
-                        clientId: this.myUserId,
-                        clientNickname: this.myUserName,
-                    })
-                    .then(() => {
-                        // --- 5) Get your own camera stream with the desired properties ---
-
-                        // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
-                        // element: we will manage it on our own) and with the desired properties
-                        let publisher = this.OV.initPublisher(undefined, {
-                            audioSource: undefined, // The source of audio. If undefined default microphone
-                            videoSource: undefined, // The source of video. If undefined default webcam
-                            publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
-                            publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                            resolution: "640x480", // The resolution of your video
-                            frameRate: 30, // The frame rate of your video
-                            insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
-                            mirror: false, // Whether to mirror your local video or not
-                        });
-
-                        // Set the main video in the page to display our webcam and store our Publisher
-                        this.mainStreamManager = publisher;
-                        this.members.push(publisher);
-                        this.publisher = publisher;
-
-                        // --- 6) Publish your stream ---
-
-                        this.session.publish(this.publisher);
-
-                        this.getSessionInfo();
-                    })
-                    .catch((error) => {
-                        console.log(
-                            "There was an error connecting to the session:",
-                            error.code,
-                            error.message
-                        );
-                    });
-            });
-
-            window.addEventListener("beforeunload", this.leaveSession);
-        },
-
-        leaveSession() {
-            // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
-            window.close();
-            if (this.session) this.session.disconnect();
-
-            // Empty all properties...
-            this.session = undefined;
-            this.mainStreamManager = undefined;
-            this.publisher = undefined;
-            this.subscribers = [];
-            this.OV = undefined;
-
-            // Remove beforeunload listener
-            window.removeEventListener("beforeunload", this.leaveSession);
-        },
-
-        updateMainVideoStreamManager(stream) {
-            if (this.mainStreamManager === stream) return;
-            this.mainStreamManager = stream;
-        },
-        // 챔피언 갱신 때 필요
-        getSessionInfo() {
-            axios({
-                    method: "get",
-                    url: import.meta.env.VITE_APP_URL +
-                        `/api/v1/playrooms/${this.mySessionId}`,
-                })
-                .then((res) => {
-                    this.sessionInfo = res.data;
-                    this.champion = res.data.champion;
-                    this.getChampionList();
-
-                    // 방 멤버들 중 챔피언 유저의 화면 생성
-                    for (let user of this.members) {
-                        console.log(user.stream.connection.data);
-                        if (
-                            JSON.parse(user.stream.connection.data).clientId == this.champion
-                        ) {
-                            this.championStreamManager = user;
-                        }
-                    }
-                })
-                .catch((err) => {
-                    alert(err);
-                });
-        },
-        // 챔피언 노래목록 불러오기
-        getChampionList() {
-            axios({
-                    method: "get",
-                    url: import.meta.env.VITE_APP_URL +
-                        `/api/v1/playrooms/playlist/${this.mySessionId}`,
-                })
-                .then((res) => {
-                    this.championSongList = res.data;
-                    console.log(res.data);
-                })
-                .catch((err) => {
-                    alert(err);
-                });
-        },
-        endGame() {
-            this.finish = true;
-            // console.log("게임 종료!!!!!!!" + this.finish)
-            if (this.likeChampion >= this.likeChallenger) {
-                this.winner = "챔피언";
-            } else {
-                this.winner = "도전자";
-            }
-            this.likeChampion = 0;
-            this.likeChallenger = 0;
-            this.champion = this.winner == "챔피언" ? this.champion : this.challenger;
-            axios({
-                    method: "put",
-                    url: import.meta.env.VITE_APP_URL +
-                        `/api/v1/playrooms/end-song`,
-                    data: {
-                        sessionId: this.mySessionId,
-                        championId: this.champion,
-                    },
-                })
-                .then((res) => {
-                    console.log("게임끝난 상태에서 data 받아오기!!!!");
-                    console.log(res);
-                    alert(this.champion + `님이 ${res.data.winCnt}연승을 달성하셨습니다!!!`);
-                    this.championSongList = res.data.championSongList;
-                    this.challenger = this.dequeue();
-                    this.challenger = this.challenger === undefined ? "" : this.challenger;
-                    
-                    getSessionInfo();
-                    // challenge();
-                    
-                    console.log("다음도전자는:" + this.challenger);
-                    if (this.challenger != "") {
-                        this.session.signal({
-                            data: JSON.stringify(this.challenger),
-                            type: "challenge",
-                        });
-                    }
-                    // for (let user of this.members) {
-                    //     console.log(user.stream.connection.data);
-                    //     if (
-                    //         JSON.parse(user.stream.connection.data).clientId == this.champion
-                    //     ) {
-                    //         this.championStreamManager = user;
-                    //     }
-                    // }
-                })
-                .catch((err) => {
-                    alert(err);
-                });
-        },
-        voteChampion() {
-            this.voteBtnShow = false;
-            this.likeChampion += 1;
-        },
-        voteChallenger() {
-            this.voteBtnShow = false;
-            this.likeChallenger += 1;
-        },
-        challenge(myUserId) {
-            if (this.challenger == "") {
-                this.challenger = myUserId;
-                // 방 멤버 중 대결신청 버튼 누른 유저의 화면 전파
-
-                this.session.signal({
-                    data: JSON.stringify(this.challenger),
-                    type: "challenge",
-                });
-
-                return;
-            }
-            if (this.challenger == myUserId) {
-                alert("이미 도전자입니다.");
-                return;
-            }
-            for (let userId of this.waitingQueue) {
-                if (userId === myUserId) {
-                    alert("이미 신청하셨습니다!!");
-                    return;
-                }
-            }
-            enqueue(myUserId);
-            console.log(111111113231232131);
-            console.log(this.waitingQueue);
-
-            const enqueue = (data) => {
-                if (this.waitingQueue) this.waitingQueue.push(data);
-            };
-        },
-        dequeue() {
-            return this.waitingQueue.shift();
-        },
-        /**
-         * --------------------------------------------
-         * GETTING A TOKEN FROM YOUR APPLICATION SERVER
-         * --------------------------------------------
-         * The methods below request the creation of a Session and a Token to
-         * your application server. This keeps your OpenVidu deployment secure.
-         *
-         * In this sample code, there is no user control at all. Anybody could
-         * access your application server endpoints! In a real production
-         * environment, your application server must identify the user to allow
-         * access to the endpoints.
-         *
-         * Visit https://docs.openvidu.io/en/stable/application-server to learn
-         * more about the integration of OpenVidu in your application server.
-         */
-        async getToken(mySessionId) {
-            const sessionId = await this.createSession(mySessionId);
-            console.log("디버깅1");
-            console.log(sessionId);
-            return await this.createToken(sessionId);
-        },
-
-        async createSession(sessionId) {
-            this.token = localStorage.getItem("jwt");
-            const response = await axios.post(
-                import.meta.env.VITE_APP_URL + "/api/v1/openvidu/sessions", { customSessionId: sessionId }, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${this.token}`,
-                    },
-                }
-            );
-            return response.data; // The sessionId
-        },
-
-        async createToken(sessionId) {
-            const response = await axios.post(
-                import.meta.env.VITE_APP_URL +
-                "/api/v1/openvidu/sessions/" +
-                sessionId +
-                "/connections", {}, {
-                    headers: { "Content-Type": "application/json" },
-                }
-            );
-            return response.data; // The token
-        },
+      window.addEventListener("beforeunload", this.leaveSession);
     },
-    setup() {
-        // 자식 컴포넌트를 핸들링하기 위한 ref
-        const store = useStore();
-        const baseModal = ref(null);
-        // Promise 객체를 핸들링하기 위한 ref
-        const resolvePromise = ref(null);
-        const isShow = () => {
-            // baseModal을 직접 컨트롤합니다.
-            baseModal.value.open();
-            // Promise 객체를 사용하여, 현재 모달에서 확인 / 취소의
-            // 응답이 돌아가기 전까지 작업을 기다리게 할 수 있습니다.
-            return new Promise((resolve) => {
-                // resolve 함수를 담아 외부에서 사용합니다.
-                resolvePromise.value = resolve;
-            });
-        };
-        const afterselect = () => {
-            baseModal.value.close();
-        };
-        const confirm = () => {
-            baseModal.value.close();
-            resolvePromise.value(true);
-            const url = "#/conferences/" + this.store.state.conferencename + "/";
-            window.open(url); // 새로운 창에서 플레이룸 오픈
-            this.store.state.conferencename = "";
-        };
 
-        const cancel = () => {
-            baseModal.value.close();
-            resolvePromise.value(false);
-            this.store.state.conferencename = "";
-        };
-        // async-await을 사용하여, Modal로부터 응답을 기다리게 된다.
-        return { baseModal, isShow, confirm, cancel, afterselect, store };
+    leaveSession() {
+      // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
+      window.close();
+      if (this.session) this.session.disconnect();
+
+      // Empty all properties...
+      this.session = undefined;
+      this.mainStreamManager = undefined;
+      this.publisher = undefined;
+      this.subscribers = [];
+      this.OV = undefined;
+
+      // Remove beforeunload listener
+      window.removeEventListener("beforeunload", this.leaveSession);
     },
+
+    updateMainVideoStreamManager(stream) {
+      if (this.mainStreamManager === stream) return;
+      this.mainStreamManager = stream;
+    },
+    // 챔피언 갱신 때 필요
+    getSessionInfo() {
+      axios({
+        method: "get",
+        url:
+          import.meta.env.VITE_APP_URL +
+          `/api/v1/playrooms/${this.mySessionId}`,
+      })
+        .then((res) => {
+          this.sessionInfo = res.data;
+          this.champion = res.data.champion;
+          this.getChampionList();
+
+          // 방 멤버들 중 챔피언 유저의 화면 생성
+          for (let user of this.members) {
+            console.log(user.stream.connection.data);
+            if (
+              JSON.parse(user.stream.connection.data).clientId == this.champion
+            ) {
+              this.championStreamManager = user;
+            }
+          }
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    // 챔피언 노래목록 불러오기
+    getChampionList() {
+      axios({
+        method: "get",
+        url:
+          import.meta.env.VITE_APP_URL +
+          `/api/v1/playrooms/playlist/${this.mySessionId}`,
+      })
+        .then((res) => {
+          this.championSongList = res.data;
+          console.log(res.data);
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    endGame() {
+      this.finish = true;
+      // console.log("게임 종료!!!!!!!" + this.finish)
+      if (this.likeChampion >= this.likeChallenger) {
+        this.winner = "챔피언";
+      } else {
+        this.winner = "도전자";
+      }
+      this.likeChampion = 0;
+      this.likeChallenger = 0;
+      this.champion = this.winner == "챔피언" ? this.champion : this.challenger;
+      axios({
+        method: "put",
+        url: import.meta.env.VITE_APP_URL + `/api/v1/playrooms/end-song`,
+        data: {
+          sessionId: this.mySessionId,
+          championId: this.champion,
+        },
+      })
+        .then((res) => {
+          console.log("게임끝난 상태에서 data 받아오기!!!!");
+          console.log(res);
+          alert(
+            this.champion + `님이 ${res.data.winCnt}연승을 달성하셨습니다!!!`
+          );
+          this.championSongList = res.data.championSongList;
+          this.challenger = this.dequeue();
+          this.challenger =
+            this.challenger === undefined ? "" : this.challenger;
+
+          getSessionInfo();
+          // challenge();
+
+          console.log("다음도전자는:" + this.challenger);
+          if (this.challenger != "") {
+            this.session.signal({
+              data: JSON.stringify(this.challenger),
+              type: "challenge",
+            });
+          }
+          // for (let user of this.members) {
+          //     console.log(user.stream.connection.data);
+          //     if (
+          //         JSON.parse(user.stream.connection.data).clientId == this.champion
+          //     ) {
+          //         this.championStreamManager = user;
+          //     }
+          // }
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    voteChampion() {
+      this.voteBtnShow = false;
+      this.likeChampion += 1;
+    },
+    voteChallenger() {
+      this.voteBtnShow = false;
+      this.likeChallenger += 1;
+    },
+    challenge(myUserId) {
+      if (this.challenger == "") {
+        this.challenger = myUserId;
+        // 방 멤버 중 대결신청 버튼 누른 유저의 화면 전파
+
+        this.session.signal({
+          data: JSON.stringify(this.challenger),
+          type: "challenge",
+        });
+
+        return;
+      }
+      if (this.challenger == myUserId) {
+        alert("이미 도전자입니다.");
+        return;
+      }
+      for (let userId of this.waitingQueue) {
+        if (userId === myUserId) {
+          alert("이미 신청하셨습니다!!");
+          return;
+        }
+      }
+      enqueue(myUserId);
+      console.log(111111113231232131);
+      console.log(this.waitingQueue);
+
+      const enqueue = (data) => {
+        if (this.waitingQueue) this.waitingQueue.push(data);
+      };
+    },
+    dequeue() {
+      return this.waitingQueue.shift();
+    },
+    /**
+     * --------------------------------------------
+     * GETTING A TOKEN FROM YOUR APPLICATION SERVER
+     * --------------------------------------------
+     * The methods below request the creation of a Session and a Token to
+     * your application server. This keeps your OpenVidu deployment secure.
+     *
+     * In this sample code, there is no user control at all. Anybody could
+     * access your application server endpoints! In a real production
+     * environment, your application server must identify the user to allow
+     * access to the endpoints.
+     *
+     * Visit https://docs.openvidu.io/en/stable/application-server to learn
+     * more about the integration of OpenVidu in your application server.
+     */
+    async getToken(mySessionId) {
+      const sessionId = await this.createSession(mySessionId);
+      console.log("디버깅1");
+      console.log(sessionId);
+      return await this.createToken(sessionId);
+    },
+
+    async createSession(sessionId) {
+      this.token = localStorage.getItem("jwt");
+      const response = await axios.post(
+        import.meta.env.VITE_APP_URL + "/api/v1/openvidu/sessions",
+        { customSessionId: sessionId },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.token}`,
+          },
+        }
+      );
+      return response.data; // The sessionId
+    },
+
+    async createToken(sessionId) {
+      const response = await axios.post(
+        import.meta.env.VITE_APP_URL +
+          "/api/v1/openvidu/sessions/" +
+          sessionId +
+          "/connections",
+        {},
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      return response.data; // The token
+    },
+  },
+  setup() {
+    // 자식 컴포넌트를 핸들링하기 위한 ref
+    const store = useStore();
+    const championSongListModal = ref(null);
+    const waitingQueueModal = ref(null);
+    // Promise 객체를 핸들링하기 위한 ref
+    const resolvePromise = ref(null);
+    const showChampionSongList = () => {
+      // showChampionSongList을 직접 컨트롤합니다.
+      championSongListModal.value.open();
+      // Promise 객체를 사용하여, 현재 모달에서 확인 / 취소의
+      // 응답이 돌아가기 전까지 작업을 기다리게 할 수 있습니다.
+      return new Promise((resolve) => {
+        // resolve 함수를 담아 외부에서 사용합니다.
+        resolvePromise.value = resolve;
+      });
+    };
+
+    const showWaitingQueue = () => {
+      waitingQueueModal.value.open();
+      return new Promise((resolve) => {
+        resolvePromise.value = resolve;
+      });
+    };
+
+    const closeChampionSongListModal = () => {
+      championSongListModal.value.close();
+    };
+
+    const closeWaitingQueueModal = () => {
+      waitingQueueModal.value.close();
+    };
+    const confirm = () => {
+      championSongListModal.value.close();
+      resolvePromise.value(true);
+      const url = "#/conferences/" + this.store.state.conferencename + "/";
+      window.open(url); // 새로운 창에서 플레이룸 오픈
+      this.store.state.conferencename = "";
+    };
+
+    const cancel = () => {
+      championSongListModal.value.close();
+      resolvePromise.value(false);
+      this.store.state.conferencename = "";
+    };
+    // async-await을 사용하여, Modal로부터 응답을 기다리게 된다.
+    return {
+      championSongListModal,
+      waitingQueueModal,
+      showChampionSongList,
+      showWaitingQueue,
+      confirm,
+      cancel,
+      closeChampionSongListModal,
+      closeWaitingQueueModal,
+      store,
+    };
+  },
 };
 </script>
 <style>
 .bigbox {
-    /* position: absolute; */
-    display: flex;
-    margin: auto;
-    padding: 0;
+  /* position: absolute; */
+  display: flex;
+  margin: auto;
+  padding: 0;
 }
 
 .audiences {
-    width: 10%;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
+  width: 10%;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
 }
 
 .smallboxb {
-    /* position: absolute; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* justify-content: space-around; */
-    margin-left: 200px;
-    margin-right: 200px;
-    width: 60%;
-    margin: auto;
-    padding: 0;
+  /* position: absolute; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* justify-content: space-around; */
+  margin-left: 200px;
+  margin-right: 200px;
+  width: 60%;
+  margin: auto;
+  padding: 0;
 }
 
 .smallboxl {
-    width: 300px;
+  width: 300px;
 }
 
 .musicbox {
-    top: 100%;
-    left: -5%;
-    width: 700px;
-    margin-left: 50px;
-    margin-right: 50px;
-    border: 0px;
+  top: 100%;
+  left: -5%;
+  width: 700px;
+  margin-left: 50px;
+  margin-right: 50px;
+  border: 0px;
 }
 
 /* .smallboxr{
@@ -884,54 +860,54 @@ export default {
 } */
 
 .container {
-    height: 100%;
-    width: 100vw;
-    background-color: black;
-    background-image: url("../../assets/images/sparkle-star.gif");
-    background-size: 400px;
-    background-repeat: repeat;
-    color: white;
-    padding: 20px;
+  height: 100%;
+  width: 100vw;
+  background-color: black;
+  background-image: url("../../assets/images/sparkle-star.gif");
+  background-size: 400px;
+  background-repeat: repeat;
+  color: white;
+  padding: 20px;
 }
 
 .musicOn {
-    height: 100%;
-    width: 100vw;
-    background-color: black;
-    background-image: url("../../assets/images/back.gif");
-    background-size: 1200px;
-    color: white;
-    padding: 20px;
+  height: 100%;
+  width: 100vw;
+  background-color: black;
+  background-image: url("../../assets/images/back.gif");
+  background-size: 1200px;
+  color: white;
+  padding: 20px;
 }
 
 .hurryup {
-    color: red;
+  color: red;
 }
 
 .play {
-    display: flex;
-    width: 50%;
-    margin: auto;
-    top: 15%;
-    left: 26%;
-    /* border: 1px solid red; */
-    position: absolute;
+  display: flex;
+  width: 50%;
+  margin: auto;
+  top: 15%;
+  left: 26%;
+  /* border: 1px solid red; */
+  position: absolute;
 }
 
 .user_video {
-    /* border: 1px solid white; */
-    margin: 20px;
+  /* border: 1px solid white; */
+  margin: 20px;
 }
 
 .music {
-    position: relative;
-    top: 0%;
-    left: 0%;
-    border: 1px solid white;
+  position: relative;
+  top: 0%;
+  left: 0%;
+  border: 1px solid white;
 }
 
 .exit {
-    float: right;
+  float: right;
 }
 
 /* #video-container p {
@@ -946,65 +922,65 @@ export default {
   text-align: center;
 } */
 
-#video-container video+div {
-    text-align: center;
-    /* line-height: 75px; */
-    float: left;
-    width: 28%;
-    position: relative;
-    margin-left: -1.5%;
-    display: flex;
-    justify-content: space-around;
+#video-container video + div {
+  text-align: center;
+  /* line-height: 75px; */
+  float: left;
+  width: 28%;
+  position: relative;
+  margin-left: -1.5%;
+  display: flex;
+  justify-content: space-around;
 }
 
 #video-container video {
-    /* position: relative; */
-    /* float: left; */
-    margin-left: 0.6%;
-    border: 3px solid;
-    border-color: rgb(255, 255, 255);
-    /* cursor: pointer; */
-    /* margin:  2%;  */
-    /* margin-left: 5%; */
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+  /* position: relative; */
+  /* float: left; */
+  margin-left: 0.6%;
+  border: 3px solid;
+  border-color: rgb(255, 255, 255);
+  /* cursor: pointer; */
+  /* margin:  2%;  */
+  /* margin-left: 5%; */
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .participation {
-    /* width: 95vw; */
-    /* height: 22vh; */
-    /* text-align: justify; */
-    /* border: 3px solid #ffa500; */
-    display: flex;
-    flex-direction: row;
-    /* align-items: center;
+  /* width: 95vw; */
+  /* height: 22vh; */
+  /* text-align: justify; */
+  /* border: 3px solid #ffa500; */
+  display: flex;
+  flex-direction: row;
+  /* align-items: center;
    justify-content: space-around;   */
 }
 
 video {
-    padding-top: 1.8vh;
-    /* 맨 아래에 나오는 카메라화면 */
-    /* width: ; */
-    width: 90%;
-    /* height: 48vh; */
-    height: auto;
-    position: relative;
+  padding-top: 1.8vh;
+  /* 맨 아래에 나오는 카메라화면 */
+  /* width: ; */
+  width: 90%;
+  /* height: 48vh; */
+  height: auto;
+  position: relative;
 }
 
 #main-video p {
-    /* position: absolute; */
-    display: inline-block;
-    background: #f8f8f8;
-    padding-left: 5px;
-    padding-right: 5px;
-    font-size: 22px;
-    color: #777777;
-    font-weight: bold;
-    border-radius: 5px;
+  /* position: absolute; */
+  display: inline-block;
+  background: #f8f8f8;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 22px;
+  color: #777777;
+  font-weight: bold;
+  border-radius: 5px;
 }
 
 .exit {
-    float: right;
+  float: right;
 }
 </style>
