@@ -4,35 +4,42 @@
       <v-col lg="7">
         <h3 align="start" style="margin-left: 80px">
           <!-- <b>{{title}}</b> -->
-          <b style="margin-left: 0px">제목 : {{ state.title }}</b>
+          <b style="margin-left: 0px">제목 : {{ videoInfo.title }}</b>
         </h3>
-        
 
-        <video
-          :src="state.video"
+        <iframe
+          :src="videoInfo.video"
           ref="videoPlayer"
-          width="700"
-          height="500"
-          style="margin-bottom:20px"
-          @click="play()"
+          width="600"
+          height="400"
+          style="margin-bottom: 20px"
+          autoplay
+        ></iframe>
 
-        ></video>
         <!-- <button @click="play">play</button> -->
 
         <v-row justify="space-between">
-          <p style="margin-left: 80px">{{ state.viewCnt }}View</p>
+          <p style="margin-left: 80px">{{ videoInfo.viewCnt }} View</p>
           <p style="margin-right: 80px">
-            {{ state.likeCnt }}
-            <button @click="activeBtn" v-if="state.heartcheck== 'true'" class="active">
-              <v-icon>mdi-heart-outline</v-icon>
-            </button>
-            <button @click="activeBtn" v-else-if="state.heartcheck!= 'true'" class="active">
+            {{ videoInfo.likeCnt }}
+            <button
+              @click="decreaseLikeCnt"
+              v-if="this.heartcheck"
+              class="active"
+            >
               <v-icon>mdi-heart</v-icon>
+            </button>
+            <button
+              @click="increaseLikeCnt"
+              v-else
+              class="active"
+            >
+              <v-icon>mdi-heart-outline</v-icon>
             </button>
           </p>
         </v-row>
       </v-col>
-      <CommentsBox :replys="state.ordering"/>
+      <CommentsBox :replys="videoInfo.replys" />
       <!-- <v-col lg="4" class="comment_box">
         <v-row>
           <h4><b>Comment</b></h4>
@@ -55,11 +62,12 @@
 </template>
 
 <script>
-import { onMounted, reactive, computed,} from "vue";
+// import { onMounted, reactive, computed } from "vue";
+import { reactive } from "vue";
 import CommentsBox from "./components/comments.vue";
 import axios from "axios";
 import { useStore } from "vuex";
-import _ from "lodash"
+import _ from "lodash";
 
 export default {
   name: "ContentsBox",
@@ -69,88 +77,166 @@ export default {
   },
   data() {
     return {
-      status:false,
+      status: false,
+      heartCheck: false,
+      videoInfo:{
+        title: "",
+        description: "",
+        usernickname: "",
+        video : "",
+        likeCnt: 0,
+        viewCnt: 0,
+        replys: [],
+      }
+    };
+  },
+  created() {
+    this.setVideoInfo();
+  },
+  computed: {
+    computedViewCnt(){
+      return this.videoInfo.viewCnt;
+    },
+    computedLikeCnt(){
+      return this.videoInfo.likeCnt;
     }
   },
   methods: {
     play() {
-      this.status = !this.status
+      this.status = !this.status;
       if (this.status) {
         this.$refs.videoPlayer.play();
-      }
-      else{
+      } else {
         this.$refs.videoPlayer.pause();
       }
     },
-  },
-  setup(){
-    const store = useStore();
-    const state = reactive({
-      heartcheck: localStorage.getItem('likes'),
-      keyId: "",
-      title : "",
-      description:"",
-      usernickname:"",
-      video:"",
-      likeCnt:"",
-      viewCnt:"",
-      replys:[],
-      ordering: [],
-    });
-    const videoId = localStorage.getItem('page')
-    
-    const activeBtn = () => {
-      // state.heartcheck = !state.heartcheck;
-      localStorage.setItem('likes', 'false')
+    increaseLikeCnt(){
+      // 프론트 likeCnt + 1
+      this.videoInfo.likeCnt += 1;
+      // db likeCnt + 1
+      this.addLikes();
+      this.heartcheck = true;
+    },
+    decreaseLikeCnt(){
+      this.videoInfo.likeCnt -= 1;
+      this.minusLikes();
+      this.heartcheck = false;
+    },
 
-      axios({
-        method: "put",
-        url: import.meta.env.VITE_APP_URL+`/api/v1/videos/likes/${videoId}`,
-      })
-        .then((res) => {
-          console.log(res); 
-          window.location.reload(true);
-          localStorage.getItem('likes')
-    })
-        .catch((err) => {
-          console.log(err);
-          console.log("하트 안가는데..?"); 
-        });
-      
-    };
-    // const fullheart =function(){ 
-    //   localStorage.getItem('likes')
-    //   // state.binheart='true';
-    // }
-
-    onMounted(() => {
-      const getid = localStorage.getItem('page')
+    setVideoInfo(){
+      const getid = localStorage.getItem("page");
       axios({
         method: "get",
-        url: import.meta.env.VITE_APP_URL+`/api/v1/videos/${getid}`
+        url: import.meta.env.VITE_APP_URL + `/api/v1/videos/${getid}`,
         // url: import.meta.env.VITE_APP_URL + `api/v1/videos/${state.keyId}`,
       })
         .then((res) => {
-          console.log(res); 
-          state.title = res.data.title
-          state.description = res.data.description
-          state.usernickname = res.data.user.nickname
-          state.video=res.data.url
-          state.likeCnt=res.data.likeCnt
-          state.viewCnt=res.data.viewCnt
-          state.replys=res.data.replys
+          console.log(res);
+          this.videoInfo.title = res.data.title;
+          this.videoInfo.description = res.data.description;
+          this.videoInfo.usernickname = res.data.user.nickname;
+          this.videoInfo.video = res.data.url;
+          this.videoInfo.likeCnt = res.data.likeCnt;
+          this.videoInfo.viewCnt = res.data.viewCnt;
+          this.videoInfo.replys = res.data.replys;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    
+  },
+
+  setup() {
+    const store = useStore();
+    const state = reactive({
+      keyId: "",
+      title: "",
+      description: "",
+      usernickname: "",
+      video: "",
+      viewCnt: 0,
+      likeCnt: 0,
+      replys: [],
+      ordering: [],
+    });
+    const videoId = localStorage.getItem("page");
+
+    const addLikes = () => {
+      axios({
+        method: "put",
+        url: import.meta.env.VITE_APP_URL + `/api/v1/videos/likes/${videoId}`,
+      })
+        .then((res) => {
+          console.log(res);
         })
         .catch((err) => {
           console.log(err);
         });
 
-        state.ordering = computed(() => _.orderBy(state.replys,'createdDate','desc'))
-    
-    });
+      // axios({
+      //   method: "get",
+      //   url: import.meta.env.VITE_APP_URL + `/api/v1/videos/${videoId}`,
+      //   // url: import.meta.env.VITE_APP_URL + `api/v1/videos/${state.keyId}`,
+      // })
+      //   .then((res) => {
+      //     console.log(res);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
+    };
+
+    const minusLikes = () => {
+      axios({
+        method: "put",
+        url: import.meta.env.VITE_APP_URL + `/api/v1/videos/likes-cancel/${videoId}`,
+      })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    // const fullheart =function(){
+    //   localStorage.getItem('likes')
+    //   // state.binheart='true';
+    // }
+
+    // onMounted(() => {
+    //   const getid = localStorage.getItem("page");
+    //   axios({
+    //     method: "get",
+    //     url: import.meta.env.VITE_APP_URL + `/api/v1/videos/${getid}`,
+    //     // url: import.meta.env.VITE_APP_URL + `api/v1/videos/${state.keyId}`,
+    //   })
+    //     .then((res) => {
+    //       console.log("hhhhhhhhhhhhhhh");
+    //       console.log(res);
+    //       state.title = res.data.title;
+    //       state.description = res.data.description;
+    //       state.usernickname = res.data.user.nickname;
+    //       state.video = res.data.url;
+    //       state.likeCnt = res.data.likeCnt;
+    //       state.viewCnt = res.data.viewCnt;
+    //       state.replys = res.data.replys;
+    //       // this.likeCnt = state.likeCnt;
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+
+    //   state.ordering = computed(() =>
+    //     _.orderBy(state.replys, "createdDate", "desc")
+    //   );
+    // });
     return {
       state,
       store,
-      activeBtn,
+      addLikes,
+      minusLikes,
       // changes,
       // getid,
       // fullheart

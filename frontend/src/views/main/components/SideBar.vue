@@ -50,7 +50,7 @@
           </v-list-item>
         </v-list>
       </v-navigation-drawer>
-      <v-main style="height: 84vh; background-color: black; overflow: scroll;">
+      <v-main style="height: 84vh; overflow: scroll;">
         <ConfirmationModal ref="modal" :content="modalContent" />
         <router-view />
       </v-main>

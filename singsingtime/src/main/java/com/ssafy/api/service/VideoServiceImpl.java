@@ -77,9 +77,11 @@ public class VideoServiceImpl implements VideoService{
         video.setLikeCnt(video.getLikeCnt() + 1);
     }
 
+    @Transactional
     @Override
     public void createReply(String userId, ReplyCreatePostReq replyReq) {
         Video video = videoRepository.findById(replyReq.getVideoId()).orElseThrow(() -> new NoSuchElementException());
+        video.setViewCnt(video.getViewCnt()-1);
         User user = userRepository.findByUserId(userId).orElseThrow(() -> new NoSuchElementException());
         Reply reply = Reply.builder()
                 .user(user)
@@ -100,6 +102,8 @@ public class VideoServiceImpl implements VideoService{
     @Override
     public void deleteReply(String userId, Long replyId) {
         Reply reply = replyRepository.findById(replyId).orElseThrow(()-> new NoSuchElementException());
+        Video video = videoRepository.findById(reply.getVideo().getId()).orElseThrow(()->new NoSuchElementException());
+        video.setViewCnt(video.getViewCnt()-1);
         if(reply.getUser().getUserId().equals(userId)){
             replyRepository.deleteById(replyId);
         }

@@ -105,6 +105,14 @@ public class UserServiceImpl implements UserService {
 			getUser.setProfileUrl(storedFileName);
 		}
 	}
+
+	@Override
+	public String getMyProfile(String userId) {
+		Optional <User> user = userRepository.findByUserId(userId);
+		User getUser = user.orElseThrow(()-> new NoSuchElementException());
+		String profileUrl = getUser.getProfileUrl();
+		return profileUrl;
+	}
 //	@Override
 //	public String getKaKaoAccessToken(String code){
 //		String access_Token="";
