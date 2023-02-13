@@ -5,8 +5,15 @@
         <h2 style="text-align: left"><b>My Page</b></h2>
         <v-row>
           <v-col col="3" class="user_image">
-              <img :src="image" alt="" v-if="state.there==false" style="width:300px;height:200px">
-              <img class="user_ex" src="../../assets/images/user_ex.png" v-else-if="state.there==true" />
+            <!-- <v-btn @click="imageGet">이거눌러보셈</v-btn> -->
+            <img
+              :src="profileUrl"
+              alt=""
+              v-if="profileUrl != ''"
+              style="width: 300px; height: 200px"
+            />
+
+            <img class="user_ex" src="../../assets/images/user_ex.png" v-else />
           </v-col>
           <v-col col="3" class="user_info">
             <v-row>
@@ -25,8 +32,13 @@
                 <template v-slot:activator="{ on }">
                   <v-row justify="end" style="margin-right: 20px">
                     <div class="filebox">
-                      <label for="chooseFile" >프로필사진</label>
-                      <input ref="image" @change="uploadImg()" type="file" id="chooseFile" accept="image/*">
+                      <label for="chooseFile">프로필사진</label>
+                      <input
+                        ref="image"
+                        @change="changeFile1"
+                        type="file"
+                        id="chooseFile"
+                      />
                     </div>
                     <v-btn
                       class="inline"
@@ -305,7 +317,7 @@
     <br />
     <v-divider></v-divider>
     <br />
-    
+
     <!--마이 하이라이트-->
     <v-row align="center" justify="center">
       <v-col sm="5" lg="10" class="d-flex">
@@ -333,12 +345,7 @@
                 cover
               >
                 <v-card-title
-                  class="
-                    text-h6 text-black
-                    d-flex
-                    flex-column
-                    justify-space-between
-                  "
+                  class="text-h6 text-black d-flex flex-column justify-space-between"
                   style="padding: 0px; height: 100%"
                 >
                   <p class="song_info" align="start"></p>
@@ -377,19 +384,93 @@ export default {
     add_dialog: false,
     file_name: "파일을 선택하세요.",
     message: "Hello, world",
-    image:'',
+    profileImg: null,
+    token: null,
+    profileUrl: "",
   }),
   methods: {
-    uploadImg() {
-      console.log('들어왔다')
-      var image = this.$refs['image'].files[0]
+    // uploadImg() {
+    //   console.log("들어왔다");
+    //   var image = this.$refs["image"].files[0];
 
-      const url = URL.createObjectURL(image)
-      this.image = url
-      this.state.there=false
-      console.log(url)
-      console.log(this.image)
-    }},
+    //   const url = URL.createObjectURL(image);
+    //   this.image = url;
+    //   this.state.there = false;
+    //   console.log(url);
+    //   console.log(this.image);
+    // },
+    async imageSubmit() {
+      this.token = localStorage.getItem("jwt");
+      const formData = new FormData();
+      console.log("2222222222222222222");
+      console.log(this.profileImg.target.files[0]);
+      console.log(typeof this.profileImg.target.files[0]);
+      formData.append("profileImg", this.profileImg.target.files[0]);
+      console.log("여기까지ㅏㅇ");
+
+      axios({
+        method: "post",
+        url: import.meta.env.VITE_APP_URL + "/api/v1/users/my-page/profile",
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${this.token}`,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log("이미지 안됨");
+          // console.log(state.form.video);
+          console.log(this.profileImg.target.files[0]);
+          console.log(err);
+        });
+      this.imageGet();
+    },
+    async imageGet() {
+      console.log("hhhhhhhhhhhh");
+      console.log(this.token);
+      axios({
+        method: "get",
+        url: import.meta.env.VITE_APP_URL + `/api/v1/users/my-page/profile`,
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          this.profileUrl = res.data;
+          console.log("4444444444444444444");
+          console.log(this.profileUrl);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    changeFile1(file) {
+      this.profileImg = file;
+      console.log(file);
+      this.imageSubmit();
+    },
+  },
+  mounted() {
+    const token = localStorage.getItem("jwt");
+    axios({
+      method: "get",
+      url: import.meta.env.VITE_APP_URL + `/api/v1/users/my-page/profile`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        this.profileUrl = res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   setup() {
     const store = useStore();
     // const update_dialog = false;
@@ -404,7 +485,7 @@ export default {
       playlist_dialog: false,
       keyword: "",
       user_videos: [],
-      there:true
+      there: true,
     });
 
     // store 연결해서 가져온 유저 데이터
@@ -583,20 +664,18 @@ export default {
     };
 
     const clickContent = function (id) {
-      localStorage.setItem('page', id)
+      localStorage.setItem("page", id);
       store.dispatch("contentStore/pageAction", {
-            contentId: id,
-          });
+        contentId: id,
+      });
       router.push({
         name: "ContentsBox",
         params: { Id: id },
       });
     };
 
-
     onMounted(() => {
       // console.log(state.form.id);
-
       // store에서 유저 정보 가져오기
       const all = computed(() => store.getters["accountStore/getAll"]);
       user_info.token = all.value.token;
@@ -604,7 +683,6 @@ export default {
       user_info.password = all.value.password;
       user_info.nickname = all.value.nickname;
 
-      const token = localStorage.getItem("jwt");
       axios({
         method: "get",
         url: import.meta.env.VITE_APP_URL + "/api/v1/users/my-page",
@@ -671,7 +749,7 @@ export default {
       userDelete,
       playlist,
       addMyPlaylist,
-      clickContent
+      clickContent,
     };
   },
 };
@@ -772,7 +850,7 @@ export default {
   padding: 6px;
   color: black;
   font-size: small;
-  font-size:inherit;
+  font-size: inherit;
   font-display: center;
   line-height: normal;
   vertical-align: middle;
@@ -783,17 +861,18 @@ export default {
   cursor: pointer;
   border: 1px solid #ebebeb;
   border-bottom-color: #e2e2e2;
-  border-radius: .25em;
+  border-radius: 0.25em;
   margin-top: 30px;
 }
-.filebox input[type="file"] {  /* 파일 필드 숨기기 */
+.filebox input[type="file"] {
+  /* 파일 필드 숨기기 */
   position: absolute;
   width: 1px;
   height: 1px;
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip:rect(0,0,0,0);
+  clip: rect(0, 0, 0, 0);
   border: 0;
 }
 </style>
