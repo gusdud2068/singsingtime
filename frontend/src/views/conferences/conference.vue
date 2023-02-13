@@ -94,17 +94,17 @@
             <h2>현재 대기중인 도전자 목록</h2>
             <hr />
 
+           
             <v-list-item-group v-model="model">
+              <v-list-item-title>
+                (현재 도전자):{{ sessionInfo.challenger }}
+                </v-list-item-title>
               <v-list-item
                 v-for="(waitingUser, i) in sessionInfo.waitingQueue"
                 :key="waitingUser"
               >
-                <v-list-item-title v-if="this.challenger != ''">
-                  {{ i + 1 }}번 - {{ sessionInfo.challenger }}(현재 도전자)
-                </v-list-item-title>
-                <v-list-item-title v-else>
-                  {{ i + 1 }}번 - {{ waitingUser }}</v-list-item-title
-                >
+                <v-list-item-title>
+                  {{i +1}}번 - {{waitingUser}}</v-list-item-title>
               </v-list-item>
             </v-list-item-group>
           </v-list>
@@ -518,7 +518,6 @@ export default {
               console.log("467467");
             }
           }
-          this.sessionInfo.waitingQueue.push(this.sessionInfo.challenger);
         });
       this.session.on("signal:sessionInfo", (event) => {
         console.log("이벤트발생시켜줘");
@@ -534,7 +533,11 @@ export default {
         }
         console.log(originData);
       });
-
+      this.session.on("signal:addWaitingQueue",(event)=>{
+      console.log("대기열에 넣어줘! 500");
+      const originData = JSON.parse(event.data);
+      this.sessionInfo = originData;
+     });
       // On every new Stream received...
       this.session.on("streamCreated", ({ stream }) => {
         const subscriber = this.session.subscribe(stream);
@@ -750,6 +753,9 @@ export default {
       this.voteBtnShow = false;
       this.sessionInfo.likeChallenger += 1;
     },
+    enqueue(data) {
+        this.sessionInfo.waitingQueue.push(data);
+      },
     challenge(myUserId) {
       if (this.sessionInfo.challenger == "") {
         this.sessionInfo.challenger = myUserId;
@@ -759,7 +765,6 @@ export default {
           data: JSON.stringify(this.sessionInfo),
           type: "challenge",
         });
-
         return;
       }
       if (this.sessionInfo.challenger == myUserId) {
@@ -772,13 +777,14 @@ export default {
           return;
         }
       }
-      enqueue(myUserId);
-      console.log(111111113231232131);
+      this.enqueue(myUserId);
       console.log(this.sessionInfo.waitingQueue);
-
-      const enqueue = (data) => {
-        this.sessionInfo.waitingQueue.push(data);
-      };
+      console.log("대기열 출력!!");
+      console.log(this.sessionInfo.waitingQueue);
+      this.session.signal({
+        data: JSON.stringify(this.sessionInfo),
+        type: "addWaitingQueue",
+      })
     },
     dequeue() {
       if(this.sessionInfo.waitingQueue.length==0) return "";
