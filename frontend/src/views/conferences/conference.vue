@@ -94,17 +94,17 @@
             <h2>현재 대기중인 도전자 목록</h2>
             <hr />
 
-           
             <v-list-item-group v-model="model">
               <v-list-item-title>
                 (현재 도전자):{{ sessionInfo.challenger }}
-                </v-list-item-title>
+              </v-list-item-title>
               <v-list-item
                 v-for="(waitingUser, i) in sessionInfo.waitingQueue"
                 :key="waitingUser"
               >
                 <v-list-item-title>
-                  {{i +1}}번 - {{waitingUser}}</v-list-item-title>
+                  {{ i + 1 }}번 - {{ waitingUser }}</v-list-item-title
+                >
               </v-list-item>
             </v-list-item-group>
           </v-list>
@@ -138,7 +138,6 @@
           <VoteChampion v-if="this.voteBtnShow" @voteChampion="voteChampion" />
         </div>
 
-
         <!-- </v-col> -->
 
         <div class="musicbox">
@@ -148,7 +147,12 @@
             @endGame="endGame"
           />
 
-          <v-row v-if="this.finish" justify="center" margin-top="0px" padding-top="0px;">
+          <v-row
+            v-if="this.finish"
+            justify="center"
+            margin-top="0px"
+            padding-top="0px;"
+          >
             <v-col>
               <h1 style="color: orange">
                 {{ this.winner }}
@@ -201,7 +205,6 @@
             @voteChallenger="voteChallenger"
           />
         </div>
-
 
         <!-- </v-col> -->
       </div>
@@ -355,6 +358,20 @@ export default {
     this.getReadyVideo();
   },
   methods: {
+    leavePlayroom() {
+      axios({
+        method: "delete",
+        url:
+          import.meta.env.VITE_APP_URL +
+          `/api/v1/playrooms/${this.mySessionId}`,
+      })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
     getReadyVideo: function () {
       this.session
         .signal({
@@ -473,7 +490,6 @@ export default {
 
       // --- 3) Specify the actions when events take place in the session ---
       // 중간에 다른 유저가 들어왔을 때 도전자 data받기
-
       this.session.on("signal:endalert", (event) => {
         this.finish = event.data;
       }),
@@ -542,11 +558,11 @@ export default {
         }
         console.log(originData);
       });
-      this.session.on("signal:addWaitingQueue",(event)=>{
-      console.log("대기열에 넣어줘! 500");
-      const originData = JSON.parse(event.data);
-      this.sessionInfo = originData;
-     });
+      this.session.on("signal:addWaitingQueue", (event) => {
+        console.log("대기열에 넣어줘! 500");
+        const originData = JSON.parse(event.data);
+        this.sessionInfo = originData;
+      });
       // On every new Stream received...
       this.session.on("streamCreated", ({ stream }) => {
         const subscriber = this.session.subscribe(stream);
@@ -625,9 +641,10 @@ export default {
               error.code,
               error.message
             );
+            alert(token);
+            window.close();
           });
       });
-
       window.addEventListener("beforeunload", this.leaveSession);
     },
 
@@ -642,6 +659,9 @@ export default {
       this.publisher = undefined;
       this.subscribers = [];
       this.OV = undefined;
+
+      // 방 정원수 감소
+      this.leavePlayroom();
       // Remove beforeunload listener
       window.removeEventListener("beforeunload", this.leaveSession);
     },
@@ -732,10 +752,9 @@ export default {
           console.log("next출력");
           console.log(next);
           console.log(this.subscribers);
-          if(next== ""){
+          if (next == "") {
             this.sessionInfo.challenger = "";
-            
-          }else{
+          } else {
             this.sessionInfo.challenger = next;
             this.session.signal({
               data: JSON.stringify(this.sessonInfo),
@@ -754,20 +773,23 @@ export default {
           //     }
           // }
         })
-        .then(()=>{
-            for(let subscriber of this.subscribers){
-              console.log("구독자 출력 759");
-              console.log(subscriber);
-              const nextId = JSON.parse(subscriber.stream.connection.data).clientId;
-              console.log(nextId);
-              console.log("챌린저 정보 763");
-              // console.log(this.challengerStreamManager.stream.connection.data);
-              // const challengerId = JSON.parse(this.challengerStreamManager.stream.connection.data).clientId;
-              // console.log(challengerId);
-              if(nextId == this.sessionInfo.challenger){
-                this.challengerStreamManager = subscriber;
-              }
-        }})
+        .then(() => {
+          for (let subscriber of this.subscribers) {
+            console.log("구독자 출력 759");
+            console.log(subscriber);
+            const nextId = JSON.parse(
+              subscriber.stream.connection.data
+            ).clientId;
+            console.log(nextId);
+            console.log("챌린저 정보 763");
+            // console.log(this.challengerStreamManager.stream.connection.data);
+            // const challengerId = JSON.parse(this.challengerStreamManager.stream.connection.data).clientId;
+            // console.log(challengerId);
+            if (nextId == this.sessionInfo.challenger) {
+              this.challengerStreamManager = subscriber;
+            }
+          }
+        })
         .catch((err) => {
           alert(err);
         });
@@ -776,21 +798,21 @@ export default {
       this.voteBtnShow = false;
       this.sessionInfo.likeChampion += 1;
       this.session.signal({
-        data:this.sessionInfo.likeChampion,
-        type:"selectChampion"
-      })
+        data: this.sessionInfo.likeChampion,
+        type: "selectChampion",
+      });
     },
     voteChallenger() {
       this.voteBtnShow = false;
       this.sessionInfo.likeChallenger += 1;
       this.session.signal({
-        data:this.sessionInfo.likeChallenger,
-        type:"selectChallenger"
-      })
+        data: this.sessionInfo.likeChallenger,
+        type: "selectChallenger",
+      });
     },
     enqueue(data) {
-        this.sessionInfo.waitingQueue.push(data);
-      },
+      this.sessionInfo.waitingQueue.push(data);
+    },
     challenge(myUserId) {
       if (this.sessionInfo.challenger == "") {
         this.sessionInfo.challenger = myUserId;
@@ -817,14 +839,14 @@ export default {
       this.session.signal({
         data: JSON.stringify(this.sessionInfo),
         type: "addWaitingQueue",
-      })
+      });
     },
     dequeue() {
-      if(this.sessionInfo.waitingQueue.length==0) return "";
+      if (this.sessionInfo.waitingQueue.length == 0) return "";
       else {
         return this.sessionInfo.waitingQueue.shift();
-    }
-  },
+      }
+    },
     /**
      * --------------------------------------------
      * GETTING A TOKEN FROM YOUR APPLICATION SERVER

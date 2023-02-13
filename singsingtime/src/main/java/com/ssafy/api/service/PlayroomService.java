@@ -27,4 +27,11 @@ public interface PlayroomService {
 
     void createPlayRoom(Map<String, Object> params, User user);
 
+    int checkPlayRoomMemberCnt(String sessionId);
+
+    void addPlayRoomMemberCnt(String sessionId);
+
+    void minusPlayRoomMemberCnt(String sessionId);
+
+    void deletePlayRoom(String sessionId);
 }

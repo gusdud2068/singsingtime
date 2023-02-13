@@ -43,7 +43,7 @@ public class Playroom extends BaseEntity {
         this.sessionId=sessionId;
         this.title= title;
         this.champion = user.getUserId();
-        this.userCnt = 1;
+        this.userCnt = 0;
         this.user= user;
         this.setPlayroomStatus(PlayroomStatus.STANDBY);
     }

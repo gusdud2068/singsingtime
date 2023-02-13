@@ -59,6 +59,7 @@ export default {
       const url = "#/conferences/" + state.conferencename + "/";
       window.open(url);
       state.conferencename = "";
+      window.location.reload(true);
     };
 
     const cancel = () => {
