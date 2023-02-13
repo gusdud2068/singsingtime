@@ -21,6 +21,8 @@ import java.util.Map;
 @RequestMapping("/openvidu")
 public class OpenviduController {
 
+	// 방 정원 6명
+	private final int MAX_MEMBER_CNT = 6;
 	@Value("${OPENVIDU_URL}")
 	private String OPENVIDU_URL;
 
@@ -81,6 +83,11 @@ public class OpenviduController {
 		if (session == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+
+		if(playroomService.checkPlayRoomMemberCnt(sessionId) >= MAX_MEMBER_CNT){
+			return new ResponseEntity<>("방 정원 초과입니다. 다른 노래방을 이용해주세요", HttpStatus.OK);
+		}
+		playroomService.addPlayRoomMemberCnt(sessionId);
 		ConnectionProperties properties = ConnectionProperties.fromJson(params).build();
 		Connection connection = session.createConnection(properties);
 		return new ResponseEntity<>(connection.getToken(), HttpStatus.OK);

@@ -6,6 +6,7 @@ import com.ssafy.api.response.PlayroomStatusRes;
 import com.ssafy.api.service.PlayroomService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.auth.SsafyUserDetails;
+import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.Playroom;
 import com.ssafy.db.entity.Song;
 import com.ssafy.db.entity.User;
@@ -31,6 +32,15 @@ public class PlayroomController {
     public ResponseEntity<List<Playroom>> getRoomInfo() {
         List<Playroom> list = playroomService.getPlayroom();
         return new ResponseEntity(list, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{sessionId}")
+    public ResponseEntity<? extends BaseResponseBody> minusPlayRoomMemberCnt(@PathVariable String sessionId) {
+        playroomService.minusPlayRoomMemberCnt(sessionId);
+        if(playroomService.checkPlayRoomMemberCnt(sessionId) == 0){
+            playroomService.deletePlayRoom(sessionId);
+        }
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
     // 방 상세 정보 조회

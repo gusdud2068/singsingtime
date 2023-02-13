@@ -136,4 +136,32 @@ public class PlayroomServiceImpl implements PlayroomService{
                 .build();
         playroomRepository.save(playroom);
     }
+
+    @Override
+    public int checkPlayRoomMemberCnt(String sessionId) {
+        Optional<Playroom> playroom = playroomRepository.findBySessionId(sessionId);
+        int memberCnt = playroom.orElseThrow(()->new NoSuchElementException()).getUserCnt();
+        return memberCnt;
+    }
+
+    @Transactional
+    @Override
+    public void addPlayRoomMemberCnt(String sessionId) {
+        Playroom playroom = playroomRepository.findBySessionId(sessionId).orElseThrow(()->new NoSuchElementException());
+        playroom.setUserCnt(playroom.getUserCnt()+1);
+    }
+
+    @Transactional
+    @Override
+    public void minusPlayRoomMemberCnt(String sessionId) {
+        Playroom playroom = playroomRepository.findBySessionId(sessionId).orElseThrow(()->new NoSuchElementException());
+        playroom.setUserCnt(playroom.getUserCnt()-1);
+    }
+
+    @Transactional
+    @Override
+    public void deletePlayRoom(String sessionId) {
+        Playroom playroom = playroomRepository.findBySessionId(sessionId).orElseThrow(()->new NoSuchElementException());
+        playroomRepository.deleteById(playroom.getId());
+    }
 }

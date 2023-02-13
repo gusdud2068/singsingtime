@@ -11,17 +11,15 @@
             >
               <v-img :src="item.img" height="225px" cover>
                 <v-card-title class="text-h6 text-white d-flex flex-column">
-                  <p class="mt-4">
-                    {{ item.title }}
-                  </p>
+                  <p class="mt-4">챔피언 : {{ playroom.champion }}</p>
 
                   <div>
-                    <p class="ma-0 text-body-1 font-weight-bold">
-                      {{ item.text }}
+                    <!-- <p class="mt-4 text-body-1 font-weight-bold">
+                      인원수 : {{ playroom.userCnt }}/{{ 6 }}
                     </p>
-                    <p class="text-caption font-weight-medium">
-                      {{ item.subtext }}
-                    </p>
+                    <p class="mt-4 font-weight-medium">
+                      챔피언 : {{ playroom.champion }}
+                    </p> -->
                   </div>
                 </v-card-title>
               </v-img>
@@ -48,6 +46,9 @@
 <script>
 export default {
   name: "ConferenceBox",
+  props: {
+    playroom: Object,
+  },
   data: () => ({
     icons: ["mdi-rewind", "mdi-play", "mdi-fast-forward"],
     items: [

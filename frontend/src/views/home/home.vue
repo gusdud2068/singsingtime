@@ -11,11 +11,11 @@
         class="infinite-list-item"
         :key="playroom.title"
       >
-        <conference :playroom="playroom"/>
+        <conference :playroom="playroom" />
         <div class="roominfo">
           <p>방 제목 : {{ playroom.title }}</p>
           <p>인원수 : {{ playroom.userCnt }}/{{ 6 }}</p>
-          <p>챔피언 : {{ playroom.champion }}</p>
+          <!-- <p>챔피언 : {{ playroom.champion }}</p> -->
         </div>
       </li>
     </ul>
@@ -92,6 +92,7 @@ export default {
       //   name: "ConferencesBox",
       //   params: { Id: id},
       // });
+      window.location.reload(true);
     };
     return { state, load, clickConference };
   },
