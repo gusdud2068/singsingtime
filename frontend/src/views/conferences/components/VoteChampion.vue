@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-left: 10px; margin-top: 2px">
+  <div style="margin-left: 10px; margin-top: 20px">
     <v-btn class="votebtn" color="primary" @click="pickChampion">
       투표하기
     </v-btn>
@@ -25,8 +25,8 @@ export default {
 
 <style scoped>
 .votebtn {
-  width: 75px;
-  height: 75px;
+  width: 100px;
+  height: 100px;
   border-radius: 100px;
 }
 /* .votebtn:hover {
