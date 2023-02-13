@@ -50,7 +50,7 @@
           </v-list-item>
         </v-list>
       </v-navigation-drawer>
-      <v-main style="height: 84vh; overflow: scroll;">
+      <v-main style="height: 84vh; overflow: scroll;" :class="{ here: $route.name == 'ConferencesBox' }">
         <ConfirmationModal ref="modal" :content="modalContent" />
         <router-view />
       </v-main>
@@ -114,5 +114,11 @@ a {
 }
 .side {
   width: 5vw;
+}
+.here{
+  background-color:black ;
+  background-image: url("../../../assets/images/sparkle-star.gif");
+  background-size: 400px;
+  background-repeat: repeat;
 }
 </style>
