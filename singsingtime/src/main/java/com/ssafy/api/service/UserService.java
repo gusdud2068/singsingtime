@@ -22,4 +22,6 @@ public interface UserService {
 	int checkUserNickname(String nickname);
 
     void addMyProfile(String userId, MultipartFile profileImg) throws IOException;
+
+	String getMyProfile(String userId);
 }

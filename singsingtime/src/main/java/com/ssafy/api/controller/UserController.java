@@ -156,6 +156,13 @@ public class UserController {
 		userService.addMyProfile(userId, profileImg);
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
+	@GetMapping("my-page/profile")
+	public ResponseEntity<String> getMyProfile(Authentication auth){
+		SsafyUserDetails userDetails = (SsafyUserDetails)auth.getDetails();
+		String userId = userDetails.getUsername();
+		String profileUrl = userService.getMyProfile(userId);
+		return ResponseEntity.status(200).body(profileUrl);
+	}
 	@GetMapping("my-page/songs")
 	public ResponseEntity<List<Song>> getMySongList(Authentication auth){
 		SsafyUserDetails userDetails = (SsafyUserDetails)auth.getDetails();
