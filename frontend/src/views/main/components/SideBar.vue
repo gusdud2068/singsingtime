@@ -50,14 +50,13 @@
           </v-list-item>
         </v-list>
       </v-navigation-drawer>
-      <v-main style="height: 84vh; overflow: scroll;">
+      <v-main style="height: 84vh; background-color: black; overflow: scroll;">
         <ConfirmationModal ref="modal" :content="modalContent" />
         <router-view />
       </v-main>
     </v-layout>
   </v-card>
 </template>
-
 <script>
 import { reactive } from "vue";
 import { ref } from "vue";

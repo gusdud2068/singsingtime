@@ -93,16 +93,15 @@
             <hr />
 
             <v-list-item-group v-model="model">
+              <v-list-item-title>
+                (현재 도전자):{{ sessionInfo.challenger }}
+                </v-list-item-title>
               <v-list-item
                 v-for="(waitingUser, i) in sessionInfo.waitingQueue"
                 :key="waitingUser"
               >
-                <v-list-item-title v-if="this.challenger!=''">
-                  {{ i + 1 }}번 - {{ sessionInfo.challenger }}(현재 도전자)
-                </v-list-item-title>
-                <v-list-item-title v-else>
-                  {{ i + 1 }}번 - {{ waitingUser }}</v-list-item-title
-                >
+                <v-list-item-title>
+                  {{i +1}}번 - {{waitingUser}}</v-list-item-title>
               </v-list-item>
             </v-list-item-group>
           </v-list>
@@ -453,6 +452,7 @@ export default {
       // 중간에 다른 유저가 들어왔을 때 도전자 data받기
       this.session.on("signal:enterNewUser",(event)=>{
          this.sessionInfo.challenger = JSON.parse(event.data).challenger;
+        console.log(event);
         // 방 멤버들 중 도전자 유저의 화면 생성
         console.log(this.members);
         for (let user of this.members) {
@@ -480,7 +480,7 @@ export default {
             console.log("467467");
           }
         }
-        this.sessionInfo.waitingQueue.push(this.sessionInfo.challenger);
+        // this.sessionInfo.waitingQueue.push(this.sessionInfo.challenger);
       });
       this.session.on("signal:sessionInfo",(event)=>{
         console.log("이벤트발생시켜줘");
@@ -496,12 +496,16 @@ export default {
         }
         console.log(originData);
      });
-
+     this.session.on("signal:addWaitingQueue",(event)=>{
+      console.log("대기열에 넣어줘! 500");
+      const originData = JSON.parse(event.data);
+      this.sessionInfo = originData;
+     });
       // On every new Stream received...
       this.session.on("streamCreated", ({ stream }) => {
         const subscriber = this.session.subscribe(stream);
         console.log("스트림!");
-        const data = stream.connection.data;
+        // const data = stream.connection.data;
         console.log(subscriber);
         const originInfo = JSON.stringify(this.sessionInfo);
         console.log(originInfo);
@@ -672,8 +676,8 @@ export default {
           this.sessonInfo.challenger = this.dequeue();
             this.sessonInfo.challenger === undefined ? "" : this.sessonInfo.challenger;
 
-          getSessionInfo();
-          console.log("다음도전자는:" + this.sessonInfo.challenger);
+          this.getSessionInfo();
+          alert("다음도전자는:" + this.sessonInfo.challenger);
           if (this.sessonInfo.challenger != "") {
             this.session.signal({
               data: JSON.stringify(this.sessonInfo.challenger),
@@ -701,16 +705,18 @@ export default {
       this.voteBtnShow = false;
       this.sessionInfo.likeChallenger += 1;
     },
+    enqueue (data) {
+        this.sessionInfo.waitingQueue.push(data);
+      },
     challenge(myUserId) {
-      if (this.sessionInfo.challenger == "") {
+      if (this.sessionInfo.challenger=="") {
         this.sessionInfo.challenger = myUserId;
         // 방 멤버 중 대결신청 버튼 누른 유저의 화면 전파
-
+        console.log("여기 들어가나?>");
         this.session.signal({
           data: JSON.stringify(this.sessionInfo),
           type: "challenge",
         });
-
         return;
       }
       if (this.sessionInfo.challenger == myUserId) {
@@ -723,13 +729,13 @@ export default {
           return;
         }
       }
-      enqueue(myUserId);
-      console.log(111111113231232131);
+      this.enqueue(myUserId);
+      console.log("대기열 출력!!");
       console.log(this.sessionInfo.waitingQueue);
-
-      const enqueue = (data) => {
-        this.sessionInfo.waitingQueue.push(data);
-      };
+      this.session.signal({
+        data: JSON.stringify(this.sessionInfo),
+        type: "addWaitingQueue",
+      })
     },
     dequeue() {
       return this.sessionInfo.waitingQueue.shift();

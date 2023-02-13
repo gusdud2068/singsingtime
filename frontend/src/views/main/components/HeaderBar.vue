@@ -532,6 +532,8 @@ export default {
       localStorage.removeItem("vuex");
       localStorage.removeItem("nickname");
       localStorage.removeItem("likes");
+      localStorage.removeItem("Id");
+      localStorage.removeItem("userId");
       state.token = false;
       console.log(state.token);
       window.location.reload(true);
