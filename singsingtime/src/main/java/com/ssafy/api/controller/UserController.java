@@ -149,8 +149,9 @@ public class UserController {
 		songService.addMySong(userId, addInfo);
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
-	@PostMapping(name="my-page/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PostMapping(value="my-page/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<? extends BaseResponseBody> addMyProfile(Authentication auth, @RequestParam(value="profileImg") MultipartFile profileImg) throws IOException {
+		System.out.println("hhhhhhhhhhhhhhhhhhhhh");
 		SsafyUserDetails userDetails = (SsafyUserDetails)auth.getDetails();
 		String userId = userDetails.getUsername();
 		userService.addMyProfile(userId, profileImg);

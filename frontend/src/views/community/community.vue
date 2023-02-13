@@ -335,6 +335,8 @@ export default {
       } else {
         this.token = localStorage.getItem("jwt");
         const formData = new FormData();
+        console.log("ttttttttttt")
+        console.log(this.video.target.files[0])
         formData.append("video", this.video.target.files[0]);
         formData.append("title", this.state.form.title);
         formData.append("context", this.state.form.context);
