@@ -5,7 +5,7 @@
         <h2 style="text-align: left"><b>My Page</b></h2>
         <v-row>
           <v-col col="3" class="user_image">
-              <img :src="image" alt="" v-if="state.there==false">
+              <img :src="image" alt="" v-if="state.there==false" style="width:300px;height:200px">
               <img class="user_ex" src="../../assets/images/user_ex.png" v-else-if="state.there==true" />
           </v-col>
           <v-col col="3" class="user_info">

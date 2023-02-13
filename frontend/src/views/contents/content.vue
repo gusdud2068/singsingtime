@@ -23,11 +23,11 @@
           <p style="margin-left: 80px">{{ state.viewCnt }}View</p>
           <p style="margin-right: 80px">
             {{ state.likeCnt }}
-            <button @click="activeBtn" v-if="state.heartcheck == 'true'" class="active">
-              <v-icon>mdi-heart</v-icon>
-            </button>
-            <button @click="activeBtn" v-else-if="state.heartcheck != 'true'" class="active">
+            <button @click="activeBtn" v-if="state.heartcheck== 'true'" class="active">
               <v-icon>mdi-heart-outline</v-icon>
+            </button>
+            <button @click="activeBtn" v-else-if="state.heartcheck!= 'true'" class="active">
+              <v-icon>mdi-heart</v-icon>
             </button>
           </p>
         </v-row>
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { onMounted, reactive, computed} from "vue";
+import { onMounted, reactive, computed,} from "vue";
 import CommentsBox from "./components/comments.vue";
 import axios from "axios";
 import { useStore } from "vuex";
@@ -100,8 +100,8 @@ export default {
     const videoId = localStorage.getItem('page')
     
     const activeBtn = () => {
-      state.heartcheck = !state.heartcheck;
-      localStorage.setItem('likes', 'true')
+      // state.heartcheck = !state.heartcheck;
+      localStorage.setItem('likes', 'false')
 
       axios({
         method: "put",
@@ -109,7 +109,8 @@ export default {
       })
         .then((res) => {
           console.log(res); 
-          window.location.reload(true)
+          window.location.reload(true);
+          localStorage.getItem('likes')
     })
         .catch((err) => {
           console.log(err);
@@ -117,6 +118,10 @@ export default {
         });
       
     };
+    // const fullheart =function(){ 
+    //   localStorage.getItem('likes')
+    //   // state.binheart='true';
+    // }
 
     onMounted(() => {
       const getid = localStorage.getItem('page')
@@ -148,6 +153,7 @@ export default {
       activeBtn,
       // changes,
       // getid,
+      // fullheart
     };
   },
 };
