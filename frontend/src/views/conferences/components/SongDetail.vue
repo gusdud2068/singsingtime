@@ -1,7 +1,6 @@
 <template>
   <div>
     <vue-countdown
-      v-if="!this.selectedVideo"
       :time="songTime * 1000"
       v-slot="{ minutes, seconds }"
     >
@@ -37,13 +36,32 @@ export default {
     };
   },
   props: {
-    selectvideo: "",
+    // selectvideo: "",
     session: Object,
   },
   created() {
     this.video = false;
     console.log();
+    // this.session.on("signal:songTitle", (event) => {
+      
+    //   console.log("노래 제목은 " + event.data);
+    //   const id = event.data.slice(1, -1);
+    //   this.videoId =
+    //     "https://sstvideo.s3.ap-northeast-2.amazonaws.com/images/" +
+    //     id +
+    //     ".mp4";
+    //   this.video = true;
+      
+    // });
+    // this.session.on("signal:songTime", (event) => {
+    //   this.songTime = event.data;
+    //   console.log("노래 시간은 " + event.data);
+    // });
+    
+  },
+  mounted() {
     this.session.on("signal:songTitle", (event) => {
+      
       console.log("노래 제목은 " + event.data);
       const id = event.data.slice(1, -1);
       this.videoId =
@@ -51,12 +69,12 @@ export default {
         id +
         ".mp4";
       this.video = true;
+      
     });
     this.session.on("signal:songTime", (event) => {
       this.songTime = event.data;
       console.log("노래 시간은 " + event.data);
     });
-    
   },
   updated() {
     this.timerStart();

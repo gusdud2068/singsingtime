@@ -239,7 +239,8 @@ export default {
       minusLikes,
       // changes,
       // getid,
-      // fullheart
+      // fullheart,
+      miChin
     };
   },
 };

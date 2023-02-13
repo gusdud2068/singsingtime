@@ -18,15 +18,32 @@ export default {
       readyvideo: false,
     };
   },
+  props: {
+    session: Object,
+  },
   created() {
     this.readyvideo = false;
     console.log(this.readyvideo);
     // this.session.on("signal:ready", () => {
     //   this.readyvideo = true;
     // });
+    // console.log(1111111111111111111111111);
   },
+  mounted() {
+    this.session.on("signal:ready", () => {
+      console.log("마운트이벤트");
+      console.log(this.session)
+      this.readyvideo = true;
+    });
+  },
+  // updated() {
+  //   this.session.on("signal:ready", (event) => {
+  //     console.log("업데이트이벤트"+event);
+  //     this.readyvideo = true;
+  //     console.log("동시에");
+  //   });
+  // },
 };
 </script>
 
-<style>
-</style>
+<style></style>

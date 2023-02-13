@@ -2,7 +2,9 @@
   <div
     id="main-container"
     class="container"
-    :class="{ musicOn: this.selectedVideo == true },{ win: this.finish == true }"
+    :class="
+      ({ musicOn: this.selectedVideo == true }, { win: this.finish == true })
+    "
   >
     <div
       style="
@@ -93,15 +95,16 @@
             <hr />
 
             <v-list-item-group v-model="model">
-              <v-list-item-title>
-                (현재 도전자):{{ sessionInfo.challenger }}
-                </v-list-item-title>
               <v-list-item
                 v-for="(waitingUser, i) in sessionInfo.waitingQueue"
                 :key="waitingUser"
               >
-                <v-list-item-title>
-                  {{i +1}}번 - {{waitingUser}}</v-list-item-title>
+                <v-list-item-title v-if="this.challenger != ''">
+                  {{ i + 1 }}번 - {{ sessionInfo.challenger }}(현재 도전자)
+                </v-list-item-title>
+                <v-list-item-title v-else>
+                  {{ i + 1 }}번 - {{ waitingUser }}</v-list-item-title
+                >
               </v-list-item>
             </v-list-item-group>
           </v-list>
@@ -139,7 +142,7 @@
         <!-- </v-col> -->
 
         <div class="musicbox">
-          <SongDetail 
+          <SongDetail
             v-if="this.selectedVideo && !this.finish"
             :session="session"
             @endGame="endGame"
@@ -154,7 +157,10 @@
               <img src="../../assets/images/pang.gif" style="width: 300px"
             /></v-col>
           </v-row>
-          <ReadyDetail v-if="this.readyVideo && !this.selectedVideo" />
+          <ReadyDetail
+            v-if="this.readyVideo && !this.selectedVideo"
+            :session="session"
+          />
         </div>
 
         <!--스몰박스 right, 노래화면 오른쪽, 여기에 챌린져가 들어가야 함-->
@@ -278,9 +284,9 @@ export default {
   },
   data() {
     return {
-      sessionInfo:{
-        waitingQueue:[],
-        challenger:"",
+      sessionInfo: {
+        waitingQueue: [],
+        challenger: "",
         likeChampion: 0,
         likeChallenger: 0,
       },
@@ -338,6 +344,7 @@ export default {
     this.getname();
     console.log("====================================================");
     console.log(this.subscribers);
+    // this.getReadyVideo();
   },
   mounted() {
     // this.getReadyVideo();
@@ -352,6 +359,7 @@ export default {
       this.session
         .signal({
           type: "ready",
+          to: [],
         })
         .then(() => {
           this.readyVideo = true;
@@ -366,10 +374,25 @@ export default {
     },
     onSelectVideo: function (championSong) {
       this.readyVideo = false;
+      this.session.signal({
+        data: this.readyVideo,
+        type: "start_readyVideo",
+      });
       this.selectedVideo = true;
+      this.session.signal({
+        data: this.selectedVideo,
+        type: "start_selectedVideo",
+      });
       this.voteBtnShow = true;
+      this.session.signal({
+        data: this.voteBtnShow,
+        type: "start_voteBtnShow",
+      });
       this.finish = false;
-      console.log(this.readyVideo);
+      this.session.signal({
+        data: this.finish,
+        type: "start_finish",
+      });
       this.session
         .signal({
           data: JSON.stringify(championSong.title),
@@ -450,74 +473,85 @@ export default {
 
       // --- 3) Specify the actions when events take place in the session ---
       // 중간에 다른 유저가 들어왔을 때 도전자 data받기
-      this.session.on("signal:enterNewUser",(event)=>{
-         this.sessionInfo.challenger = JSON.parse(event.data).challenger;
-        console.log(event);
-        // 방 멤버들 중 도전자 유저의 화면 생성
-        console.log(this.members);
-        for (let user of this.members) {
-          if (
-            JSON.parse(user.stream.connection.data).clientId==
-            this.sessionInfo.challenger
-          ) {
-            this.challengerStreamManager = user;
-            console.log("467467");
-          }
-        }
+
+      this.session.on("signal:endalert", (event) => {
+        this.finish = event.data;
       }),
-      // 도전 이벤트 발생했을 때
-      this.session.on("signal:challenge", (event) => {
-        console.log(JSON.parse(event.data).challenger);
-        this.sessionInfo.challenger = JSON.parse(event.data).challenger;
-        // 방 멤버들 중 도전자 유저의 화면 생성
-        console.log(this.members);
-        for (let user of this.members) {
-          if (
-            JSON.parse(user.stream.connection.data).clientId==
-            this.sessionInfo.challenger
-          ) {
-            this.challengerStreamManager = user;
-            console.log("467467");
+        this.session.on("signal:start_readyVideo", (event) => {
+          this.readyVideo = event.data;
+        }),
+        this.session.on("signal:start_selectedVideo", (event) => {
+          this.selectedVideo = event.data;
+        }),
+        this.session.on("signal:start_voteBtnShow", (event) => {
+          this.voteBtnShow = event.data;
+        }),
+        this.session.on("signal:start_finish", (event) => {
+          this.finish = event.data;
+        }),
+        this.session.on("signal:enterNewUser", (event) => {
+          this.sessionInfo.challenger = JSON.parse(event.data).challenger;
+          // 방 멤버들 중 도전자 유저의 화면 생성
+          console.log(this.members);
+          for (let user of this.members) {
+            if (
+              JSON.parse(user.stream.connection.data).clientId ==
+              this.sessionInfo.challenger
+            ) {
+              this.challengerStreamManager = user;
+              console.log("467467");
+            }
           }
-        }
-        // this.sessionInfo.waitingQueue.push(this.sessionInfo.challenger);
-      });
-      this.session.on("signal:sessionInfo",(event)=>{
+        }),
+        // 도전 이벤트 발생했을 때
+        this.session.on("signal:challenge", (event) => {
+          console.log(JSON.parse(event.data).challenger);
+          this.sessionInfo.challenger = JSON.parse(event.data).challenger;
+          // 방 멤버들 중 도전자 유저의 화면 생성
+          console.log(this.members);
+          for (let user of this.members) {
+            if (
+              JSON.parse(user.stream.connection.data).clientId ==
+              this.sessionInfo.challenger
+            ) {
+              this.challengerStreamManager = user;
+              console.log("467467");
+            }
+          }
+          this.sessionInfo.waitingQueue.push(this.sessionInfo.challenger);
+        });
+      this.session.on("signal:sessionInfo", (event) => {
         console.log("이벤트발생시켜줘");
         const originData = JSON.parse(event.data);
-        if(originData.challenger==""){
-        this.session.signal({
-          data: JSON.stringify(this.sessionInfo),
-          type: "enterNewUser",
-        });
+        if (originData.challenger == "") {
+          this.session.signal({
+            data: JSON.stringify(this.sessionInfo),
+            type: "enterNewUser",
+          });
           return;
-        }else{
-          this.sessionInfo= originData;
+        } else {
+          this.sessionInfo = originData;
         }
         console.log(originData);
-     });
-     this.session.on("signal:addWaitingQueue",(event)=>{
-      console.log("대기열에 넣어줘! 500");
-      const originData = JSON.parse(event.data);
-      this.sessionInfo = originData;
-     });
+      });
+
       // On every new Stream received...
       this.session.on("streamCreated", ({ stream }) => {
         const subscriber = this.session.subscribe(stream);
         console.log("스트림!");
-        // const data = stream.connection.data;
+        const data = stream.connection.data;
         console.log(subscriber);
         const originInfo = JSON.stringify(this.sessionInfo);
         console.log(originInfo);
-          this.session
-            .signal({
-              data: originInfo,
-              type: "sessionInfo",
-            })
-            .catch((err) => {
-              console.log(err);
-              console.log("전송 에러");
-            });
+        this.session
+          .signal({
+            data: originInfo,
+            type: "sessionInfo",
+          })
+          .catch((err) => {
+            console.log(err);
+            console.log("전송 에러");
+          });
         this.subscribers.push(subscriber);
         this.members.push(subscriber);
       });
@@ -649,6 +683,10 @@ export default {
     },
     endGame() {
       this.finish = true;
+      this.session.signal({
+        data: this.finish,
+        type: "endalert",
+      });
       // console.log("게임 종료!!!!!!!" + this.finish)
       if (this.sessionInfo.likeChampion >= this.sessionInfo.likeChallenger) {
         this.winner = "챔피언";
@@ -657,7 +695,8 @@ export default {
       }
       this.sessionInfo.likeChampion = 0;
       this.sessionInfo.likeChallenger = 0;
-      this.champion = this.winner == "챔피언" ? this.champion : this.sessionInfo.challenger;
+      this.champion =
+        this.winner == "챔피언" ? this.champion : this.sessionInfo.challenger;
       axios({
         method: "put",
         url: import.meta.env.VITE_APP_URL + `/api/v1/playrooms/end-song`,
@@ -673,17 +712,23 @@ export default {
             this.champion + `님이 ${res.data.winCnt}연승을 달성하셨습니다!!!`
           );
           this.championSongList = res.data.championSongList;
-          this.sessonInfo.challenger = this.dequeue();
-            this.sessonInfo.challenger === undefined ? "" : this.sessonInfo.challenger;
-
-          this.getSessionInfo();
-          alert("다음도전자는:" + this.sessonInfo.challenger);
-          if (this.sessonInfo.challenger != "") {
+          const next = this.dequeue();
+          console.log("next출력");
+          console.log(next);
+          console.log(this.subscribers);
+          if(next== ""){
+            this.sessionInfo.challenger = "";
+            
+          }else{
+            this.sessionInfo.challenger = next;
             this.session.signal({
-              data: JSON.stringify(this.sessonInfo.challenger),
+              data: JSON.stringify(this.sessonInfo),
               type: "challenge",
             });
           }
+          // this.sessonInfo.challenger=this.sessonInfo.challenger == undefined ? "" : this.sessonInfo.challenger;
+          // this.getSessionInfo();
+          // alert("다음도전자는:" + this.sessonInfo.challenger);
           // for (let user of this.members) {
           //     console.log(user.stream.connection.data);
           //     if (
@@ -705,18 +750,16 @@ export default {
       this.voteBtnShow = false;
       this.sessionInfo.likeChallenger += 1;
     },
-    enqueue (data) {
-        this.sessionInfo.waitingQueue.push(data);
-      },
     challenge(myUserId) {
-      if (this.sessionInfo.challenger=="") {
+      if (this.sessionInfo.challenger == "") {
         this.sessionInfo.challenger = myUserId;
         // 방 멤버 중 대결신청 버튼 누른 유저의 화면 전파
-        console.log("여기 들어가나?>");
+
         this.session.signal({
           data: JSON.stringify(this.sessionInfo),
           type: "challenge",
         });
+
         return;
       }
       if (this.sessionInfo.challenger == myUserId) {
@@ -729,17 +772,20 @@ export default {
           return;
         }
       }
-      this.enqueue(myUserId);
-      console.log("대기열 출력!!");
+      enqueue(myUserId);
+      console.log(111111113231232131);
       console.log(this.sessionInfo.waitingQueue);
-      this.session.signal({
-        data: JSON.stringify(this.sessionInfo),
-        type: "addWaitingQueue",
-      })
+
+      const enqueue = (data) => {
+        this.sessionInfo.waitingQueue.push(data);
+      };
     },
     dequeue() {
-      return this.sessionInfo.waitingQueue.shift();
-    },
+      if(this.sessionInfo.waitingQueue.length==0) return "";
+      else {
+        return this.sessionInfo.waitingQueue.shift();
+    }
+  },
     /**
      * --------------------------------------------
      * GETTING A TOKEN FROM YOUR APPLICATION SERVER
@@ -914,7 +960,7 @@ export default {
 ::-webkit-scrollbar-thumb {
   background: rgb(1, 19, 45);
   border-radius: 10cm;
-} 
+}
 
 .musicOn {
   height: 100%;
