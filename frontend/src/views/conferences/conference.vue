@@ -754,6 +754,20 @@ export default {
           //     }
           // }
         })
+        .then(()=>{
+            for(let subscriber of this.subscribers){
+              console.log("구독자 출력 759");
+              console.log(subscriber);
+              const nextId = JSON.parse(subscriber.stream.connection.data).clientId;
+              console.log(nextId);
+              console.log("챌린저 정보 763");
+              // console.log(this.challengerStreamManager.stream.connection.data);
+              // const challengerId = JSON.parse(this.challengerStreamManager.stream.connection.data).clientId;
+              // console.log(challengerId);
+              if(nextId == this.sessionInfo.challenger){
+                this.challengerStreamManager = subscriber;
+              }
+        }})
         .catch((err) => {
           alert(err);
         });
@@ -799,8 +813,6 @@ export default {
         }
       }
       this.enqueue(myUserId);
-      console.log(this.sessionInfo.waitingQueue);
-      console.log("대기열 출력!!");
       console.log(this.sessionInfo.waitingQueue);
       this.session.signal({
         data: JSON.stringify(this.sessionInfo),
