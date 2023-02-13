@@ -94,6 +94,12 @@ public class VideoController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
+    @PutMapping ("/likes-cancel/{videoId}")
+    public ResponseEntity<? extends BaseResponseBody> minusLikesCnt(@PathVariable Long videoId){
+        videoService.minusLikesCnt(videoId);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
     @GetMapping("/search/{keyword}")
     public ResponseEntity<List<Video>> searchVideo(@PathVariable String keyword) {
         List<Video> videoList = videoService.searchVideo(keyword);

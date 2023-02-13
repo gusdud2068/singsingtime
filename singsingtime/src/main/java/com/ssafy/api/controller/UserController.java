@@ -14,12 +14,15 @@ import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.UserRepository;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -144,6 +147,13 @@ public class UserController {
 		SsafyUserDetails userDetails = (SsafyUserDetails)auth.getDetails();
 		String userId = userDetails.getUsername();
 		songService.addMySong(userId, addInfo);
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+	}
+	@PostMapping(name="my-page/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<? extends BaseResponseBody> addMyProfile(Authentication auth, @RequestParam(value="profileImg") MultipartFile profileImg) throws IOException {
+		SsafyUserDetails userDetails = (SsafyUserDetails)auth.getDetails();
+		String userId = userDetails.getUsername();
+		userService.addMyProfile(userId, profileImg);
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
 	@GetMapping("my-page/songs")

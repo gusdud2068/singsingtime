@@ -38,4 +38,6 @@ public interface VideoService {
     List<Video> getDailyVideo();
 
     List<Video> getWeeklyVideo();
+
+    void minusLikesCnt(Long videoId);
 }

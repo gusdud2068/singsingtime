@@ -10,11 +10,17 @@ import com.ssafy.db.repository.UserRepository;
 import com.ssafy.db.repository.UserSongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service("songService")
 public class SongServiceImpl implements SongService{
+
+    @Autowired
+    private S3Uploader s3Uploader;
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -72,6 +78,7 @@ public class SongServiceImpl implements SongService{
     public void deleteMySong(Long userSongId) {
         userSongRepository.deleteById(userSongId);
     }
+
 
 
 //    @Override

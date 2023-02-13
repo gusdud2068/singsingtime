@@ -10,6 +10,8 @@ import com.ssafy.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -88,6 +90,20 @@ public class UserServiceImpl implements UserService {
 	public int checkUserNickname(String nickname) {
 		Optional<User> selectedUser = userRepository.findByNickname(nickname);
 		return selectedUser.isPresent() ? 1 : 0;
+	}
+
+
+	@Autowired
+	private S3Uploader s3Uploader;
+	@Transactional
+	@Override
+	public void addMyProfile(String userId, MultipartFile profileImg) throws IOException {
+		Optional<User> user = userRepository.findByUserId(userId);
+		User getUser = user.orElseThrow(()->new NoSuchElementException());
+		if(!profileImg.isEmpty()) {
+			String storedFileName = s3Uploader.upload(profileImg, "images");
+			getUser.setProfileUrl(storedFileName);
+		}
 	}
 //	@Override
 //	public String getKaKaoAccessToken(String code){

@@ -130,6 +130,13 @@ public class VideoServiceImpl implements VideoService{
         return weeklyVideoList;
     }
 
+    @Transactional
+    @Override
+    public void minusLikesCnt(Long videoId) {
+        Video video = videoRepository.getVideoById(videoId);
+        video.setLikeCnt(video.getLikeCnt() - 1);
+    }
+
     @Autowired
     private S3Uploader s3Uploader;
 
