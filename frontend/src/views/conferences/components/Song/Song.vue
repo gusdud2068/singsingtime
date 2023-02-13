@@ -107,6 +107,6 @@ export default {
   border: 1px solid white;
   width: fit-content;
   display: flex;
-  border: 1px solid white;
+  
 }
 </style>

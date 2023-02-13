@@ -11,7 +11,7 @@
     </vue-countdown>
     <iframe
       :src="videoId"
-      frameborder="0"
+      frameborder="5px solid white"
       style="width: 700px; height: 500px"
       allow="autoplay"
     ></iframe>
@@ -20,7 +20,7 @@
 </template>
 <script>
 import VueCountdown from "@chenfengyuan/vue-countdown";
-import { eventNames } from "process";
+
 
 export default {
   name: "SongDetail",

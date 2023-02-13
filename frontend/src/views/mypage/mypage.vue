@@ -5,7 +5,8 @@
         <h2 style="text-align: left"><b>My Page</b></h2>
         <v-row>
           <v-col col="3" class="user_image">
-            <img class="user_ex" src="../../assets/images/user_ex.png" />
+              <img :src="image" alt="" v-if="state.there==false" style="width:300px;height:200px">
+              <img class="user_ex" src="../../assets/images/user_ex.png" v-else-if="state.there==true" />
           </v-col>
           <v-col col="3" class="user_info">
             <v-row>
@@ -23,6 +24,10 @@
               <v-dialog v-model="update_dialog" persistent max-width="600px">
                 <template v-slot:activator="{ on }">
                   <v-row justify="end" style="margin-right: 20px">
+                    <div class="filebox">
+                      <label for="chooseFile" >프로필사진</label>
+                      <input ref="image" @change="uploadImg()" type="file" id="chooseFile" accept="image/*">
+                    </div>
                     <v-btn
                       class="inline"
                       color="yellow-lighten-5"
@@ -372,7 +377,19 @@ export default {
     add_dialog: false,
     file_name: "파일을 선택하세요.",
     message: "Hello, world",
+    image:'',
   }),
+  methods: {
+    uploadImg() {
+      console.log('들어왔다')
+      var image = this.$refs['image'].files[0]
+
+      const url = URL.createObjectURL(image)
+      this.image = url
+      this.state.there=false
+      console.log(url)
+      console.log(this.image)
+    }},
   setup() {
     const store = useStore();
     // const update_dialog = false;
@@ -387,6 +404,7 @@ export default {
       playlist_dialog: false,
       keyword: "",
       user_videos: [],
+      there:true
     });
 
     // store 연결해서 가져온 유저 데이터
@@ -575,6 +593,7 @@ export default {
       });
     };
 
+
     onMounted(() => {
       // console.log(state.form.id);
 
@@ -747,5 +766,34 @@ export default {
 
 .view_info {
   margin-right: 10px;
+}
+.filebox label {
+  display: inline-block;
+  padding: 6px;
+  color: black;
+  font-size: small;
+  font-size:inherit;
+  font-display: center;
+  line-height: normal;
+  vertical-align: middle;
+  width: 120px;
+  height: 36px;
+  box-shadow: 1px 2px 2px lightgrey;
+  background-color: rgb(255, 253, 231);
+  cursor: pointer;
+  border: 1px solid #ebebeb;
+  border-bottom-color: #e2e2e2;
+  border-radius: .25em;
+  margin-top: 30px;
+}
+.filebox input[type="file"] {  /* 파일 필드 숨기기 */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip:rect(0,0,0,0);
+  border: 0;
 }
 </style>

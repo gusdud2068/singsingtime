@@ -32,4 +32,5 @@ public class User extends BaseEntity {
     private int championCnt;
     private String genre;
     private int userRank;
+    public String profileUrl;
 }

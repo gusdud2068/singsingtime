@@ -3,7 +3,9 @@ package com.ssafy.api.service;
 import com.ssafy.api.request.MySongAddPostReq;
 import com.ssafy.api.request.SongRegisterPostReq;
 import com.ssafy.db.entity.Song;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface SongService {
@@ -14,6 +16,7 @@ public interface SongService {
     List<Song> getAllSongList();
 
     void deleteMySong(Long userSongId);
+
 //    List<Song> getChampionSongList(String championUserId);
 
 }
