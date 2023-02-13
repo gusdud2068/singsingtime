@@ -94,17 +94,17 @@
             <h2>현재 대기중인 도전자 목록</h2>
             <hr />
 
+           
             <v-list-item-group v-model="model">
+              <v-list-item-title>
+                (현재 도전자):{{ sessionInfo.challenger }}
+                </v-list-item-title>
               <v-list-item
                 v-for="(waitingUser, i) in sessionInfo.waitingQueue"
                 :key="waitingUser"
               >
-                <v-list-item-title v-if="this.challenger != ''">
-                  {{ i + 1 }}번 - {{ sessionInfo.challenger }}(현재 도전자)
-                </v-list-item-title>
-                <v-list-item-title v-else>
-                  {{ i + 1 }}번 - {{ waitingUser }}</v-list-item-title
-                >
+                <v-list-item-title>
+                  {{i +1}}번 - {{waitingUser}}</v-list-item-title>
               </v-list-item>
             </v-list-item-group>
           </v-list>
@@ -120,7 +120,7 @@
 
         <!-- <v-col> -->
 
-        <div class="smallboxl">
+        <div class="smallboxl" display="flex">
           <!--스몰박스 left, 노래화면 왼쪽. 여기에 스트림매니저로 챔피언을 넘겨줘야함-->
 
           <v-card style="padding: 5px; font-size: 20px" color="primary"
@@ -135,9 +135,9 @@
             :stream-manager="championStreamManager"
             @click.native="updateMainVideoStreamManager(championStreamManager)"
           />
+          <VoteChampion v-if="this.voteBtnShow" @voteChampion="voteChampion" />
         </div>
 
-        <VoteChampion v-if="this.voteBtnShow" @voteChampion="voteChampion" />
 
         <!-- </v-col> -->
 
@@ -148,7 +148,7 @@
             @endGame="endGame"
           />
 
-          <v-row v-if="this.finish" justify="center">
+          <v-row v-if="this.finish" justify="center" margin-top="0px" padding-top="0px;">
             <v-col>
               <h1 style="color: orange">
                 {{ this.winner }}
@@ -181,7 +181,7 @@
 
         <!--비디오 위치 테스트용으로 퍼블리셔 넣어놓음 -->
 
-        <div class="smallboxl">
+        <div class="smallboxl" display="flex">
           <!--스몰박스 left, 노래화면 왼쪽. 여기에 스트림매니저로 챔피언을 넘겨줘야함-->
 
           <v-card style="padding: 5px; font-size: 20px" color="green"
@@ -196,12 +196,12 @@
               updateMainVideoStreamManager(challengerStreamManager)
             "
           />
+          <VoteChallenger
+            v-if="this.voteBtnShow"
+            @voteChallenger="voteChallenger"
+          />
         </div>
 
-        <VoteChallenger
-          v-if="this.voteBtnShow"
-          @voteChallenger="voteChallenger"
-        />
 
         <!-- </v-col> -->
       </div>
@@ -489,6 +489,15 @@ export default {
         this.session.on("signal:start_finish", (event) => {
           this.finish = event.data;
         }),
+        this.session.on("signal:selectChampion", (event) => {
+          this.sessionInfo.likeChampion = event.data;
+        }),
+        this.session.on("signal:selectChallenger", (event) => {
+          this.sessionInfo.likeChallenger = event.data;
+        }),
+        this.session.on("signal:showWinner", (event) => {
+          this.winner = event.data;
+        }),
         this.session.on("signal:enterNewUser", (event) => {
           this.sessionInfo.challenger = JSON.parse(event.data).challenger;
           // 방 멤버들 중 도전자 유저의 화면 생성
@@ -518,7 +527,6 @@ export default {
               console.log("467467");
             }
           }
-          this.sessionInfo.waitingQueue.push(this.sessionInfo.challenger);
         });
       this.session.on("signal:sessionInfo", (event) => {
         console.log("이벤트발생시켜줘");
@@ -534,7 +542,11 @@ export default {
         }
         console.log(originData);
       });
-
+      this.session.on("signal:addWaitingQueue",(event)=>{
+      console.log("대기열에 넣어줘! 500");
+      const originData = JSON.parse(event.data);
+      this.sessionInfo = originData;
+     });
       // On every new Stream received...
       this.session.on("streamCreated", ({ stream }) => {
         const subscriber = this.session.subscribe(stream);
@@ -693,6 +705,10 @@ export default {
       } else {
         this.winner = "도전자";
       }
+      this.session.signal({
+        data: this.winner,
+        type: "showWinner",
+      });
       this.sessionInfo.likeChampion = 0;
       this.sessionInfo.likeChallenger = 0;
       this.champion =
@@ -745,11 +761,22 @@ export default {
     voteChampion() {
       this.voteBtnShow = false;
       this.sessionInfo.likeChampion += 1;
+      this.session.signal({
+        data:this.sessionInfo.likeChampion,
+        type:"selectChampion"
+      })
     },
     voteChallenger() {
       this.voteBtnShow = false;
       this.sessionInfo.likeChallenger += 1;
+      this.session.signal({
+        data:this.sessionInfo.likeChallenger,
+        type:"selectChallenger"
+      })
     },
+    enqueue(data) {
+        this.sessionInfo.waitingQueue.push(data);
+      },
     challenge(myUserId) {
       if (this.sessionInfo.challenger == "") {
         this.sessionInfo.challenger = myUserId;
@@ -759,7 +786,6 @@ export default {
           data: JSON.stringify(this.sessionInfo),
           type: "challenge",
         });
-
         return;
       }
       if (this.sessionInfo.challenger == myUserId) {
@@ -772,13 +798,14 @@ export default {
           return;
         }
       }
-      enqueue(myUserId);
-      console.log(111111113231232131);
+      this.enqueue(myUserId);
       console.log(this.sessionInfo.waitingQueue);
-
-      const enqueue = (data) => {
-        this.sessionInfo.waitingQueue.push(data);
-      };
+      console.log("대기열 출력!!");
+      console.log(this.sessionInfo.waitingQueue);
+      this.session.signal({
+        data: JSON.stringify(this.sessionInfo),
+        type: "addWaitingQueue",
+      })
     },
     dequeue() {
       if(this.sessionInfo.waitingQueue.length==0) return "";
