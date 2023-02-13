@@ -120,7 +120,7 @@
 
         <!-- <v-col> -->
 
-        <div class="smallboxl">
+        <div class="smallboxl" display="flex">
           <!--스몰박스 left, 노래화면 왼쪽. 여기에 스트림매니저로 챔피언을 넘겨줘야함-->
 
           <v-card style="padding: 5px; font-size: 20px" color="primary"
@@ -135,9 +135,9 @@
             :stream-manager="championStreamManager"
             @click.native="updateMainVideoStreamManager(championStreamManager)"
           />
+          <VoteChampion v-if="this.voteBtnShow" @voteChampion="voteChampion" />
         </div>
 
-        <VoteChampion v-if="this.voteBtnShow" @voteChampion="voteChampion" />
 
         <!-- </v-col> -->
 
@@ -148,7 +148,7 @@
             @endGame="endGame"
           />
 
-          <v-row v-if="this.finish" justify="center">
+          <v-row v-if="this.finish" justify="center" margin-top="0px" padding-top="0px;">
             <v-col>
               <h1 style="color: orange">
                 {{ this.winner }}
@@ -181,7 +181,7 @@
 
         <!--비디오 위치 테스트용으로 퍼블리셔 넣어놓음 -->
 
-        <div class="smallboxl">
+        <div class="smallboxl" display="flex">
           <!--스몰박스 left, 노래화면 왼쪽. 여기에 스트림매니저로 챔피언을 넘겨줘야함-->
 
           <v-card style="padding: 5px; font-size: 20px" color="green"
@@ -196,12 +196,12 @@
               updateMainVideoStreamManager(challengerStreamManager)
             "
           />
+          <VoteChallenger
+            v-if="this.voteBtnShow"
+            @voteChallenger="voteChallenger"
+          />
         </div>
 
-        <VoteChallenger
-          v-if="this.voteBtnShow"
-          @voteChallenger="voteChallenger"
-        />
 
         <!-- </v-col> -->
       </div>
@@ -489,6 +489,15 @@ export default {
         this.session.on("signal:start_finish", (event) => {
           this.finish = event.data;
         }),
+        this.session.on("signal:selectChampion", (event) => {
+          this.sessionInfo.likeChampion = event.data;
+        }),
+        this.session.on("signal:selectChallenger", (event) => {
+          this.sessionInfo.likeChallenger = event.data;
+        }),
+        this.session.on("signal:showWinner", (event) => {
+          this.winner = event.data;
+        }),
         this.session.on("signal:enterNewUser", (event) => {
           this.sessionInfo.challenger = JSON.parse(event.data).challenger;
           // 방 멤버들 중 도전자 유저의 화면 생성
@@ -696,6 +705,10 @@ export default {
       } else {
         this.winner = "도전자";
       }
+      this.session.signal({
+        data: this.winner,
+        type: "showWinner",
+      });
       this.sessionInfo.likeChampion = 0;
       this.sessionInfo.likeChallenger = 0;
       this.champion =
@@ -748,10 +761,18 @@ export default {
     voteChampion() {
       this.voteBtnShow = false;
       this.sessionInfo.likeChampion += 1;
+      this.session.signal({
+        data:this.sessionInfo.likeChampion,
+        type:"selectChampion"
+      })
     },
     voteChallenger() {
       this.voteBtnShow = false;
       this.sessionInfo.likeChallenger += 1;
+      this.session.signal({
+        data:this.sessionInfo.likeChallenger,
+        type:"selectChallenger"
+      })
     },
     enqueue(data) {
         this.sessionInfo.waitingQueue.push(data);
