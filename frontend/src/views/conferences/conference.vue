@@ -467,6 +467,7 @@ export default {
       }),
       // 도전 이벤트 발생했을 때
       this.session.on("signal:challenge", (event) => {
+        console.log("여기 찍히냐? 470");
         console.log(JSON.parse(event.data).challenger);
         this.sessionInfo.challenger = JSON.parse(event.data).challenger;
         // 방 멤버들 중 도전자 유저의 화면 생성
@@ -673,17 +674,23 @@ export default {
             this.champion + `님이 ${res.data.winCnt}연승을 달성하셨습니다!!!`
           );
           this.championSongList = res.data.championSongList;
-          this.sessonInfo.challenger = this.dequeue();
-            this.sessonInfo.challenger === undefined ? "" : this.sessonInfo.challenger;
-
-          this.getSessionInfo();
-          alert("다음도전자는:" + this.sessonInfo.challenger);
-          if (this.sessonInfo.challenger != "") {
+          const next = this.dequeue();
+          console.log("next출력");
+          console.log(next);
+          console.log(this.subscribers);
+          if(next== ""){
+            this.sessionInfo.challenger = "";
+            
+          }else{
+            this.sessionInfo.challenger = next;
             this.session.signal({
-              data: JSON.stringify(this.sessonInfo.challenger),
+              data: JSON.stringify(this.sessonInfo),
               type: "challenge",
             });
           }
+          // this.sessonInfo.challenger=this.sessonInfo.challenger == undefined ? "" : this.sessonInfo.challenger;
+          // this.getSessionInfo();
+          // alert("다음도전자는:" + this.sessonInfo.challenger);
           // for (let user of this.members) {
           //     console.log(user.stream.connection.data);
           //     if (
@@ -738,8 +745,11 @@ export default {
       })
     },
     dequeue() {
-      return this.sessionInfo.waitingQueue.shift();
-    },
+      if(this.sessionInfo.waitingQueue.length==0) return "";
+      else {
+        return this.sessionInfo.waitingQueue.shift();
+    }
+  },
     /**
      * --------------------------------------------
      * GETTING A TOKEN FROM YOUR APPLICATION SERVER
