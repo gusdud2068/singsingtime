@@ -137,7 +137,7 @@
             <hr />
             <v-list-item-group v-model="model">
               <v-list-item
-                v-for="championSong in championSongList"
+                v-for="championSong in sessionInfo.championSongList"
                 @click="
                   battleApplication(championSong), closeChampionSongListModal()
                 "
