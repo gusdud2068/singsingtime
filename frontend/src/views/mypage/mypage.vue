@@ -443,6 +443,7 @@ export default {
           this.profileUrl = res.data;
           console.log("4444444444444444444");
           console.log(this.profileUrl);
+          window.location.reload(true)
         })
         .catch((err) => {
           console.log(err);
@@ -453,6 +454,7 @@ export default {
       this.profileImg = file;
       console.log(file);
       this.imageSubmit();
+      window.location.reload(true)
     },
   },
   mounted() {
