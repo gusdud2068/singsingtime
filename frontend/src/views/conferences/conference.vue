@@ -350,19 +350,19 @@
       style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
     />
     <input
-      v-if="!filterBtnClicked"
-      class="btn btn-large btn-danger"
-      type="button"
-      @click="applyStickerFilter"
-      value="카메라 ON"
-      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
-    />
-    <input
-      v-else
+      v-if="filterBtnClicked"
       class="btn btn-large btn-primary"
       type="button"
       @click="applyStickerFilter"
       value="카메라 OFF"
+      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
+    />
+    <input
+      v-else
+      class="btn btn-large btn-danger"
+      type="button"
+      @click="applyStickerFilter"
+      value="카메라 ON"
       style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
     />
     <br />
@@ -778,7 +778,7 @@ export default {
 
       this.publisher.stream.applyFilter("GStreamerFilter", {
         command:
-          "gdkpixbufoverlay location=https://sstvideo.s3.ap-northeast-2.amazonaws.com/images/singsingtime.png offset-x=10 offset-y=10 overlay-height=200 overlay-width=200",
+          "gdkpixbufoverlay location=../../assets/images/logo.png offset-x=10 offset-y=10 overlay-height=200 overlay-width=200",
       });
 
       // 버튼 ON 전환
