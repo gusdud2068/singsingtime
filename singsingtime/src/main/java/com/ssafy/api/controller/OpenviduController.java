@@ -90,7 +90,6 @@ public class OpenviduController {
 //		}
 
 		playroomService.addPlayRoomMemberCnt(sessionId);
-		System.out.println("params = " + params);
 //		params.put("type", ConnectionType.WEBRTC);
 //		params.put("data", "user_data");
 //		params.put("role", OpenViduRole.PUBLISHER);

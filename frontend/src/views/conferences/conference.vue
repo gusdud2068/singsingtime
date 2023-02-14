@@ -6,7 +6,6 @@
       ({ musicOn: this.selectedVideo.length > 0 }, { win: this.finish == true })
     "
   >
-
     <v-row
       style="
         color: white;
@@ -314,7 +313,6 @@
             @voteChallenger="voteChallenger"
           />
         </div>
-
       </div>
     </div>
 
@@ -349,16 +347,32 @@
       type="button"
       @click="showWaitingQueue"
       value="도전자 목록"
-      style="margin-top: 20px; margin-bottom: 20px;margin-right: 20px;"
+      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
     />
-    <br/>
+    <input
+      v-if="filterBtnClicked"
+      class="btn btn-large btn-danger"
+      type="button"
+      @click="applyStickerFilter"
+      value="필터 ON"
+      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
+    />
+    <input
+      v-else
+      class="btn btn-large btn-primary"
+      type="button"
+      @click="applyStickerFilter"
+      value="필터 OFF"
+      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
+    />
+    <br />
     <input
       class="btn btn-large btn-info"
       type="button"
       ref="captureBtn"
       @click="capture"
       value="녹화 화면 지정"
-      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px;"
+      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
     />
     <input
       class="btn btn-large btn-info"
@@ -367,7 +381,7 @@
       @click="start"
       value="녹화 시작"
       disabled
-      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px;"
+      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
     />
     <input
       class="btn btn-large btn-info"
@@ -376,10 +390,9 @@
       @click="stop"
       value="녹화 중지"
       disabled
-      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px;"
+      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
     />
-
-    <a id="download" ref="down" href="#" style="display:none;">Download</a>
+    <a id="download" ref="down" href="#" style="display: none">Download</a>
 
     <!-- 관중들 들어갈 자리 -->
     <v-card
@@ -459,29 +472,28 @@ let stream;
 let voiceStream;
 let desktopStream;
 const mergeAudioStreams = (desktopStream, voiceStream) => {
-    const context = new AudioContext();
-    const destination = context.createMediaStreamDestination();
-    let hasDesktop = false;
-    let hasVoice = false;
-    if (desktopStream && desktopStream.getAudioTracks().length > 0) {
-      // If you don't want to share Audio from the desktop it should still work with just the voice.
-      const source1 = context.createMediaStreamSource(desktopStream);
-      const desktopGain = context.createGain();
-      desktopGain.gain.value = 0.7;
-      source1.connect(desktopGain).connect(destination);
-      hasDesktop = true;
-    }
-    
-    if (voiceStream && voiceStream.getAudioTracks().length > 0) {
-      const source2 = context.createMediaStreamSource(voiceStream);
-      const voiceGain = context.createGain();
-      voiceGain.gain.value = 0.7;
-      source2.connect(voiceGain).connect(destination);
-      hasVoice = true;
-    }
-    return (hasDesktop || hasVoice) ? destination.stream.getAudioTracks() : [];
-  };
+  const context = new AudioContext();
+  const destination = context.createMediaStreamDestination();
+  let hasDesktop = false;
+  let hasVoice = false;
+  if (desktopStream && desktopStream.getAudioTracks().length > 0) {
+    // If you don't want to share Audio from the desktop it should still work with just the voice.
+    const source1 = context.createMediaStreamSource(desktopStream);
+    const desktopGain = context.createGain();
+    desktopGain.gain.value = 0.7;
+    source1.connect(desktopGain).connect(destination);
+    hasDesktop = true;
+  }
 
+  if (voiceStream && voiceStream.getAudioTracks().length > 0) {
+    const source2 = context.createMediaStreamSource(voiceStream);
+    const voiceGain = context.createGain();
+    voiceGain.gain.value = 0.7;
+    source2.connect(voiceGain).connect(destination);
+    hasVoice = true;
+  }
+  return hasDesktop || hasVoice ? destination.stream.getAudioTracks() : [];
+};
 
 export default {
   name: "App",
@@ -544,6 +556,7 @@ export default {
       members: [],
       championStreamManager: undefined,
       challengerStreamManager: undefined,
+      filterBtnClicked: false,
     };
   },
   computed: {
@@ -578,63 +591,68 @@ export default {
     this.getReadyVideo();
   },
   methods: {
-     async capture() {
-    this.$refs.captureBtn.style.display = 'none';
-    const audio = true;
-    const mic = true;
-    
-    desktopStream = await navigator.mediaDevices.getDisplayMedia({ video:true, audio: audio });
-    
-    if (mic === true) {
-      voiceStream = await navigator.mediaDevices.getUserMedia({ video: false, audio: mic });
-    }
-  
-    const tracks = [
-      ...desktopStream.getVideoTracks(), 
-      ...mergeAudioStreams(desktopStream, voiceStream)
-    ];
-    
-    console.log('Tracks to add to stream', tracks);
-    stream = new MediaStream(tracks);
-    console.log('Stream', stream)
-      
-    blobs = [];
-  
-    rec = new MediaRecorder(stream, {mimeType: 'video/webm; '});
-    rec.ondataavailable = (e) => blobs.push(e.data);
-    rec.onstop = async () => {
-      
-      //blobs.push(MediaRecorder.requestData());
-      blob = new Blob(blobs, {type: 'video/mp4'});
-      let url = window.URL.createObjectURL(blob);
-      this.$refs.down.href = url;
-      this.$refs.down.download = 'test.mp4';
-      this.$refs.down.style.display = '';
-    };
-    this.$refs.startBtn.disabled = false;
-    this.$refs.startBtn.style.color="lightsalmon";
-    this.$refs.captureBtn.disabled = true;
-  },
+    async capture() {
+      this.$refs.captureBtn.style.display = "none";
+      const audio = true;
+      const mic = true;
 
-  start(){
-    this.$refs.startBtn.disabled = true;
-    this.$refs.startBtn.style.color="white";
-    this.$refs.stopBtn.style.color="lightsalmon";
-    this.$refs.stopBtn.disabled = false;
-    rec.start();
-  },
+      desktopStream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+        audio: audio,
+      });
 
-  stop(){
-    this.$refs.captureBtn.disabled = false;
-    this.$refs.startBtn.disabled = true;
-    this.$refs.stopBtn.disabled = true;
-    this.$refs.stopBtn.style.color="white";
-    rec.stop();
-    
-    stream.getTracks().forEach(s=>s.stop())
-    stream = null;
-    this.$refs.captureBtn.style.display = 'inline';
-  },
+      if (mic === true) {
+        voiceStream = await navigator.mediaDevices.getUserMedia({
+          video: false,
+          audio: mic,
+        });
+      }
+
+      const tracks = [
+        ...desktopStream.getVideoTracks(),
+        ...mergeAudioStreams(desktopStream, voiceStream),
+      ];
+
+      console.log("Tracks to add to stream", tracks);
+      stream = new MediaStream(tracks);
+      console.log("Stream", stream);
+
+      blobs = [];
+
+      rec = new MediaRecorder(stream, { mimeType: "video/webm; " });
+      rec.ondataavailable = (e) => blobs.push(e.data);
+      rec.onstop = async () => {
+        //blobs.push(MediaRecorder.requestData());
+        blob = new Blob(blobs, { type: "video/mp4" });
+        let url = window.URL.createObjectURL(blob);
+        this.$refs.down.href = url;
+        this.$refs.down.download = "test.mp4";
+        this.$refs.down.style.display = "";
+      };
+      this.$refs.startBtn.disabled = false;
+      this.$refs.startBtn.style.color = "lightsalmon";
+      this.$refs.captureBtn.disabled = true;
+    },
+
+    start() {
+      this.$refs.startBtn.disabled = true;
+      this.$refs.startBtn.style.color = "white";
+      this.$refs.stopBtn.style.color = "lightsalmon";
+      this.$refs.stopBtn.disabled = false;
+      rec.start();
+    },
+
+    stop() {
+      this.$refs.captureBtn.disabled = false;
+      this.$refs.startBtn.disabled = true;
+      this.$refs.stopBtn.disabled = true;
+      this.$refs.stopBtn.style.color = "white";
+      rec.stop();
+
+      stream.getTracks().forEach((s) => s.stop());
+      stream = null;
+      this.$refs.captureBtn.style.display = "inline";
+    },
     leavePlayroom() {
       axios({
         method: "delete",
@@ -679,46 +697,67 @@ export default {
     },
     // async imageGet() {
     imageConvert() {
-      this.token = localStorage.getItem("jwt");
-      console.log("hhhhhhhhhhhh");
-      console.log(this.token);
+      // 버튼 눌려있으면 OFF로만 바꾸기
+      if (this.filterBtnClicked) {
+        this.filterBtnClicked = false;
+        return;
+      }
+      // this.token = localStorage.getItem("jwt");
+      // console.log("hhhhhhhhhhhh");
+      // console.log(this.token);
+      // this.publisher.stream
+      //   .applyFilter("GStreamerFilter", {
+      //     command: "videoflip method=vertical-flip",
+      //   })
+      //   .then(() => {
+      //     console.log("Video rotated!");
+      //   })
+      //   .catch((error) => {
+      //     console.error(error);
+      //   });
+
+      this.filterBtnClicked = true;
+
+      // axios({
+      //   method: "get",
+      //   url: import.meta.env.VITE_APP_URL + `/api/v1/users/my-page/profile`,
+      //   headers: {
+      //     Authorization: `Bearer ${this.token}`,
+      //   },
+      // })
+      //   .then((res) => {
+      //     console.log(res);
+      //     this.profileUrl = res.data;
+      //     console.log("4444444444444444444");
+      //     console.log(this.profileUrl);
+      //     // console.log(this.state.there);
+      //     // this.state.there = !this.state.there;
+      //     // console.log(this.state.there);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
+    },
+    filterOff() {
       this.publisher.stream
-        .applyFilter("GStreamerFilter", {
-          command: "videoflip method=vertical-flip",
-        })
+        .removeFilter()
         .then(() => {
-          console.log("Video rotated!");
+          console.log("-- Filter removed --");
         })
         .catch((error) => {
           console.error(error);
         });
-
-      axios({
-        method: "get",
-        url: import.meta.env.VITE_APP_URL + `/api/v1/users/my-page/profile`,
-        headers: {
-          Authorization: `Bearer ${this.token}`,
-        },
-      })
-        .then((res) => {
-          console.log(res);
-          this.profileUrl = res.data;
-          console.log("4444444444444444444");
-          console.log(this.profileUrl);
-          // console.log(this.state.there);
-          // this.state.there = !this.state.there;
-          // console.log(this.state.there);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
     },
-
     // aa
     // Kurento faceOverlayFilter 적용한 스티커 필터
     applyStickerFilter() {
-      // bottombar 필터 해제 버튼 활성화
-      // this.$refs.bottombar.state.filter = true;
+      // 필터 해제, 버튼 OFF 전환
+      if (this.filterBtnClicked) {
+        this.filterOff();
+        this.filterBtnClicked = false;
+        return;
+      }
+
       this.publisher.stream.applyFilter("FaceOverlayFilter").then((filter) => {
         var offsetX;
         var offsetY;
@@ -736,8 +775,9 @@ export default {
           heightPercent: height,
         });
       });
-      // bottombar 필터 해제 버튼 활성화
-      // this.$refs.bottombar.state.filter = true;
+
+      // 버튼 ON 전환
+      this.filterBtnClicked = true;
     },
 
     getReadyVideo: function () {
@@ -1378,7 +1418,7 @@ export default {
         }
       );
       return response.data; // The token
-    }
+    },
   },
   setup() {
     // 자식 컴포넌트를 핸들링하기 위한 ref
