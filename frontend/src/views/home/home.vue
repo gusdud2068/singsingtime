@@ -14,7 +14,7 @@
         <conference :playroom="playroom" />
         <div class="roominfo">
           <p>방 제목 : {{ playroom.title }}</p>
-          <p>인원수 : {{ playroom.userCnt }}/{{ 50 }}</p>
+          <p>인원 수 : {{ playroom.userCnt }} / {{ 20 }}</p>
           <!-- <p>챔피언 : {{ playroom.champion }}</p> -->
         </div>
       </li>

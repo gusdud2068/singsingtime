@@ -22,7 +22,7 @@ import java.util.Map;
 public class OpenviduController {
 
 	// 방 정원 6명
-	private final int MAX_MEMBER_CNT = 50;
+	private final int MAX_MEMBER_CNT = 20;
 	@Value("${OPENVIDU_URL}")
 	private String OPENVIDU_URL;
 

@@ -350,11 +350,11 @@
       style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
     />
     <input
-      v-if="filterBtnClicked"
+      v-if="!filterBtnClicked"
       class="btn btn-large btn-danger"
       type="button"
       @click="applyStickerFilter"
-      value="필터 ON"
+      value="카메라 ON"
       style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
     />
     <input
@@ -362,7 +362,7 @@
       class="btn btn-large btn-primary"
       type="button"
       @click="applyStickerFilter"
-      value="필터 OFF"
+      value="카메라 OFF"
       style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
     />
     <br />
@@ -758,22 +758,27 @@ export default {
         return;
       }
 
-      this.publisher.stream.applyFilter("FaceOverlayFilter").then((filter) => {
-        var offsetX;
-        var offsetY;
-        var width;
-        var height;
-        offsetX = "-0.7F";
-        offsetY = "-0.7F";
-        width = "2.3";
-        height = "2.3";
-        filter.execMethod("setOverlayedImage", {
-          uri: "https://sstvideo.s3.ap-northeast-2.amazonaws.com/images/mask2.png",
-          offsetXPercent: offsetX,
-          offsetYPercent: offsetY,
-          widthPercent: width,
-          heightPercent: height,
-        });
+      // this.publisher.stream.applyFilter("FaceOverlayFilter").then((filter) => {
+      //   var offsetX;
+      //   var offsetY;
+      //   var width;
+      //   var height;
+      //   offsetX = "-0.7F";
+      //   offsetY = "-0.7F";
+      //   width = "2.3";
+      //   height = "2.3";
+      //   filter.execMethod("setOverlayedImage", {
+      //     uri: "https://sstvideo.s3.ap-northeast-2.amazonaws.com/images/mask2.png",
+      //     offsetXPercent: offsetX,
+      //     offsetYPercent: offsetY,
+      //     widthPercent: width,
+      //     heightPercent: height,
+      //   });
+      // });
+
+      publisher.stream.applyFilter("GStreamerFilter", {
+        command:
+          "gdkpixbufoverlay location=https://sstvideo.s3.ap-northeast-2.amazonaws.com/images/singsingtime.png offset-x=10 offset-y=10 overlay-height=200 overlay-width=200",
       });
 
       // 버튼 ON 전환
