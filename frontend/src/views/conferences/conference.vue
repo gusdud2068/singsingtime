@@ -3,7 +3,7 @@
     id="main-container"
     class="container"
     :class="
-      ({ musicOn: this.selectedVideo == true }, { win: this.finish == true })
+      ({ musicOn: this.selectedVideo.length>0}, { win: this.finish == true })
     "
   >
     <v-row 
@@ -295,11 +295,29 @@
 
     <div class="smallboxb">
       <!--스몰박스 right, 노래화면 오른쪽-->
-
-      <user-video
+        <div>
+          <!-- <div style="position: relative; margin-left: 50px; margin-bottom: 500px"> -->
+        <v-btn @click="imageGet" style="position:absolute;width:20px;z-index: 3;margin-top: 220px; margin-left: 250px;"><span style="color:black;font-style:bold;">전환</span></v-btn>
+        <user-video
         :stream-manager="publisher"
         @click.native="updateMainVideoStreamManager(publisher)"
-      />
+        style="z-index:1;position:absolute"
+        />
+        <img
+          :src="profileUrl"
+          alt=""
+          v-show="state.there"
+          style="width:300px;height:250px;position:relative;border:1px solid white ;
+          z-index: 2;"
+        />
+        
+
+          </div>
+   
+
+        <!-- <v-btn @click="imageGet" style="z-index: 3">눌러봐</v-btn> -->
+      <!-- </div> -->
+     
 
       <user-video
         v-for="sub in subscribers"
@@ -322,6 +340,7 @@ import SongDetail from "./components/SongDetail.vue";
 import ReadyDetail from "./components/ReadyDetail.vue";
 import VoteChallenger from "./components/VoteChallenger.vue";
 import VoteChampion from "./components/VoteChampion.vue";
+import { reactive } from "vue";
 import VueCountdown from "@chenfengyuan/vue-countdown";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
@@ -385,6 +404,71 @@ export default {
       challengerStreamManager: undefined,
     };
   },
+  setup() {
+    // 자식 컴포넌트를 핸들링하기 위한 ref
+    const store = useStore();
+    const championSongListModal = ref(null);
+    const waitingQueueModal = ref(null);
+    // Promise 객체를 핸들링하기 위한 ref
+    const resolvePromise = ref(null);
+
+    const showChampionSongList = () => {
+      // showChampionSongList을 직접 컨트롤합니다.
+      championSongListModal.value.open();
+      return new Promise((resolve) => {
+        // resolve 함수를 담아 외부에서 사용합니다.
+        resolvePromise.value = resolve;
+      });
+      // Promise 객체를 사용하여, 현재 모달에서 확인 / 취소의
+      // 응답이 돌아가기 전까지 작업을 기다리게 할 수 있습니다.
+    };
+
+    // 유저 정보, 다이얼로그에 사용할 state
+    const state = reactive({
+      there: true,
+    });
+
+    const showWaitingQueue = () => {
+      waitingQueueModal.value.open();
+      return new Promise((resolve) => {
+        resolvePromise.value = resolve;
+      });
+    };
+
+    const closeChampionSongListModal = () => {
+      championSongListModal.value.close();
+    };
+
+    const closeWaitingQueueModal = () => {
+      waitingQueueModal.value.close();
+    };
+    const confirm = () => {
+      championSongListModal.value.close();
+      resolvePromise.value(true);
+      const url = "#/conferences/" + this.store.state.conferencename + "/";
+      window.open(url); // 새로운 창에서 플레이룸 오픈
+      this.store.state.conferencename = "";
+    };
+
+    const cancel = () => {
+      championSongListModal.value.close();
+      resolvePromise.value(false);
+      this.store.state.conferencename = "";
+    };
+    // async-await을 사용하여, Modal로부터 응답을 기다리게 된다.
+    return {
+      championSongListModal,
+      waitingQueueModal,
+      showChampionSongList,
+      showWaitingQueue,
+      confirm,
+      cancel,
+      closeChampionSongListModal,
+      closeWaitingQueueModal,
+      store,
+      state,
+    };
+  },
   computed: {
     movieVideo() {
       return `https://www.youtube.com/embed/${this.$store.state.movieVideo.key}?autoplay=1`;
@@ -403,7 +487,7 @@ export default {
     // console.log(playroom+"그냥");
     this.joinSession();
     this.getname();
-    console.log("====================================================");
+    console.log("===============");
     console.log(this.subscribers);
     // this.getReadyVideo();
   },
@@ -416,6 +500,30 @@ export default {
     this.getReadyVideo();
   },
   methods: {
+
+    async imageGet() {
+      this.token = localStorage.getItem("jwt");
+      console.log("hhhhhhhhhhhh");
+      console.log(this.token);
+      axios({
+        method: "get",
+        url: import.meta.env.VITE_APP_URL + `/api/v1/users/my-page/profile`,
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          this.profileUrl = res.data;
+          console.log("4444444444444444444");
+          console.log(this.profileUrl);
+          console.log(this.state.there);
+          this.state.there = !this.state.there;
+          console.log(this.state.there);
+        })
+        .catch((err) => {
+          console.log(err);
+
     leavePlayroom() {
       axios({
         method: "delete",
@@ -428,6 +536,7 @@ export default {
         })
         .catch((err) => {
           alert(err);
+
         });
     },
     getReadyVideo: function () {
@@ -970,6 +1079,7 @@ export default {
       return response.data; // The token
     },
   },
+
   setup() {
     // 자식 컴포넌트를 핸들링하기 위한 ref
     const store = useStore();
@@ -1046,6 +1156,7 @@ export default {
       store,
     };
   },
+
 };
 </script>
 <style>
@@ -1061,10 +1172,10 @@ export default {
   justify-content: center;
   align-items: center;
   margin: auto;
+  margin-bottom: 50px;
 }
 
 .smallboxb {
-  /* position: absolute; */
   display: flex;
   justify-content: center;
   align-items: center;
