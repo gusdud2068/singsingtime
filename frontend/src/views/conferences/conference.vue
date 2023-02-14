@@ -378,10 +378,8 @@
       disabled
       style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px;"
     />
-<<<<<<< HEAD
-=======
+
     <a id="download" ref="down" href="#" style="display:none;">Download</a>
->>>>>>> 56e3961b050d931126bd1a3ec394d034660b93f6
 
     <!-- 관중들 들어갈 자리 -->
     <v-card
