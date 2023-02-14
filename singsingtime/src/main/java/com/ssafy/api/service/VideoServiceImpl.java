@@ -117,8 +117,8 @@ public class VideoServiceImpl implements VideoService{
     }
 
     @Override
-    public List<Video> getMyVideo(Long id) {
-        List<Video> myVideoList = videoRepository.findAllById(id);
+    public List<Video> getMyVideo(Long userId) {
+        List<Video> myVideoList = videoRepository.findAllByUserId(userId);
         return myVideoList;
     }
 

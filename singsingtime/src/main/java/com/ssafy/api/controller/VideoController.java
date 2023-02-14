@@ -42,10 +42,14 @@ public class VideoController {
     @GetMapping("/myvideo")
     public ResponseEntity<List<Video>> getMyVideo(@ApiIgnore Authentication authentication){
         SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-        String userId = userDetails.getUsername();
-        User user = userService.getUserByUserId(userId);
-        Long id = user.getId();
-        List<Video> videoList = videoService.getMyVideo(id);
+//        String userId = userDetails.getUsername();
+        User user = userDetails.getUser();
+        Long userId = user.getId();
+        List<Video> videoList = videoService.getMyVideo(userId);
+
+//        for (int i = 0; i < videoList.size(); i++) {
+//            System.out.println("videoList.get(i) = " + videoList.get(i));
+//        }
         return ResponseEntity.status(200).body(videoList);
     }
 

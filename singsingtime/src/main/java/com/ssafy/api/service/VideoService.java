@@ -33,7 +33,7 @@ public interface VideoService {
 
     void addReplyLikesCnt(Long replyId);
 
-    List<Video> getMyVideo(Long id);
+    List<Video> getMyVideo(Long userId);
 
     List<Video> getDailyVideo();
 

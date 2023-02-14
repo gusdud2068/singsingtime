@@ -95,12 +95,11 @@
     </v-dialog>
   </v-row>
 
-
   <ul class="infinite-list">
     <li
-      v-for="i in state.content_list"
+      v-for="(video, i) in state.content_list"
       class="infinite-list-item"
-      @click="clickContent(i.id)"
+      @click="clickContent(video.id)"
       :key="i"
     >
       <v-col>
@@ -111,25 +110,33 @@
             :class="{ 'on-hover': isHovering }"
             v-bind="props"
           >
-            <v-img src="https://picsum.photos/200" height="225px" cover>
-              <v-card-title
-                class="
-                  text-h6 text-black
-                  d-flex
-                  flex-column
-                  justify-space-between
-                "
-                style="padding: 0px; height: 100%"
-              >
-                <p class="song_info" align="start">{{ i.id }}</p>
-                <div class="d-flex justify-space-between info_box">
-                  <div class="champion_info">제목: {{ i.description}}</div>
-                  <div class="view_info">{{ i.title }}</div>
-                </div>
-              </v-card-title>
-            </v-img>
+            <!-- <v-img src="https://picsum.photos/200" height="225px" cover> -->
+            <video :src="video.url" />
+            <v-card-title
+              class="text-h6 text-black d-flex flex-column justify-space-between"
+              style="padding: 0px; height: 100%"
+            >
+              <p style="margin-left: 30px" align="left" class="champion_info">
+                제목: {{ video.title }}
+              </p>
+              <p style="margin-left: 30px" align="left">
+                작성자: {{ video.user.nickname }}
+              </p>
+              <v-row style="margin-top: 1px" justify="space-between">
+              <p style="margin-left: 40px" align="left">
+               조회수: {{ video.viewCnt }}
+              </p>
+              <p style="margin-right: 40px" align="left">
+              <v-icon color="red">mdi-heart</v-icon> 좋아요 수: {{ video.likeCnt }}
+              </p>
+              </v-row>
+              <!-- <p class="song_info" align="start">{{ video.id }}</p> -->
+              <!-- <div class="d-flex justify-space-between info_box"> -->
+                <!-- <div class="view_info">{{ video.description }}</div> -->
+              <!-- </div> -->
+            </v-card-title>
+            <!-- </v-img> -->
           </v-card>
-          <p align="right">{{ i.user.nickname }}님의 게시물</p>
         </v-hover>
       </v-col>
       <!-- <ContentBox /> -->
@@ -155,7 +162,6 @@ export default {
   name: "CommunityBox",
   components: {
     // ContentBox,
-
   },
   data() {
     return {
@@ -198,10 +204,10 @@ export default {
 
     const store = useStore();
     const clickContent = function (id) {
-      localStorage.setItem('page', id)
+      localStorage.setItem("page", id);
       store.dispatch("contentStore/pageAction", {
-            contentId: id,
-          });
+        contentId: id,
+      });
       router.push({
         name: "ContentsBox",
         params: { Id: id },
@@ -260,7 +266,9 @@ export default {
         console.log(state.searchkeyword);
         axios({
           method: "POST",
-          url: import.meta.env.VITE_APP_URL+`/api/v1/videos/search/${state.searchkeyword}`,
+          url:
+            import.meta.env.VITE_APP_URL +
+            `/api/v1/videos/search/${state.searchkeyword}`,
         })
           .then((res) => {
             console.log(res);
@@ -279,11 +287,10 @@ export default {
     onMounted(() => {
       axios({
         method: "get",
-        url: import.meta.env.VITE_APP_URL+"/api/v1/videos",
-
+        url: import.meta.env.VITE_APP_URL + "/api/v1/videos",
       })
         .then((res) => {
-          console.log(res)
+          console.log(res);
           state.content_list = res.data;
           // const count = res.data.length;
           for (let i = 0; i < res.data.lenth; i++) {
@@ -303,7 +310,7 @@ export default {
           // console.log(state.form.video.proxy);
           console.log(err);
         });
-    })
+    });
     return {
       state,
       load,
@@ -330,20 +337,24 @@ export default {
       return this.video_list;
     },
     async submit() {
-      if (!this.state.form.title || !this.state.form.context || !this.video.target.files[0]) {
-        alert("내용을 모두 입력해주세요")
+      if (
+        !this.state.form.title ||
+        !this.state.form.context ||
+        !this.video.target.files[0]
+      ) {
+        alert("내용을 모두 입력해주세요");
       } else {
         this.token = localStorage.getItem("jwt");
         const formData = new FormData();
-        console.log("ttttttttttt")
-        console.log(this.video.target.files[0])
+        console.log("ttttttttttt");
+        console.log(this.video.target.files[0]);
         formData.append("video", this.video.target.files[0]);
         formData.append("title", this.state.form.title);
         formData.append("context", this.state.form.context);
-  
+
         axios({
           method: "post",
-          url: import.meta.env.VITE_APP_URL+"/api/v1/videos",
+          url: import.meta.env.VITE_APP_URL + "/api/v1/videos",
           data: formData,
           headers: {
             "Content-Type": "multipart/form-data",
@@ -353,7 +364,7 @@ export default {
           .then((res) => {
             alert("비디오 업로드 성공!");
             console.log(res);
-            window.location.reload(true)
+            window.location.reload(true);
           })
           .catch((err) => {
             console.log("비디오 업로드 실패");
@@ -361,7 +372,7 @@ export default {
             console.log(this.video.target.files[0]);
             console.log(err);
           });
-          // router.push("/community");
+        // router.push("/community");
       }
     },
     changeFile(file) {
