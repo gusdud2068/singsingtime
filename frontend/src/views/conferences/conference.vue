@@ -467,6 +467,7 @@ export default {
       sessionInfo: {
         waitingQueue: [],
         challenger: "",
+        challengerUsername:"",
         likeChampion: 0,
         likeChallenger: 0,
       },
@@ -488,6 +489,7 @@ export default {
       myUserId: localStorage.getItem("userId"),
       token: null, // jwt토큰, 오픈비두 세션 접속용 getToken 파라미터랑 다름, this.token으로 구분
       champion: "",
+      championUsername: "",
       championSongList: [],
       readyVideo: false, // 미러볼 비디오 화면을 띄울지 결정할 변수
       ready: false,
@@ -1012,6 +1014,10 @@ export default {
               JSON.parse(user.stream.connection.data).clientId == this.champion
             ) {
               this.championStreamManager = user;
+              this.championUsername = JSON.parse(user.stream.connection.data).clientNickname;
+              // console.log("jjjjjjjjjjjjjjjjjj")
+              // console.log(this.champion)
+              // console.log(user.stream.connection.data)
             }
           }
         })
@@ -1079,7 +1085,7 @@ export default {
           } else {
             this.sessionInfo.challenger = next;
             this.session.signal({
-              data: JSON.stringify(this.sessonInfo),
+              data: JSON.stringify(this.sessionInfo),
               type: "challenge",
             });
           }
@@ -1139,8 +1145,7 @@ export default {
           return;
         }
       }
-      this.enqueue(myUserId);
-      console.log(this.sessionInfo.waitingQueue);
+      this.enqueue(this.myUserId);
       console.log("대기열 출력!!");
       console.log(this.sessionInfo.waitingQueue);
       this.session.signal({
