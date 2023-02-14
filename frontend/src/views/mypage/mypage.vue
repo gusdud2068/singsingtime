@@ -326,9 +326,9 @@
     </v-row>
     <ul class="infinite-list">
       <li
-        v-for="i in state.user_videos"
+        v-for="(user_video, i) in state.user_videos"
         class="infinite-list-item"
-        @click="clickContent(i.id)"
+        @click="clickContent(user_video.id)"
         :key="i"
       >
         <v-col>
@@ -339,22 +339,25 @@
               :class="{ 'on-hover': isHovering }"
               v-bind="props"
             >
-              <v-img
+              <!-- <v-img
                 src="https://images.unsplash.com/photo-1429514513361-8fa32282fd5f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3264&q=80"
                 height="225px"
                 cover
               >
+              </v-img> -->
+              <video :src="user_video.url" />
+                  <p>영상 제목: {{ user_video.title }}</p>
+                  <div>
+                  <span style="margin-right:20px;">조회수: {{ user_video.viewCnt }} </span>
+                  <span>좋아요 수: {{ user_video.likeCnt }}</span>
+                  </div>
                 <v-card-title
                   class="text-h6 text-black d-flex flex-column justify-space-between"
                   style="padding: 0px; height: 100%"
                 >
-                  <p class="song_info" align="start"></p>
                   <div class="d-flex justify-space-between info_box">
-                    <div class="champion_info">{{ i.description }}</div>
-                    <div class="view_info">{{ i.title }}</div>
                   </div>
                 </v-card-title>
-              </v-img>
             </v-card>
           </v-hover>
         </v-col>
@@ -387,6 +390,7 @@ export default {
     profileImg: null,
     token: null,
     profileUrl: "",
+    videoUrl: "",
   }),
   methods: {
     // uploadImg() {
@@ -695,8 +699,8 @@ export default {
         },
       })
         .then((res) => {
-          // console.log(33333333333)
-          // console.log(res);
+          console.log(33333333333)
+          console.log(res);
           // 유저 정보 저장
           state.id = res.data.userId;
           state.nickname = res.data.nickname;
@@ -731,8 +735,9 @@ export default {
         },
       })
         .then((res) => {
-          console.log(res);
           state.user_videos = res.data;
+          console.log("444444444444444444")
+          console.log(res)
         })
         .catch((err) => {
           alert(err);

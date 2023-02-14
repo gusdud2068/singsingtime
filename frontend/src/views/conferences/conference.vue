@@ -253,7 +253,7 @@
       <!--스몰박스 right, 노래화면 오른쪽-->
         <div>
           <!-- <div style="position: relative; margin-left: 50px; margin-bottom: 500px"> -->
-        <!-- <v-btn @click="imageGet" style="position:absolute;width:20px;z-index: 3;margin-top: 220px; margin-left: 250px;"><span style="color:black;font-style:bold;">전환</span></v-btn> -->
+        <v-btn @click="imageConvert" style="position:absolute;width:20px;z-index: 3;margin-top: 220px; margin-left: 250px;"><span style="color:black;font-style:bold;">전환</span></v-btn>
         <!-- <user-video
         :stream-manager="publisher"
         @click.native="updateMainVideoStreamManager(publisher)"
@@ -498,10 +498,12 @@ export default {
         })
       })
       },
-    async imageGet() {
+    // async imageGet() {
+    async imageConvert() {
       this.token = localStorage.getItem("jwt");
       console.log("hhhhhhhhhhhh");
       console.log(this.token);
+      this.publisher.stream.applyFilter("GStreamerFilter", {"command": "gdkpixbufoverlay location=/images/img.png offset-x=10 offset-y=10 overlay-height=200 overlay-width=200"})
       axios({
         method: "get",
         url: import.meta.env.VITE_APP_URL + `/api/v1/users/my-page/profile`,
