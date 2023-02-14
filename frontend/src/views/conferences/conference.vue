@@ -6,6 +6,7 @@
       ({ musicOn: this.selectedVideo.length > 0 }, { win: this.finish == true })
     "
   >
+
     <v-row
       style="
         color: white;
@@ -242,10 +243,6 @@
       <div id="video-container" class="bigbox">
         <!-- <div id="video-container" class=""> -->
 
-        <!-- 나 -->
-
-        <!-- <v-col> -->
-
         <div class="smallboxl" display="flex">
           <!--스몰박스 left, 노래화면 왼쪽. 여기에 스트림매니저로 챔피언을 넘겨줘야함-->
 
@@ -295,20 +292,6 @@
 
         <!--스몰박스 right, 노래화면 오른쪽, 여기에 챌린져가 들어가야 함-->
 
-        <!-- <div class="smallboxr"> 
-    
-                <user-video
-    
-                :stream-manager="challenger" 
-    
-                @click.native="updateMainVideoStreamManager(challenger)"
-    
-              />
-    
-              />
-    
-            </div> -->
-
         <!--비디오 위치 테스트용으로 퍼블리셔 넣어놓음 -->
 
         <div class="smallboxl" display="flex">
@@ -332,7 +315,6 @@
           />
         </div>
 
-        <!-- </v-col> -->
       </div>
     </div>
 
@@ -367,24 +349,37 @@
       type="button"
       @click="showWaitingQueue"
       value="도전자 목록"
-      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
+      style="margin-top: 20px; margin-bottom: 20px;margin-right: 20px;"
     />
-
+    <br/>
     <input
       class="btn btn-large btn-info"
       type="button"
-      @click="startRecord"
+      ref="captureBtn"
+      @click="capture"
+      value="녹화 화면 지정"
+      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px;"
+    />
+    <input
+      class="btn btn-large btn-info"
+      type="button"
+      ref="startBtn"
+      @click="start"
       value="녹화 시작"
-      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
+      disabled
+      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px;"
     />
-
     <input
       class="btn btn-large btn-info"
       type="button"
-      @click="applyStickerFilter()"
-      value="테스트"
-      style="margin-top: 20px; margin-bottom: 20px"
+      ref="stopBtn"
+      @click="stop"
+      value="녹화 중지"
+      disabled
+      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px;"
     />
+    <a id="download" ref="down" href="#" style="display:none;">Download</a>
+
     <!-- 관중들 들어갈 자리 -->
     <v-card
       class="audiences"
@@ -456,6 +451,37 @@ import VueCountdown from "@chenfengyuan/vue-countdown";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 const API_KEY = "AIzaSyBGF5ljIuwHbPn27YSImtkkgk8KooR8q7I";
 
+let blobs;
+let blob;
+let rec;
+let stream;
+let voiceStream;
+let desktopStream;
+const mergeAudioStreams = (desktopStream, voiceStream) => {
+    const context = new AudioContext();
+    const destination = context.createMediaStreamDestination();
+    let hasDesktop = false;
+    let hasVoice = false;
+    if (desktopStream && desktopStream.getAudioTracks().length > 0) {
+      // If you don't want to share Audio from the desktop it should still work with just the voice.
+      const source1 = context.createMediaStreamSource(desktopStream);
+      const desktopGain = context.createGain();
+      desktopGain.gain.value = 0.7;
+      source1.connect(desktopGain).connect(destination);
+      hasDesktop = true;
+    }
+    
+    if (voiceStream && voiceStream.getAudioTracks().length > 0) {
+      const source2 = context.createMediaStreamSource(voiceStream);
+      const voiceGain = context.createGain();
+      voiceGain.gain.value = 0.7;
+      source2.connect(voiceGain).connect(destination);
+      hasVoice = true;
+    }
+    return (hasDesktop || hasVoice) ? destination.stream.getAudioTracks() : [];
+  };
+
+
 export default {
   name: "App",
   components: {
@@ -514,8 +540,6 @@ export default {
       // likeChampion: 0,
       // likeChallenger: 0,
       winner: "",
-      // challenger: "",
-      // waitingQueue: [],
       members: [],
       championStreamManager: undefined,
       challengerStreamManager: undefined,
@@ -536,7 +560,6 @@ export default {
     ...mapGetters(["video"]),
   },
   created() {
-    // console.log(playroom+"그냥");
     this.joinSession();
     this.getname();
     console.log("====================================================");
@@ -554,6 +577,63 @@ export default {
     this.getReadyVideo();
   },
   methods: {
+     async capture() {
+    this.$refs.captureBtn.style.display = 'none';
+    const audio = true;
+    const mic = true;
+    
+    desktopStream = await navigator.mediaDevices.getDisplayMedia({ video:true, audio: audio });
+    
+    if (mic === true) {
+      voiceStream = await navigator.mediaDevices.getUserMedia({ video: false, audio: mic });
+    }
+  
+    const tracks = [
+      ...desktopStream.getVideoTracks(), 
+      ...mergeAudioStreams(desktopStream, voiceStream)
+    ];
+    
+    console.log('Tracks to add to stream', tracks);
+    stream = new MediaStream(tracks);
+    console.log('Stream', stream)
+      
+    blobs = [];
+  
+    rec = new MediaRecorder(stream, {mimeType: 'video/webm; '});
+    rec.ondataavailable = (e) => blobs.push(e.data);
+    rec.onstop = async () => {
+      
+      //blobs.push(MediaRecorder.requestData());
+      blob = new Blob(blobs, {type: 'video/mp4'});
+      let url = window.URL.createObjectURL(blob);
+      this.$refs.down.href = url;
+      this.$refs.down.download = 'test.mp4';
+      this.$refs.down.style.display = '';
+    };
+    this.$refs.startBtn.disabled = false;
+    this.$refs.startBtn.style.color="lightsalmon";
+    this.$refs.captureBtn.disabled = true;
+  },
+
+  start(){
+    this.$refs.startBtn.disabled = true;
+    this.$refs.startBtn.style.color="white";
+    this.$refs.stopBtn.style.color="lightsalmon";
+    this.$refs.stopBtn.disabled = false;
+    rec.start();
+  },
+
+  stop(){
+    this.$refs.captureBtn.disabled = false;
+    this.$refs.startBtn.disabled = true;
+    this.$refs.stopBtn.disabled = true;
+    this.$refs.stopBtn.style.color="white";
+    rec.stop();
+    
+    stream.getTracks().forEach(s=>s.stop())
+    stream = null;
+    this.$refs.captureBtn.style.display = 'inline';
+  },
     leavePlayroom() {
       axios({
         method: "delete",
@@ -897,6 +977,8 @@ export default {
         }),
         // 도전 이벤트 발생했을 때
         this.session.on("signal:challenge", (event) => {
+          console.log("여기가 문제??");
+          console.log(event);
           console.log(JSON.parse(event.data).challenger);
           this.sessionInfo.challenger = JSON.parse(event.data).challenger;
           this.sessionInfo.champion = JSON.parse(event.data).champion;
@@ -1143,6 +1225,7 @@ export default {
             this.sessionInfo.challenger = "";
           } else {
             this.sessionInfo.challenger = next;
+            console.log("839");
             this.session.signal({
               data: JSON.stringify(this.sessionInfo),
               type: "challenge",
@@ -1159,6 +1242,24 @@ export default {
           //         this.championStreamManager = user;
           //     }
           // }
+        })
+        .then(() => {
+          console.log("855");
+          for (let subscriber of this.subscribers) {
+            console.log("구독자 출력 759");
+            console.log(subscriber);
+            const nextId = JSON.parse(
+              subscriber.stream.connection.data
+            ).clientId;
+            console.log(nextId);
+            console.log("챌린저 정보 763");
+            // console.log(this.challengerStreamManager.stream.connection.data);
+            // const challengerId = JSON.parse(this.challengerStreamManager.stream.connection.data).clientId;
+            // console.log(challengerId);
+            if (nextId == this.sessionInfo.challenger) {
+              this.challengerStreamManager = subscriber;
+            }
+          }
         })
         .catch((err) => {
           alert(err);
@@ -1188,7 +1289,7 @@ export default {
       if (this.sessionInfo.challenger == "") {
         this.sessionInfo.challenger = myUserId;
         // 방 멤버 중 대결신청 버튼 누른 유저의 화면 전파
-
+        console.log("903");
         this.session.signal({
           data: JSON.stringify(this.sessionInfo),
           type: "challenge",
@@ -1240,6 +1341,7 @@ export default {
       console.log(sessionId);
       return await this.createToken(sessionId);
     },
+
     async createSession(sessionId) {
       this.token = localStorage.getItem("jwt");
       const response = await axios.post(
@@ -1275,9 +1377,8 @@ export default {
         }
       );
       return response.data; // The token
-    },
+    }
   },
-
   setup() {
     // 자식 컴포넌트를 핸들링하기 위한 ref
     const store = useStore();
