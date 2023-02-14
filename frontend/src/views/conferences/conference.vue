@@ -104,7 +104,7 @@
             <hr />
             <v-list-item-group v-model="model">
               <v-list-item
-                v-for="championSong in championSongList"
+                v-for="championSong in sessionInfo.championSongList"
                 :key="championSong.title"
               >
                 <v-list-item-title
@@ -1037,8 +1037,9 @@ export default {
           `/api/v1/playrooms/playlist/${this.mySessionId}`,
       })
         .then((res) => {
-          this.sessionInfo.championSongList = res.data;
+          console.log("jjjjjjjjjjjjjjjj")
           console.log(res.data);
+          this.sessionInfo.championSongList = res.data;
         })
         .catch((err) => {
           alert(err);
