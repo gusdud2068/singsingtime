@@ -778,7 +778,7 @@ export default {
 
       this.publisher.stream.applyFilter("GStreamerFilter", {
         command:
-          "gdkpixbufoverlay location=../../assets/images/logo.png offset-x=10 offset-y=10 overlay-height=200 overlay-width=200",
+          "gdkpixbufoverlay location=/assets/images/logo.png offset-x=10 offset-y=10 overlay-height=200 overlay-width=200",
       });
 
       // 버튼 ON 전환
