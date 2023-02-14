@@ -22,7 +22,7 @@
         v-if="
           this.readyVideo &&
           !this.selectedVideo &&
-          this.myUserId != this.champion
+          this.myUserId != this.sessionInfo.champion
         "
       >
         <h2>
@@ -98,7 +98,7 @@
               X
             </h3>
 
-            <h2>챔피언 {{ this.champion }}님의</h2>
+            <h2>챔피언 {{ this.sessionInfo.champion }}님의</h2>
             <h2>플레이리스트</h2>
 
             <hr />
@@ -131,7 +131,7 @@
               X
             </h3>
 
-            <h2>챔피언 {{ this.champion }}님의</h2>
+            <h2>챔피언 {{ this.sessionInfo.champion }}님의</h2>
             <h2>플레이리스트</h2>
 
             <hr />
@@ -192,7 +192,7 @@
     </Modal> -->
 
     <div
-      v-if="champion_confirm && this.myUserId == this.champion"
+      v-if="champion_confirm && this.myUserId == this.sessionInfo.champion"
       style="margin-bottom: 10px"
     >
       <h2>
@@ -389,7 +389,7 @@
       <!--스몰박스 right, 노래화면 오른쪽-->
       <div>
         <!-- <div style="position: relative; margin-left: 50px; margin-bottom: 500px"> -->
-        <v-btn
+        <!-- <v-btn
           @click="imageConvert"
           style="
             position: absolute;
@@ -399,7 +399,7 @@
             margin-left: 250px;
           "
           ><span style="color: black; font-style: bold">전환</span></v-btn
-        >
+        > -->
         <!-- <user-video
         :stream-manager="publisher"
         @click.native="updateMainVideoStreamManager(publisher)"
@@ -470,6 +470,8 @@ export default {
         challengerUsername:"",
         likeChampion: 0,
         likeChallenger: 0,
+        champion: "",
+        championSongList: [],
       },
       inputValue: "",
       videos: [],
@@ -488,9 +490,8 @@ export default {
       myUserName: localStorage.getItem("nickname"),
       myUserId: localStorage.getItem("userId"),
       token: null, // jwt토큰, 오픈비두 세션 접속용 getToken 파라미터랑 다름, this.token으로 구분
-      champion: "",
-      championUsername: "",
-      championSongList: [],
+      // champion: "",
+      // championSongList: [],
       readyVideo: false, // 미러볼 비디오 화면을 띄울지 결정할 변수
       ready: false,
       voteBtnShow: false,
@@ -855,6 +856,8 @@ export default {
         this.session.on("signal:challenge", (event) => {
           console.log(JSON.parse(event.data).challenger);
           this.sessionInfo.challenger = JSON.parse(event.data).challenger;
+          this.sessionInfo.champion = JSON.parse(event.data).champion;
+          this.sessionInfo.championSongList = JSON.parse(event.data).championSongList;
           // 방 멤버들 중 도전자 유저의 화면 생성
           console.log(this.members);
           for (let user of this.members) {
@@ -1004,14 +1007,14 @@ export default {
       })
         .then((res) => {
           // this.sessionInfo = res.data;
-          this.champion = res.data.champion;
+          this.sessionInfo.champion = res.data.champion;
           this.getChampionList();
 
           // 방 멤버들 중 챔피언 유저의 화면 생성
           for (let user of this.members) {
             console.log(user.stream.connection.data);
             if (
-              JSON.parse(user.stream.connection.data).clientId == this.champion
+              JSON.parse(user.stream.connection.data).clientId == this.sessionInfo.champion
             ) {
               this.championStreamManager = user;
               this.championUsername = JSON.parse(user.stream.connection.data).clientNickname;
@@ -1034,7 +1037,7 @@ export default {
           `/api/v1/playrooms/playlist/${this.mySessionId}`,
       })
         .then((res) => {
-          this.championSongList = res.data;
+          this.sessionInfo.championSongList = res.data;
           console.log(res.data);
         })
         .catch((err) => {
@@ -1059,23 +1062,24 @@ export default {
       });
       this.sessionInfo.likeChampion = 0;
       this.sessionInfo.likeChallenger = 0;
-      this.champion =
-        this.winner == "챔피언" ? this.champion : this.sessionInfo.challenger;
+      this.sessionInfo.champion = 
+        this.winner == "챔피언" ? this.sessionInfo.champion : this.sessionInfo.challenger;
+      // 시그널 필요
       axios({
         method: "put",
         url: import.meta.env.VITE_APP_URL + `/api/v1/playrooms/end-song`,
         data: {
           sessionId: this.mySessionId,
-          championId: this.champion,
+          championId: this.sessionInfo.champion,
         },
       })
         .then((res) => {
           console.log("게임끝난 상태에서 data 받아오기!!!!");
           console.log(res);
           alert(
-            this.champion + `님이 ${res.data.winCnt}연승을 달성하셨습니다!!!`
+            this.sessionInfo.champion + `님이 ${res.data.winCnt}연승을 달성하셨습니다!!!`
           );
-          this.championSongList = res.data.championSongList;
+          this.sessionInfo.championSongList = res.data.championSongList;
           const next = this.dequeue();
           console.log("next출력");
           console.log(next);

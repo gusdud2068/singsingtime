@@ -25938,3 +25938,200 @@ java.util.NoSuchElementException: null
 2023-02-14 16:32:47.462 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [text/plain, */*, text/plain, */*, text/plain, */*, application/json, application/*+json, application/json, application/*+json, application/cbor]
 2023-02-14 16:32:47.462 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["방 정원 초과입니다. 다른 노래방을 이용해주세요"]
 2023-02-14 16:32:47.463 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:46:40.187 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/users/my-page", parameters={}
+2023-02-14 16:46:40.187 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.UserController#getUserInfo(Authentication)
+2023-02-14 16:46:40.188 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:46:40.188 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.api.response.UserRes@2395c53d]
+2023-02-14 16:46:40.188 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:46:40.190 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/playrooms", parameters={}
+2023-02-14 16:46:40.190 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.PlayroomController#getRoomInfo()
+2023-02-14 16:46:40.193 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:46:40.194 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[Playroom(callStartTime=null, callEndTime=null, sessionId=bbbb, genre=null, user=User(userId=haechan (truncated)...]
+2023-02-14 16:46:40.195 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:46:40.196 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/videos/daily-video", parameters={}
+2023-02-14 16:46:40.196 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.VideoController#getDailyVideo()
+2023-02-14 16:46:40.198 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:46:40.198 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[]]
+2023-02-14 16:46:40.198 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:12.411 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/users/my-page", parameters={}
+2023-02-14 16:50:12.411 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.UserController#getUserInfo(Authentication)
+2023-02-14 16:50:12.412 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:12.412 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.api.response.UserRes@5820173e]
+2023-02-14 16:50:12.413 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:12.414 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/playrooms", parameters={}
+2023-02-14 16:50:12.415 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.PlayroomController#getRoomInfo()
+2023-02-14 16:50:12.418 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:12.418 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[Playroom(callStartTime=null, callEndTime=null, sessionId=bbbb, genre=null, user=User(userId=haechan (truncated)...]
+2023-02-14 16:50:12.419 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:12.420 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/videos/daily-video", parameters={}
+2023-02-14 16:50:12.420 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.VideoController#getDailyVideo()
+2023-02-14 16:50:12.421 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:12.421 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[]]
+2023-02-14 16:50:12.421 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:17.480 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/users/my-page", parameters={}
+2023-02-14 16:50:17.481 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.UserController#getUserInfo(Authentication)
+2023-02-14 16:50:17.482 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:17.482 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.api.response.UserRes@4ceda655]
+2023-02-14 16:50:17.483 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:17.515 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-9] o.s.web.servlet.DispatcherServlet        : POST "/api/v1/openvidu/sessions", parameters={}
+2023-02-14 16:50:17.515 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.OpenviduController#initializeSession(Map, Authentication)
+2023-02-14 16:50:17.516 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-9] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [{customSessionId=bbbb}]
+2023-02-14 16:50:17.523  INFO 15944 --- [http-nio-127.0.0.1-8080-exec-9] io.openvidu.java.client.Session          : Session 'bbbb' created
+2023-02-14 16:50:17.524 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [text/plain, */*, text/plain, */*, text/plain, */*, application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:17.524 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["bbbb"]
+2023-02-14 16:50:17.525 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:17.553 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-2] o.s.web.servlet.DispatcherServlet        : POST "/api/v1/openvidu/sessions/bbbb/connections", parameters={}
+2023-02-14 16:50:17.553 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.OpenviduController#createConnection(String, Map)
+2023-02-14 16:50:17.554 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-2] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [{}]
+2023-02-14 16:50:17.569 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [text/plain, */*, text/plain, */*, text/plain, */*, application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:17.570 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["방 정원 초과입니다. 다른 노래방을 이용해주세요"]
+2023-02-14 16:50:17.570 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:18.856 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-4] o.s.web.servlet.DispatcherServlet        : DELETE "/api/v1/playrooms/bbbb", parameters={}
+2023-02-14 16:50:18.857 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.PlayroomController#minusPlayRoomMemberCnt(String)
+2023-02-14 16:50:18.873 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:18.873 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.common.model.response.BaseResponseBody@459ab0ae]
+2023-02-14 16:50:18.873 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:19.029 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/users/my-page", parameters={}
+2023-02-14 16:50:19.029 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.UserController#getUserInfo(Authentication)
+2023-02-14 16:50:19.030 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:19.030 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.api.response.UserRes@51083068]
+2023-02-14 16:50:19.030 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:19.062 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/playrooms", parameters={}
+2023-02-14 16:50:19.062 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/videos/daily-video", parameters={}
+2023-02-14 16:50:19.062 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.PlayroomController#getRoomInfo()
+2023-02-14 16:50:19.062 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.VideoController#getDailyVideo()
+2023-02-14 16:50:19.063 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:19.063 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[]]
+2023-02-14 16:50:19.064 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:19.065 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:19.067 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[Playroom(callStartTime=null, callEndTime=null, sessionId=bbbb, genre=null, user=User(userId=haechan (truncated)...]
+2023-02-14 16:50:19.067 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:19.497 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/users/my-page", parameters={}
+2023-02-14 16:50:19.497 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.UserController#getUserInfo(Authentication)
+2023-02-14 16:50:19.498 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:19.498 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.api.response.UserRes@3c979305]
+2023-02-14 16:50:19.499 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:19.525 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/videos/daily-video", parameters={}
+2023-02-14 16:50:19.525 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/playrooms", parameters={}
+2023-02-14 16:50:19.525 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.VideoController#getDailyVideo()
+2023-02-14 16:50:19.525 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.PlayroomController#getRoomInfo()
+2023-02-14 16:50:19.526 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:19.526 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[]]
+2023-02-14 16:50:19.527 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:19.527 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:19.528 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[Playroom(callStartTime=null, callEndTime=null, sessionId=bbbb, genre=null, user=User(userId=haechan (truncated)...]
+2023-02-14 16:50:19.529 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:20.138 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/users/my-page", parameters={}
+2023-02-14 16:50:20.138 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.UserController#getUserInfo(Authentication)
+2023-02-14 16:50:20.139 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:20.139 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.api.response.UserRes@40236ee0]
+2023-02-14 16:50:20.140 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:20.171 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-9] o.s.web.servlet.DispatcherServlet        : POST "/api/v1/openvidu/sessions", parameters={}
+2023-02-14 16:50:20.171 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.OpenviduController#initializeSession(Map, Authentication)
+2023-02-14 16:50:20.172 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-9] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [{customSessionId=bbbb}]
+2023-02-14 16:50:20.192  INFO 15944 --- [http-nio-127.0.0.1-8080-exec-9] io.openvidu.java.client.Session          : Session info fetched for session 'bbbb'. Any change: true
+2023-02-14 16:50:20.193 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [text/plain, */*, text/plain, */*, text/plain, */*, application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:20.193 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["bbbb"]
+2023-02-14 16:50:20.193 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:20.206 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-2] o.s.web.servlet.DispatcherServlet        : POST "/api/v1/openvidu/sessions/bbbb/connections", parameters={}
+2023-02-14 16:50:20.206 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.OpenviduController#createConnection(String, Map)
+2023-02-14 16:50:20.206 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-2] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [{}]
+2023-02-14 16:50:20.224 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [text/plain, */*, text/plain, */*, text/plain, */*, application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:20.224 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["방 정원 초과입니다. 다른 노래방을 이용해주세요"]
+2023-02-14 16:50:20.224 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:20.225 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-4] o.s.web.servlet.DispatcherServlet        : DELETE "/api/v1/playrooms/bbbb", parameters={}
+2023-02-14 16:50:20.226 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.PlayroomController#minusPlayRoomMemberCnt(String)
+2023-02-14 16:50:20.230 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:20.230 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.common.model.response.BaseResponseBody@6c2c1ccd]
+2023-02-14 16:50:20.231 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:20.712 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/users/my-page", parameters={}
+2023-02-14 16:50:20.713 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.UserController#getUserInfo(Authentication)
+2023-02-14 16:50:20.714 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:20.714 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.api.response.UserRes@7295ef6a]
+2023-02-14 16:50:20.714 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:20.736 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/playrooms", parameters={}
+2023-02-14 16:50:20.736 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/videos/daily-video", parameters={}
+2023-02-14 16:50:20.737 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.VideoController#getDailyVideo()
+2023-02-14 16:50:20.737 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.PlayroomController#getRoomInfo()
+2023-02-14 16:50:20.737 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:20.737 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[]]
+2023-02-14 16:50:20.737 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:20.738 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:20.739 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[Playroom(callStartTime=null, callEndTime=null, sessionId=bbbb, genre=null, user=User(userId=haechan (truncated)...]
+2023-02-14 16:50:20.739 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:21.626 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/users/my-page", parameters={}
+2023-02-14 16:50:21.627 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.UserController#getUserInfo(Authentication)
+2023-02-14 16:50:21.628 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:21.628 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.api.response.UserRes@78c9b1b4]
+2023-02-14 16:50:21.628 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:21.658 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] o.s.web.servlet.DispatcherServlet        : POST "/api/v1/openvidu/sessions", parameters={}
+2023-02-14 16:50:21.659 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.OpenviduController#initializeSession(Map, Authentication)
+2023-02-14 16:50:21.659 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [{customSessionId=bbbb}]
+2023-02-14 16:50:21.668  INFO 15944 --- [http-nio-127.0.0.1-8080-exec-8] io.openvidu.java.client.Session          : Session info fetched for session 'bbbb'. Any change: true
+2023-02-14 16:50:21.669 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [text/plain, */*, text/plain, */*, text/plain, */*, application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:21.669 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["bbbb"]
+2023-02-14 16:50:21.669 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:21.692 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-3] o.s.web.servlet.DispatcherServlet        : POST "/api/v1/openvidu/sessions/bbbb/connections", parameters={}
+2023-02-14 16:50:21.692 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.OpenviduController#createConnection(String, Map)
+2023-02-14 16:50:21.693 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-3] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [{}]
+2023-02-14 16:50:21.709 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [text/plain, */*, text/plain, */*, text/plain, */*, application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:21.709 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["방 정원 초과입니다. 다른 노래방을 이용해주세요"]
+2023-02-14 16:50:21.709 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:22.678 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] o.s.web.servlet.DispatcherServlet        : DELETE "/api/v1/playrooms/bbbb", parameters={}
+2023-02-14 16:50:22.678 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.PlayroomController#minusPlayRoomMemberCnt(String)
+2023-02-14 16:50:22.695 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:22.695 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.common.model.response.BaseResponseBody@45a656a2]
+2023-02-14 16:50:22.696 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:24.000 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/users/my-page", parameters={}
+2023-02-14 16:50:24.001 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.UserController#getUserInfo(Authentication)
+2023-02-14 16:50:24.001 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:24.001 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.api.response.UserRes@fbf467c]
+2023-02-14 16:50:24.002 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:24.028 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/playrooms", parameters={}
+2023-02-14 16:50:24.028 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/videos/daily-video", parameters={}
+2023-02-14 16:50:24.029 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.PlayroomController#getRoomInfo()
+2023-02-14 16:50:24.029 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.VideoController#getDailyVideo()
+2023-02-14 16:50:24.030 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:24.030 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[]]
+2023-02-14 16:50:24.031 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:24.031 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:24.033 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[Playroom(callStartTime=null, callEndTime=null, sessionId=bbbb, genre=null, user=User(userId=haechan (truncated)...]
+2023-02-14 16:50:24.034 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:25.421 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/users/my-page", parameters={}
+2023-02-14 16:50:25.421 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.UserController#getUserInfo(Authentication)
+2023-02-14 16:50:25.422 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:25.422 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.api.response.UserRes@6e5aa7d1]
+2023-02-14 16:50:25.423 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:25.464 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-10] o.s.web.servlet.DispatcherServlet        : POST "/api/v1/openvidu/sessions", parameters={}
+2023-02-14 16:50:25.464 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.OpenviduController#initializeSession(Map, Authentication)
+2023-02-14 16:50:25.464 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-10] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [{customSessionId=bbbb}]
+2023-02-14 16:50:25.478  INFO 15944 --- [http-nio-127.0.0.1-8080-exec-10] io.openvidu.java.client.Session          : Session info fetched for session 'bbbb'. Any change: true
+2023-02-14 16:50:25.479 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [text/plain, */*, text/plain, */*, text/plain, */*, application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:25.480 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["bbbb"]
+2023-02-14 16:50:25.480 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:25.498 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : POST "/api/v1/openvidu/sessions/bbbb/connections", parameters={}
+2023-02-14 16:50:25.498 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.OpenviduController#createConnection(String, Map)
+2023-02-14 16:50:25.498 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-1] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [{}]
+2023-02-14 16:50:25.509 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [text/plain, */*, text/plain, */*, text/plain, */*, application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:25.509 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["방 정원 초과입니다. 다른 노래방을 이용해주세요"]
+2023-02-14 16:50:25.510 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:26.314 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-6] o.s.web.servlet.DispatcherServlet        : DELETE "/api/v1/playrooms/bbbb", parameters={}
+2023-02-14 16:50:26.315 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.PlayroomController#minusPlayRoomMemberCnt(String)
+2023-02-14 16:50:26.328 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:26.328 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.common.model.response.BaseResponseBody@602eb7c7]
+2023-02-14 16:50:26.328 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:26.476 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/users/my-page", parameters={}
+2023-02-14 16:50:26.477 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.UserController#getUserInfo(Authentication)
+2023-02-14 16:50:26.477 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:26.477 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.api.response.UserRes@2d0a78c4]
+2023-02-14 16:50:26.478 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:26.508 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/playrooms", parameters={}
+2023-02-14 16:50:26.508 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/videos/daily-video", parameters={}
+2023-02-14 16:50:26.509 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.PlayroomController#getRoomInfo()
+2023-02-14 16:50:26.509 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.api.controller.VideoController#getDailyVideo()
+2023-02-14 16:50:26.510 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:26.510 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[]]
+2023-02-14 16:50:26.510 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-02-14 16:50:26.510 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/json, application/*+json, application/cbor]
+2023-02-14 16:50:26.511 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[Playroom(callStartTime=null, callEndTime=null, sessionId=bbbb, genre=null, user=User(userId=haechan (truncated)...]
+2023-02-14 16:50:26.512 DEBUG 15944 --- [http-nio-127.0.0.1-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
