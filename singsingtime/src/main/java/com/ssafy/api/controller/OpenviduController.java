@@ -85,6 +85,7 @@ public class OpenviduController {
 		}
 
 		if(playroomService.checkPlayRoomMemberCnt(sessionId) >= MAX_MEMBER_CNT){
+			playroomService.addPlayRoomMemberCnt(sessionId);
 			return new ResponseEntity<>("방 정원 초과입니다. 다른 노래방을 이용해주세요", HttpStatus.OK);
 		}
 		playroomService.addPlayRoomMemberCnt(sessionId);

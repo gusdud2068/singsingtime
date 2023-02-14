@@ -427,6 +427,8 @@ export default {
           console.log(err);
         });
       this.imageGet();
+
+      await window.location.reload(true);
     },
     async imageGet() {
       console.log("hhhhhhhhhhhh");
@@ -454,7 +456,6 @@ export default {
       this.profileImg = file;
       console.log(file);
       this.imageSubmit();
-      window.location.reload(true)
     },
   },
   mounted() {
