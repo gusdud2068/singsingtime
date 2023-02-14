@@ -378,7 +378,10 @@
       disabled
       style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px;"
     />
+<<<<<<< HEAD
+=======
     <a id="download" ref="down" href="#" style="display:none;">Download</a>
+>>>>>>> 56e3961b050d931126bd1a3ec394d034660b93f6
 
     <!-- 관중들 들어갈 자리 -->
     <v-card
@@ -723,12 +726,12 @@ export default {
         var offsetY;
         var width;
         var height;
-        offsetX = "-0.5F";
-        offsetY = "-1.0F";
-        width = "2.1F";
-        height = "1.5F";
+        offsetX = "-0.7F";
+        offsetY = "-0.7F";
+        width = "2.3";
+        height = "2.3";
         filter.execMethod("setOverlayedImage", {
-          uri: "https://sstvideo.s3.ap-northeast-2.amazonaws.com/images/aaaa.jpg",
+          uri: "https://sstvideo.s3.ap-northeast-2.amazonaws.com/images/mask2.png",
           offsetXPercent: offsetX,
           offsetYPercent: offsetY,
           widthPercent: width,
