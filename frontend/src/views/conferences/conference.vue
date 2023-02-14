@@ -6,19 +6,21 @@
       ({ musicOn: this.selectedVideo.length>0}, { win: this.finish == true })
     "
   >
-  <a ref="down" style="display: none;"></a>
 
-    <div
+    <v-row
+      <a ref="down" style="display: none;"></a>
       style="
         color: white;
-        display: flex;
-        justify-content: space-between;
-        padding-bottom: 50px;
+        margin-left: 100px;
+        margin-right: 50px;
+        padding-bottom: 30px;
       "
+      justify="space-between"
     >
+      <div><v-icon color="yellow" size="x-large">mdi-bell</v-icon></div>
       <div
-        style="margin-left: 40%"
-        v-if="this.readyVideo && !this.selectedVideo"
+        style="margin-left: 2%"
+        v-if="this.readyVideo && !this.selectedVideo && this.myUserId != this.champion"
       >
         <h2>
           지금
@@ -34,6 +36,41 @@
         </h2>
       </div>
 
+      <v-col
+        justify="center"
+        v-if="this.selectedVideo && !this.finish"
+        style="padding-top: 0px"
+      >
+        <MARquee
+          style="font-size: 25px"
+          scrollamount="25"
+          direction="right"
+          loop="1"
+          >도전자가
+          <span style="color: orange">{{ nowplaysong }}</span>
+          를(을) 신청하였습니다. 대결이 시작됩니다!
+        </MARquee>
+        <!-- <MARquee 
+          class="blinking"
+          v-if="vote_please"
+          style="font-size: 25px"
+          scrollamount="25"
+          direction="right"
+          loop="1"
+          >투표시간이 
+          <span style="color: orange">30초</span>
+          남았습니다. 투표를 진행해주세요!
+        </MARquee> -->
+        <vue-countdown :time="nowplaytime * 1000" v-slot="{ minutes, seconds }">
+          <h2
+            :class="{ hurryup: minutes == 0 && seconds <= 30 }"
+            style="margin-top: 50px"
+          >
+            남은 투표 시간 : {{ minutes }} 분 {{ seconds }} 초
+          </h2>
+        </vue-countdown>
+      </v-col>
+
       <div>
         <input
           class="btn btn-large btn-danger"
@@ -44,9 +81,76 @@
           style="margin-right: 20px"
         />
       </div>
-    </div>
+    </v-row>
+
+    <Modal ref="championSongListShowModal">
+      <div style="text-align: center">
+        <v-card class="mx-auto black" max-width="500">
+          <v-list dark>
+            <h3
+              type="button"
+              @click="closeChampionSongListShowModal()"
+              style="margin: 10px; margin-right: 20px; text-align: right"
+            >
+              X
+            </h3>
+
+            <h2>챔피언 {{ this.champion }}님의</h2>
+            <h2>플레이리스트</h2>
+
+            <hr />
+            <v-list-item-group v-model="model">
+              <v-list-item
+                v-for="championSong in championSongList"
+                :key="championSong.title"
+              >
+                <v-list-item-title
+                  >{{ championSong.title }} -
+
+                  {{ championSong.singer }}</v-list-item-title
+                >
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-card>
+      </div>
+    </Modal>
 
     <Modal ref="championSongListModal">
+      <div style="text-align: center">
+        <v-card class="mx-auto black" max-width="500">
+          <v-list dark>
+            <h3
+              type="button"
+              @click="closeChampionSongListModal()"
+              style="margin: 10px; margin-right: 20px; text-align: right"
+            >
+              X
+            </h3>
+
+            <h2>챔피언 {{ this.champion }}님의</h2>
+            <h2>플레이리스트</h2>
+
+            <hr />
+            <v-list-item-group v-model="model">
+              <v-list-item
+                v-for="championSong in championSongList"
+                @click="battleApplication(championSong), closeChampionSongListModal()"
+                :key="championSong.title"
+              >
+                <v-list-item-title
+                  >{{ championSong.title }}
+
+                  {{ championSong.singer }}</v-list-item-title
+                >
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-card>
+      </div>
+    </Modal>
+
+    <!-- <Modal ref="championSongListModal">
       <div style="text-align: center">
         <v-card class="mx-auto black" max-width="500">
           <v-list dark>
@@ -80,7 +184,14 @@
           </v-list>
         </v-card>
       </div>
-    </Modal>
+    </Modal> -->
+
+    <div v-if="champion_confirm && this.myUserId == this.champion" style="margin-bottom: 10px;">
+      <h2>도전자로부터 [<span style="color: green">{{nowplaysong}}</span>] 대결 신청이 들어왔습니다!</h2>
+      <h3>대결을 시작하시겠습니까?</h3>
+
+      <v-btn @click="onSelectVideo()" color="green" variant="outlined">확인</v-btn>
+    </div>
 
     <Modal ref="waitingQueueModal">
       <div style="text-align: center">
@@ -229,6 +340,16 @@
     />
 
     <input
+<<<<<<< frontend/src/views/conferences/conference.vue
+      v-if="this.myUserId != this.sessionInfo.challenger"
+      class="btn btn-large btn-warning"
+      type="button"
+      @click="showChampionSongShowList"
+      value="챔피언 플레이리스트"
+      style="margin-right: 20px;"
+    />
+
+    <input
       class="btn btn-large btn-success"
       type="button"
       @click="showWaitingQueue"
@@ -245,8 +366,8 @@
       style="margin-top: 20px; margin-bottom: 20px "
     />
     <!-- 관중들 들어갈 자리 -->
-    <v-card class="audiences" color="#3232FF" style="width: 200px"
-      ><h3 style="color: white">관람객</h3></v-card
+    <v-card class="audiences" color="#3232FF" style="width: 200px; height:35px; margin-top:10px;"
+      ><h3 style="color: white; margin-top:4px;">관람객</h3></v-card
     >
 
     <div class="smallboxb">
@@ -350,6 +471,12 @@ export default {
       voteBtnShow: false,
       test: false,
       finish: false,
+      nowplaytime: 0, // 현재 대결곡의 소요 시간
+      TimeCounter: 0,
+      nowplaysong: "", // 현재 대결곡
+      champion_confirm: false,
+      vote_please: false, // 30초 남았을때 공지 띄우기
+
       // likeChampion: 0,
       // likeChallenger: 0,
       winner: "",
@@ -445,6 +572,7 @@ export default {
     this.getname();
     console.log("====================================================");
     console.log(this.subscribers);
+    this.myUserId= localStorage.getItem("userId")
     // this.getReadyVideo();
   },
   mounted() {
@@ -541,11 +669,46 @@ export default {
           console.log(err);
         });
     },
-    onSelectVideo: function (championSong) {
+    onSelectVideo: function () {
       this.readyVideo = false;
+      // this.nowplaytime = championSong.part4 + 10;
+      // this.nowplaytime = 5;
+      // this.nowplaysong = championSong.title;
+      this.champion_confirm = false;
+      this.TimeCounter = this.nowplaytime;
+      var interval = setInterval(() => {
+        this.TimeCounter -= 1; //1초씩 감소
+        console.log("시간 : " + this.TimeCounter);
+        if (this.TimeCounter <= 30) {
+          this.vote_please = true;
+          this.session.signal({data: this.vote_please, type:"vote_please"})
+        }
+        if (this.TimeCounter <= 0) this.timerStop(interval);
+      }, 1000);
+
       this.session.signal({
         data: this.readyVideo,
         type: "start_readyVideo",
+      });
+      this.session.signal({
+        data: this.champion_confirm,
+        type: "start_battle",
+      });
+      this.session.signal({
+        data: this.readyVideo,
+        type: "start_readyVideo",
+      });
+      // this.session.signal({
+      //   data: championSong.title,
+      //   type: "start_notice",
+      // });
+      // this.session.signal({
+      //   data: championSong.part4 + 10,
+      //   type: "start_nowplaytime",
+      // });
+      this.session.signal({
+        data: this.nowplaytime,
+        type: "start_timecounter",
       });
       this.selectedVideo = true;
       this.session.signal({
@@ -564,7 +727,7 @@ export default {
       });
       this.session
         .signal({
-          data: JSON.stringify(championSong.title),
+          data: JSON.stringify(this.nowplaysong),
           type: "songTitle",
         })
         // .signal({
@@ -586,6 +749,26 @@ export default {
       });
       console.log(this.$store.state.video);
     },
+    battleApplication: function (championSong) {
+      // console.log("222222222222222222222222222");
+      // console.log("챔피언 아이디는!!!" + this.champion);
+      // console.log(this.myUserId)
+      this.nowplaysong = championSong.title;
+      this.nowplaytime = championSong.part4 + 10;
+      this.champion_confirm = true;
+      this.session.signal({ data: championSong.title, type: "battleApply" });
+      this.session.signal({
+        data: championSong.part4 + 10,
+        type: "battleApplySongTime",
+      });
+      this.session.signal({ data: true, type: "battlemodalshow" });
+    },
+
+    timerStop: function (Timer) {
+      clearInterval(Timer);
+      this.endGame();
+    },
+
     onInputSearch: function (inputText) {
       console.log("데이터가 Search로부터 올라왔다.");
 
@@ -646,8 +829,32 @@ export default {
       this.session.on("signal:endalert", (event) => {
         this.finish = event.data;
       }),
+        this.session.on("signal:battleApply", (event) => {
+          this.nowplaysong = event.data;
+        }),
+        this.session.on("signal:battleApplySongTime", (event) => {
+          this.nowplaytime = event.data;
+        }),
+        this.session.on("signal:battlemodalshow", (event) => {
+          this.champion_confirm = event.data;
+        }),
         this.session.on("signal:start_readyVideo", (event) => {
           this.readyVideo = event.data;
+        }),
+        this.session.on("signal:start_battle", (event) => {
+          this.champion_confirm = event.data;
+        }),
+        this.session.on("signal:start_readyVideo", (event) => {
+          this.readyVideo = event.data;
+        }),
+        this.session.on("signal:start_notice", (event) => {
+          this.nowplaysong = event.data;
+        }),
+        this.session.on("signal:start_nowplaytime", (event) => {
+          this.nowplaytime = event.data;
+        }),
+        this.session.on("signal:start_timecounter", (event) => {
+          this.TimeCounter = event.data;
         }),
         this.session.on("signal:start_selectedVideo", (event) => {
           this.selectedVideo = event.data;
@@ -666,6 +873,9 @@ export default {
         }),
         this.session.on("signal:showWinner", (event) => {
           this.winner = event.data;
+        }),
+        this.session.on("signal:vote_please", (event) => {
+          this.vote_please = event.data;
         }),
         this.session.on("signal:enterNewUser", (event) => {
           this.sessionInfo.challenger = JSON.parse(event.data).challenger;
@@ -1008,7 +1218,6 @@ export default {
       console.log(sessionId);
       return await this.createToken(sessionId);
     },
-
     async createSession(sessionId) {
       this.token = localStorage.getItem("jwt");
       const response = await axios.post(
@@ -1038,6 +1247,89 @@ export default {
       return response.data; // The token
     },
   },
+<<<<<<< frontend/src/views/conferences/conference.vue
+  setup() {
+    // 자식 컴포넌트를 핸들링하기 위한 ref
+    const store = useStore();
+    const championSongListModal = ref(null);
+    const championSongListShowModal = ref(null);
+    // const championBattleNoticeModal = ref(null);
+    const waitingQueueModal = ref(null);
+    // Promise 객체를 핸들링하기 위한 ref
+    const resolvePromise = ref(null);
+    const showChampionSongList = () => {
+      // showChampionSongList을 직접 컨트롤합니다.
+      championSongListModal.value.open();
+      // Promise 객체를 사용하여, 현재 모달에서 확인 / 취소의
+      // 응답이 돌아가기 전까지 작업을 기다리게 할 수 있습니다.
+      return new Promise((resolve) => {
+        // resolve 함수를 담아 외부에서 사용합니다.
+        resolvePromise.value = resolve;
+      });
+    };
+    const showChampionSongShowList = () => {
+      // showChampionSongList을 직접 컨트롤합니다.
+      championSongListShowModal.value.open();
+      // Promise 객체를 사용하여, 현재 모달에서 확인 / 취소의
+      // 응답이 돌아가기 전까지 작업을 기다리게 할 수 있습니다.
+      return new Promise((resolve) => {
+        // resolve 함수를 담아 외부에서 사용합니다.
+        resolvePromise.value = resolve;
+      });
+    };
+
+    const showWaitingQueue = () => {
+      waitingQueueModal.value.open();
+      return new Promise((resolve) => {
+        resolvePromise.value = resolve;
+      });
+    };
+
+    const closeChampionSongListModal = () => {
+      championSongListModal.value.close();
+    };
+
+    const closeChampionSongListShowModal = () => {
+      championSongListShowModal.value.close();
+    };
+
+    const closeWaitingQueueModal = () => {
+      waitingQueueModal.value.close();
+    };
+    const confirm = () => {
+      championSongListModal.value.close();
+      resolvePromise.value(true);
+      const url = "#/conferences/" + this.store.state.conferencename + "/";
+      window.open(url); // 새로운 창에서 플레이룸 오픈
+      this.store.state.conferencename = "";
+    };
+
+    const cancel = () => {
+      championSongListModal.value.close();
+      resolvePromise.value(false);
+      this.store.state.conferencename = "";
+    };
+    // async-await을 사용하여, Modal로부터 응답을 기다리게 된다.
+    return {
+      championSongListModal,
+      championSongListShowModal,
+      // championBattleNoticeModal,
+      waitingQueueModal,
+      showChampionSongList,
+      showChampionSongShowList,
+      // showChampionBattleNoticeModal,
+      showWaitingQueue,
+      confirm,
+      cancel,
+      closeChampionSongListModal,
+      closeChampionSongListShowModal,
+      // closeChampionBattleNoticeModal,
+      closeWaitingQueueModal,
+      store,
+    };
+  },
+=======
+>>>>>>> frontend/src/views/conferences/conference.vue
 };
 </script>
 <style>
@@ -1221,6 +1513,27 @@ video {
   color: #777777;
   font-weight: bold;
   border-radius: 5px;
+}
+.blinking{
+  -webkit-animation: blink 0.5s ease-in-out alternate;
+  -moz-animation: blink 0.5s ease-in-out alternate;
+  animation: blink 0.5s ease-in-out alternate;
+  animation-iteration-count: 4;
+}
+
+@-webkit-keyframes blink{
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+@-moz-keyframes blink{
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+@keyframes blink{
+  0% {opacity: 0;}
+  100% {opacity: 1;}
 }
 
 .exit {
