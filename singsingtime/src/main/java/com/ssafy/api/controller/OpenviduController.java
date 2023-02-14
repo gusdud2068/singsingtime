@@ -22,7 +22,7 @@ import java.util.Map;
 public class OpenviduController {
 
 	// 방 정원 6명
-	private final int MAX_MEMBER_CNT = 6;
+	private final int MAX_MEMBER_CNT = 50;
 	@Value("${OPENVIDU_URL}")
 	private String OPENVIDU_URL;
 
@@ -84,13 +84,39 @@ public class OpenviduController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
-		if(playroomService.checkPlayRoomMemberCnt(sessionId) >= MAX_MEMBER_CNT){
-			playroomService.addPlayRoomMemberCnt(sessionId);
-			return new ResponseEntity<>("방 정원 초과입니다. 다른 노래방을 이용해주세요", HttpStatus.OK);
-		}
+//		if(playroomService.checkPlayRoomMemberCnt(sessionId) >= MAX_MEMBER_CNT){
+//			playroomService.addPlayRoomMemberCnt(sessionId);
+//			return new ResponseEntity<>("방 정원 초과입니다. 다른 노래방을 이용해주세요", HttpStatus.OK);
+//		}
+
 		playroomService.addPlayRoomMemberCnt(sessionId);
+		System.out.println("params = " + params);
+//		params.put("type", ConnectionType.WEBRTC);
+//		params.put("data", "user_data");
+//		params.put("role", OpenViduRole.PUBLISHER);
+
+//		KurentoOptions kurentoOptions = new KurentoOptions.Builder()
+//								.allowedFilters(new String[]{"GStreamerFilter", "FaceOverlayFilter"})
+//								.build();
+//		params.put("kurentoOptions", kurentoOptions);
+
 		ConnectionProperties properties = ConnectionProperties.fromJson(params).build();
 		Connection connection = session.createConnection(properties);
+
+		// 얼굴 마스크 필터 적용 코드
+//		ConnectionProperties connectionProperties = new ConnectionProperties.Builder()
+//				.type(ConnectionType.WEBRTC)
+//				.data("user_data")
+//				.role(OpenViduRole.PUBLISHER)
+//				.kurentoOptions(
+//						new KurentoOptions.Builder()
+//								.allowedFilters(new String[]{"GStreamerFilter", "FaceOverlayFilter"})
+//								.build())
+//				.build();
+//		Connection connection = session.createConnection(connectionProperties);
+//		String token = connection.getToken(); // Send this string to the client side
+
+
 		return new ResponseEntity<>(connection.getToken(), HttpStatus.OK);
 	}
 }
