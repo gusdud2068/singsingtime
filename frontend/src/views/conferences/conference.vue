@@ -776,7 +776,7 @@ export default {
       //   });
       // });
 
-      publisher.stream.applyFilter("GStreamerFilter", {
+      this.publisher.stream.applyFilter("GStreamerFilter", {
         command:
           "gdkpixbufoverlay location=https://sstvideo.s3.ap-northeast-2.amazonaws.com/images/singsingtime.png offset-x=10 offset-y=10 overlay-height=200 overlay-width=200",
       });
