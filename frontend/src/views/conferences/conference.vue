@@ -375,6 +375,14 @@
       type="button"
       @click="startRecord"
       value="녹화 시작"
+      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
+    />
+
+    <input
+      class="btn btn-large btn-info"
+      type="button"
+      @click="applyStickerFilter()"
+      value="테스트"
       style="margin-top: 20px; margin-bottom: 20px"
     />
     <!-- 관중들 들어갈 자리 -->
@@ -467,7 +475,7 @@ export default {
       sessionInfo: {
         waitingQueue: [],
         challenger: "",
-        challengerUsername:"",
+        challengerUsername: "",
         likeChampion: 0,
         likeChallenger: 0,
         champion: "",
@@ -540,6 +548,7 @@ export default {
     // this.getReadyVideo();
     // this.ready = !this.ready;
     this.test = !this.test;
+    // this.leavePlayroom();
   },
   updated() {
     this.getReadyVideo();
@@ -588,14 +597,21 @@ export default {
         });
     },
     // async imageGet() {
-    async imageConvert() {
+    imageConvert() {
       this.token = localStorage.getItem("jwt");
       console.log("hhhhhhhhhhhh");
       console.log(this.token);
-      this.publisher.stream.applyFilter("GStreamerFilter", {
-        command:
-          "gdkpixbufoverlay location=/images/img.png offset-x=10 offset-y=10 overlay-height=200 overlay-width=200",
-      });
+      this.publisher.stream
+        .applyFilter("GStreamerFilter", {
+          command: "videoflip method=vertical-flip",
+        })
+        .then(() => {
+          console.log("Video rotated!");
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
       axios({
         method: "get",
         url: import.meta.env.VITE_APP_URL + `/api/v1/users/my-page/profile`,
@@ -608,14 +624,41 @@ export default {
           this.profileUrl = res.data;
           console.log("4444444444444444444");
           console.log(this.profileUrl);
-          console.log(this.state.there);
-          this.state.there = !this.state.there;
-          console.log(this.state.there);
+          // console.log(this.state.there);
+          // this.state.there = !this.state.there;
+          // console.log(this.state.there);
         })
         .catch((err) => {
           console.log(err);
         });
     },
+
+    // aa
+    // Kurento faceOverlayFilter 적용한 스티커 필터
+    applyStickerFilter() {
+      // bottombar 필터 해제 버튼 활성화
+      // this.$refs.bottombar.state.filter = true;
+      this.publisher.stream.applyFilter("FaceOverlayFilter").then((filter) => {
+        var offsetX;
+        var offsetY;
+        var width;
+        var height;
+        offsetX = "-0.5F";
+        offsetY = "-1.0F";
+        width = "2.1F";
+        height = "1.5F";
+        filter.execMethod("setOverlayedImage", {
+          uri: "https://sstvideo.s3.ap-northeast-2.amazonaws.com/images/aaaa.jpg",
+          offsetXPercent: offsetX,
+          offsetYPercent: offsetY,
+          widthPercent: width,
+          heightPercent: height,
+        });
+      });
+      // bottombar 필터 해제 버튼 활성화
+      // this.$refs.bottombar.state.filter = true;
+    },
+
     getReadyVideo: function () {
       this.session
         .signal({
@@ -857,7 +900,9 @@ export default {
           console.log(JSON.parse(event.data).challenger);
           this.sessionInfo.challenger = JSON.parse(event.data).challenger;
           this.sessionInfo.champion = JSON.parse(event.data).champion;
-          this.sessionInfo.championSongList = JSON.parse(event.data).championSongList;
+          this.sessionInfo.championSongList = JSON.parse(
+            event.data
+          ).championSongList;
           // 방 멤버들 중 도전자 유저의 화면 생성
           console.log(this.members);
           for (let user of this.members) {
@@ -952,6 +997,10 @@ export default {
               mirror: false, // Whether to mirror your local video or not
             });
 
+            // aa
+            // Kurento 필터 적용을 위해 remote를 subscribe
+            publisher.subscribeToRemote(true);
+
             // Set the main video in the page to display our webcam and store our Publisher
             this.mainStreamManager = publisher;
             this.members.push(publisher);
@@ -967,7 +1016,6 @@ export default {
               error.code,
               error.message
             );
-            alert(token);
             window.close();
           });
       });
@@ -986,8 +1034,8 @@ export default {
       this.publisher = undefined;
       this.subscribers = [];
       this.OV = undefined;
-
-      // 방 정원수 감소
+      // 윈도우 언로드 되기전에 방 정원수 감소
+      // 윈도우 리로드에는 여길 안거치니까 감소를 안함
       this.leavePlayroom();
       // Remove beforeunload listener
       window.removeEventListener("beforeunload", this.leaveSession);
@@ -1014,10 +1062,13 @@ export default {
           for (let user of this.members) {
             console.log(user.stream.connection.data);
             if (
-              JSON.parse(user.stream.connection.data).clientId == this.sessionInfo.champion
+              JSON.parse(user.stream.connection.data).clientId ==
+              this.sessionInfo.champion
             ) {
               this.championStreamManager = user;
-              this.championUsername = JSON.parse(user.stream.connection.data).clientNickname;
+              this.championUsername = JSON.parse(
+                user.stream.connection.data
+              ).clientNickname;
               // console.log("jjjjjjjjjjjjjjjjjj")
               // console.log(this.champion)
               // console.log(user.stream.connection.data)
@@ -1037,7 +1088,7 @@ export default {
           `/api/v1/playrooms/playlist/${this.mySessionId}`,
       })
         .then((res) => {
-          console.log("jjjjjjjjjjjjjjjj")
+          console.log("jjjjjjjjjjjjjjjj");
           console.log(res.data);
           this.sessionInfo.championSongList = res.data;
         })
@@ -1063,8 +1114,10 @@ export default {
       });
       this.sessionInfo.likeChampion = 0;
       this.sessionInfo.likeChallenger = 0;
-      this.sessionInfo.champion = 
-        this.winner == "챔피언" ? this.sessionInfo.champion : this.sessionInfo.challenger;
+      this.sessionInfo.champion =
+        this.winner == "챔피언"
+          ? this.sessionInfo.champion
+          : this.sessionInfo.challenger;
       // 시그널 필요
       axios({
         method: "put",
@@ -1078,7 +1131,8 @@ export default {
           console.log("게임끝난 상태에서 data 받아오기!!!!");
           console.log(res);
           alert(
-            this.sessionInfo.champion + `님이 ${res.data.winCnt}연승을 달성하셨습니다!!!`
+            this.sessionInfo.champion +
+              `님이 ${res.data.winCnt}연승을 달성하셨습니다!!!`
           );
           this.sessionInfo.championSongList = res.data.championSongList;
           const next = this.dequeue();
@@ -1109,6 +1163,7 @@ export default {
         .catch((err) => {
           alert(err);
         });
+      window.location.reload(true);
     },
     voteChampion() {
       this.voteBtnShow = false;
@@ -1206,7 +1261,15 @@ export default {
           "/api/v1/openvidu/sessions/" +
           sessionId +
           "/connections",
-        {},
+        {
+          // aa
+          // filter 사용을 위해 create connection 시 body를 추가
+          type: "WEBRTC",
+          role: "PUBLISHER",
+          kurentoOptions: {
+            allowedFilters: ["GStreamerFilter", "FaceOverlayFilter"],
+          },
+        },
         {
           headers: { "Content-Type": "application/json" },
         }
