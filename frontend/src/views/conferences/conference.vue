@@ -6,7 +6,6 @@
       ({ musicOn: this.selectedVideo.length > 0 }, { win: this.finish == true })
     "
   >
-
     <v-row
       style="
         color: white;
@@ -314,7 +313,6 @@
             @voteChallenger="voteChallenger"
           />
         </div>
-
       </div>
     </div>
 
@@ -349,16 +347,16 @@
       type="button"
       @click="showWaitingQueue"
       value="도전자 목록"
-      style="margin-top: 20px; margin-bottom: 20px;margin-right: 20px;"
+      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
     />
-    <br/>
+    <br />
     <input
       class="btn btn-large btn-info"
       type="button"
       ref="captureBtn"
       @click="capture"
       value="녹화 화면 지정"
-      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px;"
+      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
     />
     <input
       class="btn btn-large btn-info"
@@ -367,7 +365,7 @@
       @click="start"
       value="녹화 시작"
       disabled
-      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px;"
+      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
     />
     <input
       class="btn btn-large btn-info"
@@ -376,12 +374,9 @@
       @click="stop"
       value="녹화 중지"
       disabled
-      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px;"
+      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
     />
-<<<<<<< HEAD
-=======
-    <a id="download" ref="down" href="#" style="display:none;">Download</a>
->>>>>>> 56e3961b050d931126bd1a3ec394d034660b93f6
+    <a id="download" ref="down" href="#" style="display: none">Download</a>
 
     <!-- 관중들 들어갈 자리 -->
     <v-card
@@ -461,29 +456,28 @@ let stream;
 let voiceStream;
 let desktopStream;
 const mergeAudioStreams = (desktopStream, voiceStream) => {
-    const context = new AudioContext();
-    const destination = context.createMediaStreamDestination();
-    let hasDesktop = false;
-    let hasVoice = false;
-    if (desktopStream && desktopStream.getAudioTracks().length > 0) {
-      // If you don't want to share Audio from the desktop it should still work with just the voice.
-      const source1 = context.createMediaStreamSource(desktopStream);
-      const desktopGain = context.createGain();
-      desktopGain.gain.value = 0.7;
-      source1.connect(desktopGain).connect(destination);
-      hasDesktop = true;
-    }
-    
-    if (voiceStream && voiceStream.getAudioTracks().length > 0) {
-      const source2 = context.createMediaStreamSource(voiceStream);
-      const voiceGain = context.createGain();
-      voiceGain.gain.value = 0.7;
-      source2.connect(voiceGain).connect(destination);
-      hasVoice = true;
-    }
-    return (hasDesktop || hasVoice) ? destination.stream.getAudioTracks() : [];
-  };
+  const context = new AudioContext();
+  const destination = context.createMediaStreamDestination();
+  let hasDesktop = false;
+  let hasVoice = false;
+  if (desktopStream && desktopStream.getAudioTracks().length > 0) {
+    // If you don't want to share Audio from the desktop it should still work with just the voice.
+    const source1 = context.createMediaStreamSource(desktopStream);
+    const desktopGain = context.createGain();
+    desktopGain.gain.value = 0.7;
+    source1.connect(desktopGain).connect(destination);
+    hasDesktop = true;
+  }
 
+  if (voiceStream && voiceStream.getAudioTracks().length > 0) {
+    const source2 = context.createMediaStreamSource(voiceStream);
+    const voiceGain = context.createGain();
+    voiceGain.gain.value = 0.7;
+    source2.connect(voiceGain).connect(destination);
+    hasVoice = true;
+  }
+  return hasDesktop || hasVoice ? destination.stream.getAudioTracks() : [];
+};
 
 export default {
   name: "App",
@@ -580,63 +574,68 @@ export default {
     this.getReadyVideo();
   },
   methods: {
-     async capture() {
-    this.$refs.captureBtn.style.display = 'none';
-    const audio = true;
-    const mic = true;
-    
-    desktopStream = await navigator.mediaDevices.getDisplayMedia({ video:true, audio: audio });
-    
-    if (mic === true) {
-      voiceStream = await navigator.mediaDevices.getUserMedia({ video: false, audio: mic });
-    }
-  
-    const tracks = [
-      ...desktopStream.getVideoTracks(), 
-      ...mergeAudioStreams(desktopStream, voiceStream)
-    ];
-    
-    console.log('Tracks to add to stream', tracks);
-    stream = new MediaStream(tracks);
-    console.log('Stream', stream)
-      
-    blobs = [];
-  
-    rec = new MediaRecorder(stream, {mimeType: 'video/webm; '});
-    rec.ondataavailable = (e) => blobs.push(e.data);
-    rec.onstop = async () => {
-      
-      //blobs.push(MediaRecorder.requestData());
-      blob = new Blob(blobs, {type: 'video/mp4'});
-      let url = window.URL.createObjectURL(blob);
-      this.$refs.down.href = url;
-      this.$refs.down.download = 'test.mp4';
-      this.$refs.down.style.display = '';
-    };
-    this.$refs.startBtn.disabled = false;
-    this.$refs.startBtn.style.color="lightsalmon";
-    this.$refs.captureBtn.disabled = true;
-  },
+    async capture() {
+      this.$refs.captureBtn.style.display = "none";
+      const audio = true;
+      const mic = true;
 
-  start(){
-    this.$refs.startBtn.disabled = true;
-    this.$refs.startBtn.style.color="white";
-    this.$refs.stopBtn.style.color="lightsalmon";
-    this.$refs.stopBtn.disabled = false;
-    rec.start();
-  },
+      desktopStream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+        audio: audio,
+      });
 
-  stop(){
-    this.$refs.captureBtn.disabled = false;
-    this.$refs.startBtn.disabled = true;
-    this.$refs.stopBtn.disabled = true;
-    this.$refs.stopBtn.style.color="white";
-    rec.stop();
-    
-    stream.getTracks().forEach(s=>s.stop())
-    stream = null;
-    this.$refs.captureBtn.style.display = 'inline';
-  },
+      if (mic === true) {
+        voiceStream = await navigator.mediaDevices.getUserMedia({
+          video: false,
+          audio: mic,
+        });
+      }
+
+      const tracks = [
+        ...desktopStream.getVideoTracks(),
+        ...mergeAudioStreams(desktopStream, voiceStream),
+      ];
+
+      console.log("Tracks to add to stream", tracks);
+      stream = new MediaStream(tracks);
+      console.log("Stream", stream);
+
+      blobs = [];
+
+      rec = new MediaRecorder(stream, { mimeType: "video/webm; " });
+      rec.ondataavailable = (e) => blobs.push(e.data);
+      rec.onstop = async () => {
+        //blobs.push(MediaRecorder.requestData());
+        blob = new Blob(blobs, { type: "video/mp4" });
+        let url = window.URL.createObjectURL(blob);
+        this.$refs.down.href = url;
+        this.$refs.down.download = "test.mp4";
+        this.$refs.down.style.display = "";
+      };
+      this.$refs.startBtn.disabled = false;
+      this.$refs.startBtn.style.color = "lightsalmon";
+      this.$refs.captureBtn.disabled = true;
+    },
+
+    start() {
+      this.$refs.startBtn.disabled = true;
+      this.$refs.startBtn.style.color = "white";
+      this.$refs.stopBtn.style.color = "lightsalmon";
+      this.$refs.stopBtn.disabled = false;
+      rec.start();
+    },
+
+    stop() {
+      this.$refs.captureBtn.disabled = false;
+      this.$refs.startBtn.disabled = true;
+      this.$refs.stopBtn.disabled = true;
+      this.$refs.stopBtn.style.color = "white";
+      rec.stop();
+
+      stream.getTracks().forEach((s) => s.stop());
+      stream = null;
+      this.$refs.captureBtn.style.display = "inline";
+    },
     leavePlayroom() {
       axios({
         method: "delete",
@@ -1380,7 +1379,7 @@ export default {
         }
       );
       return response.data; // The token
-    }
+    },
   },
   setup() {
     // 자식 컴포넌트를 핸들링하기 위한 ref
