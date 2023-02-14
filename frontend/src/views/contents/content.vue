@@ -240,7 +240,6 @@ export default {
       // changes,
       // getid,
       // fullheart,
-      miChin
     };
   },
 };

@@ -6,7 +6,11 @@
       ({ musicOn: this.selectedVideo.length>0}, { win: this.finish == true })
     "
   >
-    <v-row 
+  <!-- <video ref="video" width="100" height="100" controls></video> -->
+  <button @click="startRecord">
+    녹화 시작
+  </button>
+    <v-row
       style="
         color: white;
         display: flex;
@@ -20,7 +24,6 @@
       >
         <h2>
           지금
-
           <img
             src="../../assets/images/champion.gif"
             style="width: 50px"
@@ -1049,7 +1052,34 @@ export default {
       console.log(sessionId);
       return await this.createToken(sessionId);
     },
-
+    startRecord(){
+        navigator.mediaDevices.getDisplayMedia(
+        {
+          audio:true,
+          video: {
+            mediaSource:"screen",
+          }
+        }
+      ).then((stream)=>{
+        const recorder = new MediaRecorder(stream);
+        recorder.start();
+        const buffer = [];
+        recorder.addEventListener('dataavailable',(event)=>{
+          buffer.push(event.data);
+        })
+        recorder.addEventListener('stop',()=>{
+          const blob = new Blob(buffer,{
+          type:'video/mp4'
+        });
+        this.$refs.down.href= URL.createObjectURL(blob);
+        console.log("녹화테스트");
+        console.log(this.$refs.down);
+        this.$refs.down.download="recording.mp4"
+        this.$refs.down.click();
+        })
+      })
+      },
+   
     async createSession(sessionId) {
       this.token = localStorage.getItem("jwt");
       const response = await axios.post(
