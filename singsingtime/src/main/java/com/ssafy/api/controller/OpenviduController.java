@@ -100,7 +100,7 @@ public class OpenviduController {
 //		params.put("kurentoOptions", kurentoOptions);
 
 		ConnectionProperties properties = ConnectionProperties.fromJson(params).build();
-		Connection connection>>> = session.createConnection(properties);
+		Connection connection = session.createConnection(properties);
 
 		// 얼굴 마스크 필터 적용 코드
 //		ConnectionProperties connectionProperties = new ConnectionProperties.Builder()
