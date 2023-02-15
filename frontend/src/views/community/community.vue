@@ -95,7 +95,7 @@
     </v-dialog>
   </v-row>
 
-  <ul class="infinite-list">
+  <ul class="infinite-list" style="margin-top:20px;">
     <li
       v-for="(video, i) in state.content_list"
       class="infinite-list-item"
@@ -109,30 +109,42 @@
             :elevation="isHovering ? 12 : 2"
             :class="{ 'on-hover': isHovering }"
             v-bind="props"
+            style="background-color:#1A237E; border-radius:15px;"
           >
             <!-- <v-img src="https://picsum.photos/200" height="225px" cover> -->
             <video :src="video.url" />
             <v-card-title
-              class="text-h6 text-black d-flex flex-column justify-space-between"
+              class="
+                text-h6 text-black
+                d-flex
+                flex-column
+                justify-space-between
+              "
               style="padding: 0px; height: 100%"
             >
-              <p style="margin-left: 30px" align="left" class="champion_info">
-                제목: {{ video.title }}
-              </p>
-              <p style="margin-left: 30px" align="left">
-                작성자: {{ video.user.nickname }}
-              </p>
-              <v-row style="margin-top: 1px" justify="space-between">
-              <p style="margin-left: 40px" align="left">
-               조회수: {{ video.viewCnt }}
-              </p>
-              <p style="margin-right: 40px" align="left">
-              <v-icon color="red">mdi-heart</v-icon> 좋아요 수: {{ video.likeCnt }}
-              </p>
+              <v-row style="margin-top:1px;" justify="space-between">
+                <p
+                  style="margin-left: 40px; font-size: 15px; color:white;"
+                  align="left"
+                  class="champion_info"
+                >
+                  제목: {{ video.title }}
+                </p>
+                <p style="margin-right: 40px; font-size: 15px; color:white;" align="left">
+                  {{ video.user.nickname }}님
+                </p>
+              </v-row>
+              <v-row style="margin-top: 1px; margin-bottom:1px;" justify="space-between">
+                <p style="margin-left: 40px; font-size: 15px; color:white;" align="left">
+                   View {{ video.viewCnt }}
+                </p>
+                <p style="margin-right: 40px; font-size: 15px; color:white;" align="left">
+                  <v-icon color="red">mdi-heart</v-icon> {{ video.likeCnt }}
+                </p>
               </v-row>
               <!-- <p class="song_info" align="start">{{ video.id }}</p> -->
               <!-- <div class="d-flex justify-space-between info_box"> -->
-                <!-- <div class="view_info">{{ video.description }}</div> -->
+              <!-- <div class="view_info">{{ video.description }}</div> -->
               <!-- </div> -->
             </v-card-title>
             <!-- </v-img> -->
@@ -141,13 +153,6 @@
       </v-col>
       <!-- <ContentBox /> -->
     </li>
-    <div class="text-center">
-      <v-pagination
-        v-model="state.page"
-        :length="max_page"
-        @click="consolemethod(state.page)"
-      ></v-pagination>
-    </div>
   </ul>
 </template>
 
