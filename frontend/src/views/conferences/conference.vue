@@ -1148,10 +1148,10 @@ export default {
       });
       // 2. 게임 끝나고 다음 도전자 없을 때
       this.session.on("signal:updateNoChallengerSessionInfo", (event) => {
-        console.log("iiiiiiiiiiiiiiiiiii");
-        console.log(JSON.parse(event.data).challenger);
-        console.log(JSON.parse(event.data).champion);
-        console.log(JSON.parse(event.data).championSongList);
+        // console.log("iiiiiiiiiiiiiiiiiii2");
+        // console.log(JSON.parse(event.data).challenger);
+        // console.log(JSON.parse(event.data).champion);
+        // console.log(JSON.parse(event.data).championSongList);
         this.sessionInfo.challenger = JSON.parse(event.data).challenger;
         this.sessionInfo.champion = JSON.parse(event.data).champion;
         this.sessionInfo.championSongList = JSON.parse(
@@ -1171,11 +1171,15 @@ export default {
 
         // 1초 쉬고 새로고침
         // setTimeout(() => console.log("1초 후에 실행됨"), 1000);
-        window.location.reload(true);
+        // window.location.reload(true);
       });
 
       // 3. 게임 끝나고 다음 도전자가 있을 때
       this.session.on("signal:updateYesChallengerSessionInfo", (event) => {
+        // console.log("iiiiiiiiiiiiiiiiiii3");
+        // console.log(JSON.parse(event.data).challenger);
+        // console.log(JSON.parse(event.data).champion);
+        // console.log(JSON.parse(event.data).championSongList);
         this.sessionInfo.challenger = JSON.parse(event.data).challenger;
         this.sessionInfo.champion = JSON.parse(event.data).champion;
         this.sessionInfo.championSongList = JSON.parse(
@@ -1202,7 +1206,7 @@ export default {
 
         // 1초 쉬고 새로고침
         // setTimeout(() => console.log("1초 후에 실행됨"), 1000);
-        window.location.reload(true);
+        // window.location.reload(true);
       });
 
       // aa
@@ -1448,6 +1452,7 @@ export default {
               type: "updateYesChallengerSessionInfo",
             });
           }
+          // aa
           // 챔피언만 실행하는 함수인데 자기만 화면 못생성함 -> 시그널 받는 곳과 별개로 생성
           // 방 멤버들 중 챔피언 화면 생성
           for (let user of this.members) {
