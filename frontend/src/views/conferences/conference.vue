@@ -781,7 +781,7 @@ export default {
         var offsetY;
         var width;
         var height;
-        offsetX = "0.0F"; // -0.7F
+        offsetX = "-0.1F"; // -0.7F
         offsetY = "-0.7F";
         width = "1.4";
         height = "1.4";
@@ -808,7 +808,7 @@ export default {
         return;
       }
 
-      this.publisher.stream.applyFilter("GStreamerFilter", {"command": "audioecho delay=50000000 intensity=1.6 feedback=1.4"})
+      this.publisher.stream.applyFilter("GStreamerFilter", {"command": "audioecho delay=50000000 intensity=1.4 feedback=0.7"})
 
       // this.publisher.stream.applyFilter("GStreamerFilter", {
       //   command:
