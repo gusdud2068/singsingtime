@@ -39,10 +39,11 @@ public class Playroom extends BaseEntity {
     private int recommendCnt;
 
     @Builder
-    public Playroom(String sessionId, String title, String champion, int userCnt, User user){
+    public Playroom(String sessionId, String title, String champion, String challenger, int userCnt, User user){
         this.sessionId=sessionId;
         this.title= title;
         this.champion = user.getUserId();
+        this.challenger = ""; // null 값 방지
         this.userCnt = 0;
         this.user= user;
         this.setPlayroomStatus(PlayroomStatus.STANDBY);

@@ -772,7 +772,6 @@ export default {
           console.error(error);
         });
     },
-    // aa
     // Kurento faceOverlayFilter 적용한 스티커 필터
     applyStickerFilter() {
       // 필터 해제, 버튼 OFF 전환
@@ -804,7 +803,6 @@ export default {
       this.stickerFilterBtnClicked = true;
     },
 
-    // aa
     // Kurento audioecho Filter 적용한 오디오 필터
     applyEchoFilter() {
       // 필터 해제, 버튼 OFF 전환
@@ -846,7 +844,6 @@ export default {
     },
     // 챔피언만 실행하는 함수
     onSelectVideo: function () {
-      // aa
       // if(this.myUserId == this.sessionInfo.champion){
       //   this.session.signal({ type: "onSelectVideoSpread" }); // 데이터 상관없음
       // }
@@ -1189,7 +1186,7 @@ export default {
         window.location.reload(true);
       });
 
-      // aa
+      // aa 구조 파악 필요
       this.session.on("signal:sessionInfo", (event) => {
         console.log("이벤트발생시켜줘");
         const originData = JSON.parse(event.data);
@@ -1272,7 +1269,6 @@ export default {
               mirror: false, // Whether to mirror your local video or not
             });
 
-            // aa
             // Kurento 필터 적용을 위해 remote를 subscribe
             publisher.subscribeToRemote(true);
 
@@ -1329,14 +1325,17 @@ export default {
           `/api/v1/playrooms/${this.mySessionId}`,
       })
         .then((res) => {
+          // 들어오면 받는 정보
+          // 1. 챔피언, 도전자, 챔피언 노래 목록
           this.sessionInfo.champion = res.data.champion;
           this.sessionInfo.challenger = res.data.challenger;
-          this.getChampionList();
+          this.getChampionSongList();
+          // aa 플레이룸-도전자 조회
 
-          // 방 멤버들 중 챔피언 화면 생성
+          // 2. 방 멤버들 중 챔피언 화면 생성
           this.setChampionStreamManager();
 
-          // 방 멤버들 중 도전자 화면 생성
+          // 3. 방 멤버들 중 도전자 화면 생성
           this.setChallengerStreamManager();
         })
         .catch((err) => {
@@ -1367,7 +1366,7 @@ export default {
       }
     },
     // 챔피언 노래목록 불러오기
-    getChampionList() {
+    getChampionSongList() {
       axios({
         method: "get",
         url:
@@ -1443,7 +1442,6 @@ export default {
               data: JSON.stringify(this.sessionInfo),
               type: "updateNoChallengerSessionInfo",
             });
-            // aa
           } else {
             this.sessionInfo.challenger = next;
             // DB 플레이룸 도전자 정보 수정3
@@ -1454,7 +1452,6 @@ export default {
               type: "updateYesChallengerSessionInfo",
             });
           }
-          // aa
           // 챔피언만 실행하는 함수인데 자기만 화면 못생성함 -> 시그널 받는 곳과 별개로 생성
           // 방 멤버들 중 챔피언 화면 생성
           this.setChampionStreamManager();
@@ -1500,6 +1497,7 @@ export default {
       });
     },
     enqueue(data) {
+      // aa 플레이룸-도전자 등록
       this.sessionInfo.waitingQueue.push(data);
     },
     // 도전자만 실행하는 함수
@@ -1529,6 +1527,7 @@ export default {
       this.enqueue(this.myUserId);
       console.log("대기열 출력!!");
       console.log(this.sessionInfo.waitingQueue);
+
       this.session.signal({
         data: JSON.stringify(this.sessionInfo),
         type: "addWaitingQueue",
@@ -1537,6 +1536,7 @@ export default {
     dequeue() {
       if (this.sessionInfo.waitingQueue.length == 0) return "";
       else {
+        // aa 플레이룸-도전자 삭제
         return this.sessionInfo.waitingQueue.shift();
       }
     },
@@ -1584,7 +1584,6 @@ export default {
           sessionId +
           "/connections",
         {
-          // aa
           // filter 사용을 위해 create connection 시 body를 추가
           type: "WEBRTC",
           role: "PUBLISHER",
