@@ -116,7 +116,7 @@ a {
   width: 5vw;
 }
 .here{
-  background-color:black ;
+  background-color:black;
   background-image: url("../../../assets/images/sparkle-star.gif");
   background-size: 400px;
   background-repeat: repeat;
