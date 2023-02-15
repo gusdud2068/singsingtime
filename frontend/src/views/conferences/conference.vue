@@ -1148,6 +1148,10 @@ export default {
       });
       // 2. 게임 끝나고 다음 도전자 없을 때
       this.session.on("signal:updateNoChallengerSessionInfo", (event) => {
+        console.log("iiiiiiiiiiiiiiiiiii");
+        console.log(JSON.parse(event.data).challenger);
+        console.log(JSON.parse(event.data).champion);
+        console.log(JSON.parse(event.data).championSongList);
         this.sessionInfo.challenger = JSON.parse(event.data).challenger;
         this.sessionInfo.champion = JSON.parse(event.data).champion;
         this.sessionInfo.championSongList = JSON.parse(
