@@ -1130,6 +1130,7 @@ export default {
 
       // 1. 첫 도전자가 있을 때 (challenge 자리)
       this.session.on("signal:challengeFirst", (event) => {
+        console.log("iiiiiiiiiiiiiiiiiii1");
         this.sessionInfo.challenger = JSON.parse(event.data).challenger;
         // this.sessionInfo.champion = JSON.parse(event.data).champion;
         // this.sessionInfo.championSongList = JSON.parse(
@@ -1148,7 +1149,7 @@ export default {
       });
       // 2. 게임 끝나고 다음 도전자 없을 때
       this.session.on("signal:updateNoChallengerSessionInfo", (event) => {
-        // console.log("iiiiiiiiiiiiiiiiiii2");
+        console.log("iiiiiiiiiiiiiiiiiii2");
         // console.log(JSON.parse(event.data).challenger);
         // console.log(JSON.parse(event.data).champion);
         // console.log(JSON.parse(event.data).championSongList);
@@ -1172,11 +1173,13 @@ export default {
         // 1초 쉬고 새로고침
         // setTimeout(() => console.log("1초 후에 실행됨"), 1000);
         // window.location.reload(true);
+        // 강제 리렌더링
+        this.$forceUpdate();
       });
 
       // 3. 게임 끝나고 다음 도전자가 있을 때
       this.session.on("signal:updateYesChallengerSessionInfo", (event) => {
-        // console.log("iiiiiiiiiiiiiiiiiii3");
+        console.log("iiiiiiiiiiiiiiiiiii3");
         // console.log(JSON.parse(event.data).challenger);
         // console.log(JSON.parse(event.data).champion);
         // console.log(JSON.parse(event.data).championSongList);
@@ -1207,6 +1210,8 @@ export default {
         // 1초 쉬고 새로고침
         // setTimeout(() => console.log("1초 후에 실행됨"), 1000);
         // window.location.reload(true);
+        // 강제 리렌더링
+        this.$forceUpdate();
       });
 
       // aa
@@ -1498,6 +1503,7 @@ export default {
     enqueue(data) {
       this.sessionInfo.waitingQueue.push(data);
     },
+    // 도전자만 실행하는 함수
     challengeFirst(myUserId) {
       if (this.sessionInfo.challenger == "") {
         this.sessionInfo.challenger = myUserId;
