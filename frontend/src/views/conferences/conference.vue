@@ -1161,6 +1161,9 @@ export default {
             this.championStreamManager = user;
           }
         }
+
+        // 새로고침 필요
+        window.location.reload(true);
       });
 
       // 3. 게임 끝나고 다음 도전자가 있을 때
@@ -1188,6 +1191,8 @@ export default {
             this.championStreamManager = user;
           }
         }
+        // 새로고침 필요
+        window.location.reload(true);
       });
 
       // aa
