@@ -625,6 +625,7 @@ export default {
     this.getReadyVideo();
   },
   methods: {
+    // 챔피언만 실행하는 함수
     sendStartSignal() {
       this.session.signal({ type: "onSelectVideoSpread" }); // 데이터 상관없음
       this.onSelectVideo();
@@ -843,6 +844,7 @@ export default {
           console.log(err);
         });
     },
+    // 챔피언만 실행하는 함수
     onSelectVideo: function () {
       // aa
       // if(this.myUserId == this.sessionInfo.champion){
@@ -970,6 +972,7 @@ export default {
       this.session.signal({ data: true, type: "battlemodalshow" });
     },
 
+    // 챔피언만 실행하는 함수
     timerStop: function (Timer) {
       clearInterval(Timer);
       // if ( minutes == 0 && seconds == 0) {
@@ -1163,7 +1166,7 @@ export default {
         }
 
         // 1초 쉬고 새로고침
-        setTimeout(() => console.log("1초 후에 실행됨"), 1000);
+        // setTimeout(() => console.log("1초 후에 실행됨"), 1000);
         window.location.reload(true);
       });
 
@@ -1194,7 +1197,7 @@ export default {
         }
 
         // 1초 쉬고 새로고침
-        setTimeout(() => console.log("1초 후에 실행됨"), 1000);
+        // setTimeout(() => console.log("1초 후에 실행됨"), 1000);
         window.location.reload(true);
       });
 
@@ -1376,6 +1379,7 @@ export default {
           alert(err);
         });
     },
+    // 챔피언만 실행하는 함수
     endGame() {
       // console.log("=====================end")
 
@@ -1439,6 +1443,26 @@ export default {
               data: JSON.stringify(this.sessionInfo),
               type: "updateYesChallengerSessionInfo",
             });
+          }
+          // 챔피언만 실행하는 함수인데 자기만 화면 못생성함 -> 시그널 받는 곳과 별개로 생성
+          // 방 멤버들 중 챔피언 화면 생성
+          for (let user of this.members) {
+            if (
+              JSON.parse(user.stream.connection.data).clientId ==
+              this.sessionInfo.champion
+            ) {
+              this.championStreamManager = user;
+            }
+          }
+
+          // 방 멤버들 중 도전자 화면 생성
+          for (let user of this.members) {
+            if (
+              JSON.parse(user.stream.connection.data).clientId ==
+              this.sessionInfo.challenger
+            ) {
+              this.challengerStreamManager = user;
+            }
           }
         })
         .catch((err) => {
