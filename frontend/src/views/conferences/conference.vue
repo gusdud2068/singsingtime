@@ -1162,7 +1162,8 @@ export default {
           }
         }
 
-        // 새로고침 필요
+        // 1초 쉬고 새로고침
+        setTimeout(() => console.log("1초 후에 실행됨"), 1000);
         window.location.reload(true);
       });
 
@@ -1191,7 +1192,9 @@ export default {
             this.championStreamManager = user;
           }
         }
-        // 새로고침 필요
+
+        // 1초 쉬고 새로고침
+        setTimeout(() => console.log("1초 후에 실행됨"), 1000);
         window.location.reload(true);
       });
 
