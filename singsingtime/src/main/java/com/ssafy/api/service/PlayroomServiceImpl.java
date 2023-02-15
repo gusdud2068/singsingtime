@@ -164,4 +164,11 @@ public class PlayroomServiceImpl implements PlayroomService{
         Playroom playroom = playroomRepository.findBySessionId(sessionId).orElseThrow(()->new NoSuchElementException());
         playroomRepository.deleteById(playroom.getId());
     }
+
+    @Transactional
+    @Override
+    public void updateChallenger(PlayroomStatusReq playroomStatusReq) {
+        Playroom playroom = playroomRepository.findBySessionId(playroomStatusReq.getSessionId()).orElseThrow(()->new NoSuchElementException());
+        playroom.setChallenger(playroomStatusReq.getChallengerId());
+    }
 }

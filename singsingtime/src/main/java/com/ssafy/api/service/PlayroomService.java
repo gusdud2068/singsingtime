@@ -34,4 +34,6 @@ public interface PlayroomService {
     void minusPlayRoomMemberCnt(String sessionId);
 
     void deletePlayRoom(String sessionId);
+
+    void updateChallenger(PlayroomStatusReq playroomStatusReq);
 }

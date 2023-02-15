@@ -98,6 +98,12 @@ public class PlayroomController {
         PlayroomStatusRes playroomStatusRes =playroomService.endSong(playroomStatusReq);
         return new ResponseEntity<>(playroomStatusRes,HttpStatus.OK);
     }
+    @PutMapping("/challenger")
+    public ResponseEntity<? extends BaseResponseBody> updateChallenger(@RequestBody PlayroomStatusReq playroomStatusReq){
+
+        playroomService.updateChallenger(playroomStatusReq);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
     @PostMapping("/")
     public ResponseEntity<List<Playroom>> createRoom() {
         List<Playroom> list = playroomService.getPlayroom();

@@ -9,5 +9,5 @@ public class PlayroomStatusReq {
     String sessionId;
     String championId;
     String title;
-//    String singer;
+    String challengerId;
 }

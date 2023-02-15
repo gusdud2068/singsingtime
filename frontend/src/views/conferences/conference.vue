@@ -1161,20 +1161,11 @@ export default {
         // 방 멤버들 중 도전자 빈 화면 생성
         this.challengerStreamManager = undefined;
         // 방 멤버들 중 챔피언 화면 생성
-        for (let user of this.members) {
-          if (
-            JSON.parse(user.stream.connection.data).clientId ==
-            this.sessionInfo.champion
-          ) {
-            this.championStreamManager = user;
-          }
-        }
+        this.setChampionStreamManager();
 
         // 1초 쉬고 새로고침
         // setTimeout(() => console.log("1초 후에 실행됨"), 1000);
-        // window.location.reload(true);
-        // 강제 리렌더링
-        this.$forceUpdate();
+        window.location.reload(true);
       });
 
       // 3. 게임 끝나고 다음 도전자가 있을 때
@@ -1188,30 +1179,14 @@ export default {
         this.sessionInfo.championSongList = JSON.parse(
           event.data
         ).championSongList;
-        // 방 멤버들 중 도전자 화면 생성
-        for (let user of this.members) {
-          if (
-            JSON.parse(user.stream.connection.data).clientId ==
-            this.sessionInfo.challenger
-          ) {
-            this.challengerStreamManager = user;
-          }
-        }
         // 방 멤버들 중 챔피언 화면 생성
-        for (let user of this.members) {
-          if (
-            JSON.parse(user.stream.connection.data).clientId ==
-            this.sessionInfo.champion
-          ) {
-            this.championStreamManager = user;
-          }
-        }
+        this.setChampionStreamManager();
+        // 방 멤버들 중 도전자 화면 생성
+        this.setChallengerStreamManager();
 
         // 1초 쉬고 새로고침
         // setTimeout(() => console.log("1초 후에 실행됨"), 1000);
-        // window.location.reload(true);
-        // 강제 리렌더링
-        this.$forceUpdate();
+        window.location.reload(true);
       });
 
       // aa
@@ -1355,25 +1330,41 @@ export default {
       })
         .then((res) => {
           this.sessionInfo.champion = res.data.champion;
+          this.sessionInfo.challenger = res.data.challenger;
           this.getChampionList();
 
-          // 방 멤버들 중 챔피언 유저의 화면 생성
-          for (let user of this.members) {
-            console.log(user.stream.connection.data);
-            if (
-              JSON.parse(user.stream.connection.data).clientId ==
-              this.sessionInfo.champion
-            ) {
-              this.championStreamManager = user;
-              this.championUsername = JSON.parse(
-                user.stream.connection.data
-              ).clientNickname;
-            }
-          }
+          // 방 멤버들 중 챔피언 화면 생성
+          this.setChampionStreamManager();
+
+          // 방 멤버들 중 도전자 화면 생성
+          this.setChallengerStreamManager();
         })
         .catch((err) => {
           alert(err);
         });
+    },
+    // 방 멤버들 중 챔피언 화면 생성
+    setChampionStreamManager() {
+      for (let user of this.members) {
+        if (
+          JSON.parse(user.stream.connection.data).clientId ==
+          this.sessionInfo.champion
+        ) {
+          this.championStreamManager = user;
+        }
+      }
+    },
+
+    // 방 멤버들 중 도전자 화면 생성
+    setChallengerStreamManager() {
+      for (let user of this.members) {
+        if (
+          JSON.parse(user.stream.connection.data).clientId ==
+          this.sessionInfo.challenger
+        ) {
+          this.challengerStreamManager = user;
+        }
+      }
     },
     // 챔피언 노래목록 불러오기
     getChampionList() {
@@ -1445,6 +1436,9 @@ export default {
           // 다음 사람이 있으면 next challenger 올리고 sessionInfo 전파
           if (next == "") {
             this.sessionInfo.challenger = "";
+            // DB 플레이룸 도전자 정보 수정2
+            this.updateDBChallenger(this.sessionInfo.challenger);
+            // challenger 없는거 전파
             this.session.signal({
               data: JSON.stringify(this.sessionInfo),
               type: "updateNoChallengerSessionInfo",
@@ -1452,6 +1446,9 @@ export default {
             // aa
           } else {
             this.sessionInfo.challenger = next;
+            // DB 플레이룸 도전자 정보 수정3
+            this.updateDBChallenger(this.sessionInfo.challenger);
+            // challenger 다음 사람 전파
             this.session.signal({
               data: JSON.stringify(this.sessionInfo),
               type: "updateYesChallengerSessionInfo",
@@ -1460,29 +1457,31 @@ export default {
           // aa
           // 챔피언만 실행하는 함수인데 자기만 화면 못생성함 -> 시그널 받는 곳과 별개로 생성
           // 방 멤버들 중 챔피언 화면 생성
-          for (let user of this.members) {
-            if (
-              JSON.parse(user.stream.connection.data).clientId ==
-              this.sessionInfo.champion
-            ) {
-              this.championStreamManager = user;
-            }
-          }
-
+          this.setChampionStreamManager();
           // 방 멤버들 중 도전자 화면 생성
-          for (let user of this.members) {
-            if (
-              JSON.parse(user.stream.connection.data).clientId ==
-              this.sessionInfo.challenger
-            ) {
-              this.challengerStreamManager = user;
-            }
-          }
+          this.setChallengerStreamManager();
         })
         .catch((err) => {
           alert(err);
         });
-      // window.location.reload(true);
+      // 챔피언 화면 reload
+      window.location.reload(true);
+    },
+    updateDBChallenger(newChallenger) {
+      axios({
+        method: "put",
+        url: import.meta.env.VITE_APP_URL + `/api/v1/playrooms/challenger`,
+        data: {
+          sessionId: this.mySessionId,
+          challengerId: newChallenger,
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          alert(err);
+        });
     },
     voteChampion() {
       this.voteBtnShow = false;
@@ -1512,6 +1511,9 @@ export default {
           data: JSON.stringify(this.sessionInfo),
           type: "challengeFirst",
         });
+        // DB 플레이룸 도전자 정보 수정1
+        this.updateDBChallenger(this.sessionInfo.challenger);
+
         return;
       }
       if (this.sessionInfo.challenger == myUserId) {
