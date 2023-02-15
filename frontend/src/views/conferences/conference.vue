@@ -765,10 +765,10 @@ export default {
         var height;
         offsetX = "-0.7F";
         offsetY = "-0.7F";
-        width = "2.3";
-        height = "2.3";
+        width = "1.8";
+        height = "1.8";
         filter.execMethod("setOverlayedImage", {
-          uri: "https://sstvideo.s3.ap-northeast-2.amazonaws.com/images/mask2.png",
+          uri: "https://sstvideo.s3.ap-northeast-2.amazonaws.com/images/maskmask.png",
           offsetXPercent: offsetX,
           offsetYPercent: offsetY,
           widthPercent: width,
