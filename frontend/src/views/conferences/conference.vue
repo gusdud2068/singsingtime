@@ -268,7 +268,7 @@
       <div id="video-container" class="bigbox">
         <!-- <div id="video-container" class=""> -->
 
-        <div class="smallboxl" display="flex">
+        <div class="smallboxl" style="margin-right: 300px;"  display="flex">
           <!--스몰박스 left, 노래화면 왼쪽. 여기에 스트림매니저로 챔피언을 넘겨줘야함-->
 
           <v-card style="padding: 5px; font-size: 20px" color="primary"
@@ -282,13 +282,14 @@
           <user-video
             :stream-manager="championStreamManager"
             @click.native="updateMainVideoStreamManager(championStreamManager)"
+            :player="playerJoined"
           />
           <VoteChampion v-if="this.voteBtnShow" @voteChampion="voteChampion" />
         </div>
 
         <!-- </v-col> -->
 
-        <div class="musicbox">
+        <div class="musicbox" style="margin-right: 300px;">
           <SongDetail
             v-if="this.selectedVideo && this.finish == false"
             :session="session"
@@ -333,6 +334,7 @@
             @click.native="
               updateMainVideoStreamManager(challengerStreamManager)
             "
+            :player="playerJoined"
           />
           <VoteChallenger
             v-if="this.voteBtnShow"
@@ -486,6 +488,7 @@
         :key="sub.stream.connection.connectionId"
         :stream-manager="sub"
         @click.native="updateMainVideoStreamManager(sub)"
+        :player="crowdJoined"
       />
     </div>
   </div>
@@ -613,6 +616,8 @@ export default {
       challengerStreamManager: undefined,
       stickerFilterBtnClicked: false,
       echoFilterBtnClicked: false,
+      playerJoined: true,
+      crowdJoined: false,
     };
   },
   computed: {
@@ -1695,7 +1700,7 @@ export default {
 }
 
 .smallboxl {
-  width: 300px;
+  width: 700px;
 }
 
 .musicbox {
@@ -1806,7 +1811,8 @@ export default {
   /* position: relative; */
   /* float: left; */
   margin-left: 0.6%;
-  border: 3px solid;
+  /* border: 3px solid; */
+  border: 0px solid;
   border-color: rgb(255, 255, 255);
   /* cursor: pointer; */
   /* margin:  2%;  */
