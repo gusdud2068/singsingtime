@@ -350,7 +350,7 @@
       style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
     />
     <input
-      v-if="filterBtnClicked"
+      v-if="stickerFilterBtnClicked"
       class="btn btn-large btn-danger"
       type="button"
       @click="applyStickerFilter"
@@ -365,6 +365,23 @@
       value="필터 OFF"
       style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
     />
+    <input
+      v-if="echoFilterBtnClicked"
+      class="btn btn-large btn-danger"
+      type="button"
+      @click="applyEchoFilter"
+      value="에코 ON"
+      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
+    />
+    <input
+      v-else
+      class="btn btn-large btn-primary"
+      type="button"
+      @click="applyEchoFilter"
+      value="에코 OFF"
+      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
+    />
+
     <br />
     <input
       class="btn btn-large btn-info"
@@ -556,7 +573,8 @@ export default {
       members: [],
       championStreamManager: undefined,
       challengerStreamManager: undefined,
-      filterBtnClicked: false,
+      stickerFilterBtnClicked: false,
+      echoFilterBtnClicked: false,
     };
   },
   computed: {
@@ -698,8 +716,8 @@ export default {
     // async imageGet() {
     imageConvert() {
       // 버튼 눌려있으면 OFF로만 바꾸기
-      if (this.filterBtnClicked) {
-        this.filterBtnClicked = false;
+      if (this.stickerFilterBtnClicked) {
+        this.stickerFilterBtnClicked = false;
         return;
       }
       // this.token = localStorage.getItem("jwt");
@@ -716,7 +734,7 @@ export default {
       //     console.error(error);
       //   });
 
-      this.filterBtnClicked = true;
+      this.stickerFilterBtnClicked = true;
 
       // axios({
       //   method: "get",
@@ -752,9 +770,9 @@ export default {
     // Kurento faceOverlayFilter 적용한 스티커 필터
     applyStickerFilter() {
       // 필터 해제, 버튼 OFF 전환
-      if (this.filterBtnClicked) {
+      if (this.stickerFilterBtnClicked) {
         this.filterOff();
-        this.filterBtnClicked = false;
+        this.stickerFilterBtnClicked = false;
         return;
       }
 
@@ -765,24 +783,40 @@ export default {
         var height;
         offsetX = "-0.7F";
         offsetY = "-0.7F";
-        width = "1.8";
-        height = "1.8";
+        width = "1.4";
+        height = "1.4";
         filter.execMethod("setOverlayedImage", {
-          uri: "https://sstvideo.s3.ap-northeast-2.amazonaws.com/images/logo.png",
+          uri: "https://sstvideo.s3.ap-northeast-2.amazonaws.com/images/singmask.png",
           offsetXPercent: offsetX,
           offsetYPercent: offsetY,
           widthPercent: width,
           heightPercent: height,
         });
       });
+      
+      // 버튼 ON 전환
+      this.stickerFilterBtnClicked = true;
+    },
+
+      // aa
+    // Kurento audioecho Filter 적용한 오디오 필터
+    applyEchoFilter() {
+      // 필터 해제, 버튼 OFF 전환
+      if (this.echoFilterBtnClicked) {
+        this.filterOff();
+        this.echoFilterBtnClicked = false;
+        return;
+      }
+
+      this.publisher.stream.applyFilter("GStreamerFilter", {"command": "audioecho delay=50000000 intensity=0.6 feedback=0.4"})
 
       // this.publisher.stream.applyFilter("GStreamerFilter", {
       //   command:
-      //     "gdkpixbufoverlay location=/assets/images/logo.png offset-x=10 offset-y=10 overlay-height=200 overlay-width=200",
+      //     `gdkpixbufoverlay location=/assets/images/logo.png offset-x=10 offset-y=10 overlay-height=200 overlay-width=200`,
       // });
 
       // 버튼 ON 전환
-      this.filterBtnClicked = true;
+      this.echoFilterBtnClicked = true;
     },
 
     getReadyVideo: function () {
