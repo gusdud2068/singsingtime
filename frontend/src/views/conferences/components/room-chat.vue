@@ -1,11 +1,12 @@
 <template>
 	<div class="absolute flex top-0 h-screen z-20 right-0 flex-row border-l border-main-100">
-
 		<!-- chat-bar -->
 		<div
-			ref="content"
-			class="transition-all pt-16 pb-12 px-8 w-80 duration-700 bg-main-300 overflow-hidden flex flex-col items-center justify-between"
+		ref="content"
+		class="transition-all pt-16 pb-12 px-8 w-80 duration-700 bg-main-300 overflow-hidden flex flex-col items-center justify-between"
+		style="font-size:20px"
 		>
+		<div style="overflow: scroll;height:500px; width:800px; overflow-x: hidden;">
 			<!-- 채팅 내용 -->
 			<ul
 				class="border-2 h-full w-full border-main-100 bg-tc-500 p-4 overflow-y-auto m-0"
@@ -18,43 +19,46 @@
 				>
 					<!-- 내가 보낸 채팅인 경우 -->
 					<div v-if="chat.isMyMessage" class="border-r-2 border-sub-200 pr-2">
-						<div class="flex flex-row-reverse items-center">
-							<span class="text-sub-200 text-md ml-2 font-bold" style="color:red">Me</span>
-							<span class="text-tc-400 text-xs" style="color:orange">{{ chat.time }}</span>
+						<div class="flex flex-row-reverse items-center text-right">
+							<span class="text-sub-200 text-md ml-2 font-bold" style="color:whitesmoke">Me </span>
+							<span class="text-tc-400 text-xs" style="color:whitesmoke">({{ chat.time }})</span>
 						</div>
 						<div>
-							<p class="text-tc-300 text-sm break-all text-right" style="color:salmon">
+							<p class="text-tc-300 text-sm break-all" style="color:whitesmoke">
 								{{ chat.content }}
 							</p>
 						</div>
 					</div>
 					<!-- 다른 사람이 보낸 채팅인 경우 -->
 					<div v-else class="border-l-2 border-main-100 pl-2">
-						<div class="flex flex-row items-center">
-							<span class="text-main-100 text-md mr-2 font-bold" style="color:blue">{{
+						<div class="flex flex-row items-center text-left">
+							<span class="text-main-100 text-md mr-2 font-bold" style="color:cornflowerblue">{{
 								chat.userId
 							}}</span>
-							<span class="text-tc-400 text-xs" style="color:aqua">{{ chat.time }}</span>
+							<span class="text-tc-400 text-xs" style="color:cornflowerblue">({{ chat.time }})</span>
 						</div>
 						<div>
-							<p class="text-tc-300 text-sm break-all text-left" style="color: yellow;">
+							<p class="text-tc-300 text-sm break-all" style="color:cornflowerblue;">
 								{{ chat.content }}
 							</p>
 						</div>
 					</div>
 				</li>
 			</ul>
+			</div>
 
 			<div class="flex flex-col items-start w-full mt-8">
 				<!-- 메시지 작성 -->
-				<div class="w-full p-0 flex flex-row justify-between items-center" style="color:greenyellow">
+				<div class="w-full p-0 flex flex-row justify-between items-center" style="color:whitesmoke">
 					<textarea 
+						placeholder="채팅을 입력해주세요!"
 						v-model="state.message"
 						@keydown.enter="sendMessage"
-						class="w-5/6 border-2 border-main-100 text-xs focus:border-main-100 focus:border-2 resize-none"
+						class="w-5/6 border-2 border-main-100 focus:border-main-100 focus:border-2 resize-none"
 						cols=""
-						rows="2"
-                        style="border: 5px solid greenyellow;"
+						rows=""
+                        style="border: 5px solid whitesmoke; font-size:20px;
+						width:800px;height:40px;"
 					></textarea>
 				</div>
 			</div>

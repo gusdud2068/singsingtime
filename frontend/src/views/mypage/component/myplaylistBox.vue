@@ -6,7 +6,7 @@
   <ul style="margin-top:5px;">
     <p v-for="mysong in state.mysongs" :key="mysong">
       <mysongInfo :mysong="mysong" />
-      <hr>
+      <hr style="width:400px;">
     </p>
   </ul>
 </template>

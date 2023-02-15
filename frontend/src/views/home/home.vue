@@ -10,13 +10,14 @@
         @click="clickConference(playroom.title)"
         class="infinite-list-item"
         :key="playroom.title"
+        style="margin-bottom:20px;"
       >
         <conference :playroom="playroom" />
-        <div class="roominfo">
-          <p>방 제목 : {{ playroom.title }}</p>
-          <p>인원 수 : {{ playroom.userCnt }} / {{ 20 }}</p>
+        <v-row class="roominfof" justify="space-between">
+          <p style="margin-left:30px;">{{ playroom.title }}</p>
+          <p style="margin-right:33px;"><v-icon>mdi-account</v-icon>{{ playroom.userCnt }} / {{ 20 }}</p>
           <!-- <p>챔피언 : {{ playroom.champion }}</p> -->
-        </div>
+        </v-row>
       </li>
     </ul>
   </div>
