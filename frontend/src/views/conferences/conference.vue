@@ -628,6 +628,8 @@ export default {
   methods: {
     // 챔피언만 실행하는 함수
     sendStartSignal() {
+      // aa 관중 mute 적용
+      this.session.signal({ type: "crowdMute" });
       this.session.signal({ type: "onSelectVideoSpread" }); // 데이터 상관없음
       this.onSelectVideo();
     },
@@ -1037,14 +1039,25 @@ export default {
       this.session = this.OV.initSession();
 
       // --- 3) Specify the actions when events take place in the session ---
-      // 중간에 다른 유저가 들어왔을 때 도전자 data받기
-      // public 채팅 signal 받기
-      // onSelectVideoSpread
-      this.session.on("signal:onSelectVideoSpread", () => {
-        if (this.myUserId != this.sessionInfo.champion) {
-          this.onSelectVideo();
+      // 챔피언, 도전자가 아니면 mute
+      this.session.on("signal:crowdMute", () => {
+        if (
+          this.myUserId != this.sessionInfo.champion &&
+          this.myUserId != this.sessionInfo.challenger
+        ) {
+          this.publisher.publishAudio(false);
         }
       }),
+      // 노래 끝나면 모두 mute 해제
+      this.session.on("signal:crowdMuteCancel", () => {
+          this.publisher.publishAudio(true);
+      }),
+        // onSelectVideoSpread
+        this.session.on("signal:onSelectVideoSpread", () => {
+          if (this.myUserId != this.sessionInfo.champion) {
+            this.onSelectVideo();
+          }
+        }),
         this.session.on("signal:endalert", (event) => {
           this.finish = event.data;
         }),
@@ -1377,14 +1390,15 @@ export default {
     },
     // 챔피언만 실행하는 함수
     endGame() {
-      // console.log("=====================end")
-
+      // aa 모두 mute 해제 (에러 가능성)
+      this.session.signal({ type: "crowdMuteCancel" });
       // this.finish true 전파
       this.finish = true;
       this.session.signal({
         data: this.finish,
         type: "endalert",
       });
+      // aa mute 해제
 
       if (this.sessionInfo.likeChampion >= this.sessionInfo.likeChallenger) {
         this.winner = "챔피언";
