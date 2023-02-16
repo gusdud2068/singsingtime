@@ -69,7 +69,7 @@
         <v-row justify="space-between">
           <vue-countdown
             class="championCount"
-            :time="21 * 1000"
+            :time="20 * 1000"
             v-slot="{ seconds }"
             v-if="this.nowPart == 'champion'"
           >
@@ -97,7 +97,7 @@
           </vue-countdown>
           <vue-countdown
             class="challengerCount"
-            :time="21 * 1000"
+            :time="20 * 1000"
             v-slot="{ seconds }"
             v-if="this.nowPart == 'challenger'"
           >
@@ -954,7 +954,7 @@ export default {
         if (this.nowPart == "challenger") {
           this.session.signal({ data: "champion", type: "part_change" });
         }
-      }, 21 * 1000);
+      }, 20 * 1000);
 
       // this.partTimeCounter = this.partTime;
       // this.session.signal({ data: this.partTime, type: "time_reset" });
