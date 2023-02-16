@@ -22,10 +22,10 @@ export default {
 <style>
 .live1 {
   width: 695px;
-  margin-right: 2rem;
+  margin-right: 0.5rem;
 }
 .live2 {
   width: 300px;
-  margin-right: 2rem;
+  margin-right: 0.5rem;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div style="margin-left:10px;margin-top: 20px;">
-    <v-btn class="votebtn"  @click="pickChallenger">
+    <v-btn class="votebtn"  @click="pickChallenger" style="font-size:25px;">
       투표하기
     </v-btn>
      <!-- <h4 class="blinking" style="width: 300px;">도전자가 대결을 신청하였습니다!</h4> -->
@@ -29,8 +29,8 @@ export default {
 
 <style scoped>
 .votebtn {
-  width: 100px;
-  height: 100px;
+  width: 140px;
+  height: 140px;
   border-radius: 100px;
   background-color: green;
   /* border: 3px solid white; */

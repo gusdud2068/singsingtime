@@ -16,10 +16,6 @@ public class UserPlayroom {
     @Id
     @GeneratedValue
     private long id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
-    private User user;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "playroomId")
-    private Playroom playroom;
+    private String userId;
+    private String sessionId;
 }

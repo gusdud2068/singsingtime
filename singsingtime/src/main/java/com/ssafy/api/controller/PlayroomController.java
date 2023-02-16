@@ -104,6 +104,26 @@ public class PlayroomController {
         playroomService.updateChallenger(playroomStatusReq);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
+
+    @PostMapping("/addmember")
+    public ResponseEntity<? extends BaseResponseBody> postUserPlayroom(@RequestBody PlayroomStatusReq playroomStatusReq){
+
+        playroomService.postUserPlayroom(playroomStatusReq);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    @GetMapping("/getmember/{sessionId}")
+    public ResponseEntity<List<String>> getUserPlayroom(@PathVariable String sessionId){
+
+        List<String> list = playroomService.getUserPlayroom(sessionId);
+        return new ResponseEntity(list,HttpStatus.OK);
+    }
+    @DeleteMapping("/deletemember")
+    public ResponseEntity<? extends BaseResponseBody> deleteUserPlayroom(@RequestBody PlayroomStatusReq playroomStatusReq){
+
+        playroomService.deleteUserPlayroom(playroomStatusReq);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
     @PostMapping("/")
     public ResponseEntity<List<Playroom>> createRoom() {
         List<Playroom> list = playroomService.getPlayroom();

@@ -1,6 +1,5 @@
 package com.ssafy.api.service;
 
-import com.ssafy.api.request.PlayroomCreateReq;
 import com.ssafy.api.request.PlayroomStatusReq;
 import com.ssafy.api.response.PlayroomStatusRes;
 import com.ssafy.db.entity.Playroom;
@@ -36,4 +35,7 @@ public interface PlayroomService {
     void deletePlayRoom(String sessionId);
 
     void updateChallenger(PlayroomStatusReq playroomStatusReq);
+    void postUserPlayroom(PlayroomStatusReq playroomStatusReq);
+    List<String> getUserPlayroom(String sessionId);
+    void deleteUserPlayroom(PlayroomStatusReq playroomStatusReq);
 }

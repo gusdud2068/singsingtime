@@ -46,7 +46,7 @@
         style="padding-top: 0px"
       >
         <MARquee
-          style="font-size: 25px"
+          style="font-size: 30px"
           scrollamount="25"
           direction="right"
           loop="3"
@@ -65,24 +65,31 @@
           <span style="color: orange">30초</span>
           남았습니다. 투표를 진행해주세요!
         </MARquee> -->
-        <v-row justify="center">
+        <v-row justify="space-between">
           <vue-countdown
             class="championCount"
             :time="20 * 1000"
             v-slot="{ seconds }"
             v-if="this.nowPart == 'champion'"
           >
-            <h2 style="margin-top: 50px; margin-right: 370px; color: blue">
+            <h2 style="margin-top: 50px; margin-left: 270px; color: #18ffff">
               {{ seconds }} 초
             </h2>
           </vue-countdown>
+          <h2
+            style="margin-top: 50px; margin-left: 270px; color: #18ffff"
+            v-if="this.nowPart == 'challenger'"
+          >
+            준비
+          </h2>
           <vue-countdown
+            class="votetime"
             :time="nowplaytime * 1000 * 0.98"
             v-slot="{ minutes, seconds }"
           >
             <h2
               :class="{ hurryup: minutes == 0 && seconds <= 30 }"
-              style="margin-top: 50px"
+              style="margin-top: 50px; margin-left: 60px"
             >
               남은 투표 시간 : {{ minutes }} 분 {{ seconds }} 초
             </h2>
@@ -93,10 +100,16 @@
             v-slot="{ seconds }"
             v-if="this.nowPart == 'challenger'"
           >
-            <h2 style="margin-top: 50px; margin-left: 320px; color: green">
+            <h2 style="margin-top: 50px; margin-right: 260px; color: #b2ff59">
               {{ seconds }} 초
             </h2>
           </vue-countdown>
+          <h2
+            style="margin-top: 50px; margin-right: 250px; color: #b2ff59"
+            v-if="this.nowPart == 'champion'"
+          >
+            준비
+          </h2>
         </v-row>
       </v-col>
 
@@ -107,7 +120,7 @@
           id="buttonLeaveSession"
           @click="leaveSession"
           value="나가기"
-          style="margin-right: 20px"
+          style="margin-right: 20px; font-size: 20px"
         />
       </div>
     </v-row>
@@ -221,13 +234,13 @@
       v-if="champion_confirm && this.myUserId == this.sessionInfo.champion"
       style="margin-bottom: 10px"
     >
-      <h2>
+      <h1>
         도전자로부터 [<span style="color: green">{{ nowplaysong }}</span
         >] 대결 신청이 들어왔습니다!
-      </h2>
-      <h3>대결을 시작하시겠습니까?</h3>
+      </h1>
+      <h2>대결을 시작하시겠습니까?</h2>
 
-      <v-btn @click="sendStartSignal()" color="green" variant="outlined"
+      <v-btn @click="sendStartSignal()" color="green" variant="outlined" style="font-size:20px;"
         >확인</v-btn
       >
       <!-- 취소 만들기 -->
@@ -275,12 +288,13 @@
           <v-card style="padding: 5px; font-size: 20px" color="primary"
             ><img
               src="../../assets/images/sparkling.gif"
-              style="width: 20px" /><span style="color: white">챔피언</span>
+              style="width: 30px" /><span style="color: white; font-size:30px;">챔피언</span>
 
-            <img src="../../assets/images/sparkling.gif" style="width: 20px"
+            <img src="../../assets/images/sparkling.gif" style="width: 30px"
           /></v-card>
 
           <user-video
+            :class="{championVideo: this.nowPart == 'champion' && this.selectedVideo && !this.finish}"
             :stream-manager="championStreamManager"
             @click.native="updateMainVideoStreamManager(championStreamManager)"
             :player="playerJoined"
@@ -315,6 +329,150 @@
             v-if="this.readyVideo && !this.selectedVideo"
             :session="session"
           />
+          <div style="margin-top: 30px">
+            <input
+              class="btn btn-large btn-danger"
+              type="button"
+              @click="challengeFirst(myUserId)"
+              value="대결 신청"
+              style="
+                margin-top: 20px;
+                margin-bottom: 20px;
+                margin-right: 20px;
+                font-size: 20px;
+              "
+            />
+
+            <input
+              v-if="this.myUserId == this.sessionInfo.challenger"
+              class="btn btn-large btn-warning"
+              type="button"
+              @click="showChampionSongList"
+              value="도전 가능곡"
+              style="margin-right: 20px; font-size: 20px; width:140px;"
+            />
+
+            <input
+              v-if="this.myUserId != this.sessionInfo.challenger"
+              class="btn btn-large btn-warning"
+              type="button"
+              @click="showChampionSongShowList"
+              value="챔피언 플레이리스트"
+              style="margin-right: 20px; width: 200px; font-size: 20px"
+            />
+
+            <input
+              class="btn btn-large btn-success"
+              type="button"
+              @click="showWaitingQueue"
+              value="도전자 목록"
+              style="
+                margin-top: 20px;
+                margin-bottom: 20px;
+                margin-right: 20px;
+                font-size: 20px;
+                width: 120px;
+              "
+            />
+            <input
+              v-if="stickerFilterBtnClicked"
+              class="btn btn-large btn-danger"
+              type="button"
+              @click="applyStickerFilter"
+              value="필터 ON"
+              style="
+                margin-top: 20px;
+                margin-bottom: 20px;
+                margin-right: 20px;
+                font-size: 20px;
+              "
+            />
+            <input
+              v-else
+              class="btn btn-large btn-primary"
+              type="button"
+              @click="applyStickerFilter"
+              value="필터 OFF"
+              style="
+                margin-top: 20px;
+                margin-bottom: 20px;
+                margin-right: 20px;
+                font-size: 20px;
+              "
+            />
+            <input
+              v-if="echoFilterBtnClicked"
+              class="btn btn-large btn-danger"
+              type="button"
+              @click="applyEchoFilter"
+              value="에코 ON"
+              style="
+                margin-top: 20px;
+                margin-bottom: 20px;
+                margin-right: 20px;
+                font-size: 20px;
+              "
+            />
+            <input
+              v-else
+              class="btn btn-large btn-primary"
+              type="button"
+              @click="applyEchoFilter"
+              value="에코 OFF"
+              style="
+                margin-top: 20px;
+                margin-bottom: 20px;
+                margin-right: 20px;
+                font-size: 20px;
+              "
+            />
+            <br />
+            <input
+              class="btn btn-large btn-info"
+              type="button"
+              ref="captureBtn"
+              @click="capture"
+              value="녹화 화면 지정"
+              style="
+                margin-top: 20px;
+                margin-bottom: 20px;
+                margin-right: 20px;
+                width: 140px;
+                font-size: 20px;
+              "
+            />
+            <input
+              class="btn btn-large btn-info"
+              type="button"
+              ref="startBtn"
+              @click="start"
+              value="녹화 시작"
+              disabled
+              style="
+                margin-top: 20px;
+                margin-bottom: 20px;
+                margin-right: 20px;
+                font-size: 20px;
+              "
+            />
+            <input
+              class="btn btn-large btn-info"
+              type="button"
+              ref="stopBtn"
+              @click="stop"
+              value="녹화 중지"
+              disabled
+              style="
+                margin-top: 20px;
+                margin-bottom: 20px;
+                margin-right: 20px;
+                font-size: 20px;
+              "
+            />
+            <a id="download" ref="down" href="#" style="display: none"
+              >Download</a
+            >
+          </div>
         </div>
 
         <!--스몰박스 right, 노래화면 오른쪽, 여기에 챌린져가 들어가야 함-->
@@ -325,12 +483,14 @@
           <!--스몰박스 left, 노래화면 왼쪽. 여기에 스트림매니저로 챔피언을 넘겨줘야함-->
 
           <v-card style="padding: 5px; font-size: 20px" color="green"
-            ><img src="../../assets/images/sparkling.gif" style="width: 20px" />
+            ><img src="../../assets/images/sparkling.gif" style="width: 30px" />
 
-            <span style="color: white">도전자 </span
-            ><img src="../../assets/images/sparkling.gif" style="width: 20px"
+            <span style="color: white; font-size:30px;">도전자 </span
+            ><img src="../../assets/images/sparkling.gif" style="width: 30px"
           /></v-card>
+
           <user-video
+            :class="{championVideo: this.nowPart == 'challenger' && this.selectedVideo && !this.finish}"
             :stream-manager="challengerStreamManager"
             @click.native="
               updateMainVideoStreamManager(challengerStreamManager)
@@ -345,109 +505,7 @@
       </div>
     </div>
 
-    <input
-      class="btn btn-large btn-danger"
-      type="button"
-      @click="challengeFirst(myUserId)"
-      value="대결 신청"
-      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
-    />
-
-    <input
-      v-if="this.myUserId == this.sessionInfo.challenger"
-      class="btn btn-large btn-warning"
-      type="button"
-      @click="showChampionSongList"
-      value="도전 가능곡"
-      style="margin-right: 20px"
-    />
-
-    <input
-      v-if="this.myUserId != this.sessionInfo.challenger"
-      class="btn btn-large btn-warning"
-      type="button"
-      @click="showChampionSongShowList"
-      value="챔피언 플레이리스트"
-      style="margin-right: 20px"
-    />
-
-    <input
-      class="btn btn-large btn-success"
-      type="button"
-      @click="showWaitingQueue"
-      value="도전자 목록"
-      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
-    />
-    <input
-      v-if="stickerFilterBtnClicked"
-      class="btn btn-large btn-danger"
-      type="button"
-      @click="applyStickerFilter"
-      value="필터 ON"
-      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
-    />
-    <input
-      v-else
-      class="btn btn-large btn-primary"
-      type="button"
-      @click="applyStickerFilter"
-      value="필터 OFF"
-      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
-    />
-    <input
-      v-if="echoFilterBtnClicked"
-      class="btn btn-large btn-danger"
-      type="button"
-      @click="applyEchoFilter"
-      value="에코 ON"
-      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
-    />
-    <input
-      v-else
-      class="btn btn-large btn-primary"
-      type="button"
-      @click="applyEchoFilter"
-      value="에코 OFF"
-      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
-    />
-
-    <br />
-    <input
-      class="btn btn-large btn-info"
-      type="button"
-      ref="captureBtn"
-      @click="capture"
-      value="녹화 화면 지정"
-      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
-    />
-    <input
-      class="btn btn-large btn-info"
-      type="button"
-      ref="startBtn"
-      @click="start"
-      value="녹화 시작"
-      disabled
-      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
-    />
-    <input
-      class="btn btn-large btn-info"
-      type="button"
-      ref="stopBtn"
-      @click="stop"
-      value="녹화 중지"
-      disabled
-      style="margin-top: 20px; margin-bottom: 20px; margin-right: 20px"
-    />
-    <a id="download" ref="down" href="#" style="display: none">Download</a>
-
     <!-- 관중들 들어갈 자리 -->
-    <v-card
-      class="audiences"
-      color="#3232FF"
-      style="width: 200px; height: 35px; margin-top: 10px"
-      ><h3 style="color: white; margin-top: 4px">관람객</h3></v-card
-    >
-
     <div class="smallboxb">
       <div>
         <user-video
@@ -856,104 +914,106 @@ export default {
       // this.nowplaysong = championSong.title;
       this.champion_confirm = false;
       this.TimeCounter = this.nowplaytime;
-      var interval = setInterval(() => {
-        this.TimeCounter -= 1; //1초씩 감소
-        // console.log(this.myUserName)
-        // console.log(this.TimeCounter);
-
-        // console.log("시간 : " + this.TimeCounter);
-        if (this.TimeCounter == 30) {
-          this.vote_please = true;
-          this.session.signal({ data: this.vote_please, type: "vote_please" });
-        }
-        if (this.TimeCounter == 0) {
-          console.log("timeStop22222");
-          this.timerStop(interval);
-        }
-      }, 1000);
-
-      var part = "";
-      setInterval(() => {
-        if (this.nowPart == "champion") {
-          part = "challenger";
-        } else {
-          part = "champion";
-        }
-        this.session.signal({ data: part, type: "part_change" });
-      }, 20 * 1000);
-
-      // this.partTimeCounter = this.partTime;
-      // this.session.signal({ data: this.partTime, type: "time_reset" });
-      // var partinterval = setInterval(() => {
-      //   this.partTimeCounter -= 1; //1초씩 감소
-      //   if (this.partTimeCounter == -1) {
-      //     this.session.signal({ data: this.nowPart, type: "part_change" });
-      //     this.parttimerStop(partinterval);
-      //   }
-      // }, 1000);
-
-      this.session.signal({
-        data: this.readyVideo,
-        type: "start_readyVideo",
-      });
-      this.session.signal({
-        data: this.champion_confirm,
-        type: "start_battle",
-      });
-      this.session.signal({
-        data: this.readyVideo,
-        type: "start_readyVideo",
-      });
-      // this.session.signal({
-      //   data: championSong.title,
-      //   type: "start_notice",
-      // });
-      // this.session.signal({
-      //   data: championSong.part4 + 10,
-      //   type: "start_nowplaytime",
-      // });
-      this.session.signal({
-        data: this.nowplaytime,
-        type: "start_timecounter",
-      });
-      this.selectedVideo = true;
-      this.session.signal({
-        data: this.selectedVideo,
-        type: "start_selectedVideo",
-      });
-      this.voteBtnShow = true;
-      this.session.signal({
-        data: this.voteBtnShow,
-        type: "start_voteBtnShow",
-      });
-      this.finish = false;
-      this.session.signal({
-        data: this.finish,
-        type: "start_finish",
-      });
-      this.session
-        .signal({
-          data: JSON.stringify(this.nowplaysong),
-          type: "songTitle",
-        })
-        // .signal({
-        //   data : championSong.id,
-        //   type: "songId",
-        // })
-        .then(() => {
-          console.log("노래방 시그널 전송");
-          // console.log(video.id.videoId)
-        })
-        .catch((err) => {
-          console.log(err);
-          console.log("전송 에러");
+      setTimeout(() => {
+        
+        var interval = setInterval(() => {
+          this.TimeCounter -= 1; //1초씩 감소
+          // console.log(this.myUserName)
+          // console.log(this.TimeCounter);
+  
+          // console.log("시간 : " + this.TimeCounter);
+          if (this.TimeCounter == 30) {
+            this.vote_please = true;
+            this.session.signal({ data: this.vote_please, type: "vote_please" });
+          }
+          if (this.TimeCounter == 0) {
+            console.log("timeStop22222");
+            this.timerStop(interval);
+          }
+        }, 1000);
+  
+        setInterval(() => {
+          if (this.nowPart == "champion") {
+            this.session.signal({ data: "challenger", type: "part_change" })
+          }
+          if (this.nowPart == "challenger") {
+            this.session.signal({ data: "champion", type: "part_change" })
+          }
+        }, 20 * 1000);
+  
+        // this.partTimeCounter = this.partTime;
+        // this.session.signal({ data: this.partTime, type: "time_reset" });
+        // var partinterval = setInterval(() => {
+        //   this.partTimeCounter -= 1; //1초씩 감소
+        //   if (this.partTimeCounter == -1) {
+        //     this.session.signal({ data: this.nowPart, type: "part_change" });
+        //     this.parttimerStop(partinterval);
+        //   }
+        // }, 1000);
+  
+        this.session.signal({
+          data: this.readyVideo,
+          type: "start_readyVideo",
         });
-      this.session.signal({
-        // data: championSong.part4 + 10,
-        data: 5,
-        type: "songTime",
-      });
-      console.log(this.$store.state.video);
+        this.session.signal({
+          data: this.champion_confirm,
+          type: "start_battle",
+        });
+        this.session.signal({
+          data: this.readyVideo,
+          type: "start_readyVideo",
+        });
+        // this.session.signal({
+        //   data: championSong.title,
+        //   type: "start_notice",
+        // });
+        // this.session.signal({
+        //   data: championSong.part4 + 10,
+        //   type: "start_nowplaytime",
+        // });
+        this.session.signal({
+          data: this.nowplaytime,
+          type: "start_timecounter",
+        });
+        this.selectedVideo = true;
+        this.session.signal({
+          data: this.selectedVideo,
+          type: "start_selectedVideo",
+        });
+        this.voteBtnShow = true;
+        this.session.signal({
+          data: this.voteBtnShow,
+          type: "start_voteBtnShow",
+        });
+        this.finish = false;
+        this.session.signal({
+          data: this.finish,
+          type: "start_finish",
+        });
+        this.session
+          .signal({
+            data: JSON.stringify(this.nowplaysong),
+            type: "songTitle",
+          })
+          // .signal({
+          //   data : championSong.id,
+          //   type: "songId",
+          // })
+          .then(() => {
+            console.log("노래방 시그널 전송");
+            // console.log(video.id.videoId)
+          })
+          .catch((err) => {
+            console.log(err);
+            console.log("전송 에러");
+          });
+        this.session.signal({
+          // data: championSong.part4 + 10,
+          data: 5,
+          type: "songTime",
+        });
+        console.log(this.$store.state.video);
+      }, 6000);
     },
     battleApplication: function (championSong) {
       // console.log("222222222222222222222222222");
@@ -1337,7 +1397,7 @@ export default {
           this.sessionInfo.challenger = res.data.challenger;
           this.getChampionSongList();
           // aa 플레이룸-도전자 조회
-
+          this.getWaitingQueue();
           // 2. 방 멤버들 중 챔피언 화면 생성
           this.setChampionStreamManager();
 
@@ -1383,6 +1443,25 @@ export default {
           console.log("jjjjjjjjjjjjjjjj");
           console.log(res.data);
           this.sessionInfo.championSongList = res.data;
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    getWaitingQueue(){
+      axios({
+        method: "get",
+        url:
+          import.meta.env.VITE_APP_URL +
+          `/api/v1/playrooms/getmember/${this.sessionId}`,
+       data: {
+        sessionId : this.sessionId,
+       },
+        })
+        .then((res) => {
+          console.log("대기열불러오기 1395");
+          console.log(res.data);
+          this.sessionInfo.waitingQueue = Array.from(res.data);
         })
         .catch((err) => {
           alert(err);
@@ -1453,7 +1532,7 @@ export default {
           } else {
             this.sessionInfo.challenger = next;
             // DB 플레이룸 도전자 정보 수정3
-            alert("다음 도전자 있음, 도전자 수정");
+            // alert("다음 도전자 있음, 도전자 수정");
             this.updateDBChallenger(this.sessionInfo.challenger);
             // challenger 다음 사람 전파
             this.session.signal({
@@ -1506,6 +1585,24 @@ export default {
     enqueue(data) {
       // aa 플레이룸-도전자 등록
       this.sessionInfo.waitingQueue.push(data);
+      axios({
+        method: "post",
+        url:
+          import.meta.env.VITE_APP_URL +
+          `/api/v1/playrooms/addmember/`,
+       data: {
+        sessionId : this.sessionId,
+        challengerId : data,
+       },
+        })
+        .then((res) => {
+          console.log("jjjjjjjjjjjjjjjj");
+          console.log(res.data);
+          this.sessionInfo.championSongList = res.data;
+        })
+        .catch((err) => {
+          alert(err);
+        });
     },
     // 도전자만 실행하는 함수
     challengeFirst(myUserId) {
@@ -1544,7 +1641,27 @@ export default {
       if (this.sessionInfo.waitingQueue.length == 0) return "";
       else {
         // aa 플레이룸-도전자 삭제 (변수 선언)
-        return this.sessionInfo.waitingQueue.shift();
+        const data = this.sessionInfo.waitingQueue.shift();
+        axios({
+        method: "delete",
+        url:
+          import.meta.env.VITE_APP_URL +
+          `/api/v1/playrooms/deletemember/`,
+       data: {
+        sessionId : this.sessionId,
+        challengerId : data,
+       },
+        })
+        .then((res) => {
+          console.log("1574"+"deleteWaitingQueue");
+          console.log(res);
+        })
+        .catch((err) => {
+          alert(err);
+        });
+
+
+        return data;
       }
     },
     /**
@@ -1722,7 +1839,7 @@ export default {
 .musicbox {
   top: 100%;
   left: -5%;
-  width: 700px;
+  width: 800px;
   margin-left: 50px;
   margin-right: 50px;
 }
@@ -1904,7 +2021,7 @@ video {
   }
 }
 
-.championCount {
+/* .championCount {
   position: fixed;
   left: 950px;
   top: 180px;
@@ -1914,6 +2031,18 @@ video {
   position: fixed;
   right: 950px;
   top: 180px;
+} */
+
+input {
+  width: 110px;
+  height: 60px;
+}
+
+.championVideo{
+  box-shadow: 0 0 200px blue;
+}
+.challengerVideo{
+  box-shadow: 0 0 200px green;
 }
 
 .exit {

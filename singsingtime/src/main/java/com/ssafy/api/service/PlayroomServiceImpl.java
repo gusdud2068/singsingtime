@@ -1,11 +1,8 @@
 package com.ssafy.api.service;
-import com.ssafy.api.request.PlayroomCreateReq;
 import com.ssafy.api.request.PlayroomStatusReq;
 import com.ssafy.api.response.PlayroomStatusRes;
 import com.ssafy.db.entity.*;
-import com.ssafy.db.repository.PlayroomRepository;
-import com.ssafy.db.repository.UserRepository;
-import com.ssafy.db.repository.UserSongRepository;
+import com.ssafy.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,9 +11,7 @@ import java.util.*;
 
 import com.ssafy.db.entity.Playroom;
 import com.ssafy.db.repository.PlayroomRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -27,6 +22,8 @@ public class PlayroomServiceImpl implements PlayroomService{
 
     private final UserSongRepository userSongRepository;
     private final UserRepository userRepository;
+
+    private final UserPlayroomRepository userPlayroomRepository;
 
     @Override
     public List<Playroom> getPlayroom() {
@@ -170,5 +167,32 @@ public class PlayroomServiceImpl implements PlayroomService{
     public void updateChallenger(PlayroomStatusReq playroomStatusReq) {
         Playroom playroom = playroomRepository.findBySessionId(playroomStatusReq.getSessionId()).orElseThrow(()->new NoSuchElementException());
         playroom.setChallenger(playroomStatusReq.getChallengerId());
+    }
+
+    @Override
+    public void postUserPlayroom(PlayroomStatusReq playroomStatusReq) {
+        String sessionId = playroomStatusReq.getSessionId();
+        String challenger = playroomStatusReq.getChallengerId();
+        UserPlayroom userPlayroom = new UserPlayroom();
+        userPlayroom.setSessionId(sessionId);
+        userPlayroom.setUserId(challenger);
+        userPlayroomRepository.save(userPlayroom);
+        return;
+    }
+    @Override
+    public List<String> getUserPlayroom(String sessionId) {
+        List<UserPlayroom> playroomList = userPlayroomRepository.findAllBySessionId(sessionId);
+        List<String> list = new ArrayList<>();
+        for(int i=0;i<playroomList.size();i++){
+        list.add(playroomList.get(i).getUserId());
+        }
+        return list;
+    }
+    @Override
+    public void deleteUserPlayroom(PlayroomStatusReq playroomStatusReq) {
+        String sessionId = playroomStatusReq.getSessionId();
+        String challenger = playroomStatusReq.getChallengerId();
+        userPlayroomRepository.deleteBySessionIdAndUserId(sessionId,challenger);
+        return;
     }
 }
