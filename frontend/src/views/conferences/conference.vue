@@ -4,7 +4,7 @@
     id="main-container"
     class="container"
     :class="
-      ({ musicOn: this.selectedVideo.length > 0 }, { win: this.finish == true })
+      ({ musicOn: this.selectedVideo && this.finish == false }, { win: this.finish == true })
     "
   >
     <v-row
@@ -490,7 +490,7 @@
           /></v-card>
 
           <user-video
-            :class="{championVideo: this.nowPart == 'challenger' && this.selectedVideo && !this.finish}"
+            :class="{challengerVideo: this.nowPart == 'challenger' && this.selectedVideo && !this.finish}"
             :stream-manager="challengerStreamManager"
             @click.native="
               updateMainVideoStreamManager(challengerStreamManager)
@@ -506,7 +506,7 @@
     </div>
 
     <!-- 관중들 들어갈 자리 -->
-    <div class="smallboxb">
+    <v-row class="smallboxb" justify="space-around" style="width: 2500px;">
       <div>
         <user-video
           :stream-manager="publisher"
@@ -521,7 +521,7 @@
         @click.native="updateMainVideoStreamManager(sub)"
         :player="crowdJoined"
       />
-    </div>
+    </v-row>
 
     <v-col>
       <room-chat
@@ -1108,6 +1108,12 @@ export default {
           this.publisher.publishAudio(false);
         }
       }),
+
+      // 노래가 끝난 후 nowPart를 다시 champion으로 초기화
+      this.session.on("signal:nowPartChampion", (event) => {
+        this.nowPart = event.data
+      })
+
       // 노래 끝나면 모두 mute 해제
       this.session.on("signal:crowdMuteCancel", () => {
           this.publisher.publishAudio(true);
@@ -1478,6 +1484,12 @@ export default {
         type: "endalert",
       });
       // aa mute 해제
+
+      // 다음 대결을 위해 nowPart 를 다시 champion으로 수정
+      this.session.signal({
+        data: "champion",
+        type: "nowPartChampion"
+      })
 
       if (this.sessionInfo.likeChampion >= this.sessionInfo.likeChallenger) {
         this.winner = "챔피언";
