@@ -1162,7 +1162,7 @@ export default {
 
         // 1초 쉬고 새로고침
         // setTimeout(() => console.log("1초 후에 실행됨"), 1000);
-        window.location.reload(true);
+        // window.location.reload(true);
       });
 
       // 3. 게임 끝나고 다음 도전자가 있을 때
@@ -1183,7 +1183,7 @@ export default {
 
         // 1초 쉬고 새로고침
         // setTimeout(() => console.log("1초 후에 실행됨"), 1000);
-        window.location.reload(true);
+        // window.location.reload(true);
       });
 
       // aa 구조 파악 필요
@@ -1436,6 +1436,7 @@ export default {
           if (next == "") {
             this.sessionInfo.challenger = "";
             // DB 플레이룸 도전자 정보 수정2
+            // alert("다음 도전자 없음, 도전자 비우기")
             this.updateDBChallenger(this.sessionInfo.challenger);
             // challenger 없는거 전파
             this.session.signal({
@@ -1445,6 +1446,7 @@ export default {
           } else {
             this.sessionInfo.challenger = next;
             // DB 플레이룸 도전자 정보 수정3
+            alert("다음 도전자 있음, 도전자 수정")
             this.updateDBChallenger(this.sessionInfo.challenger);
             // challenger 다음 사람 전파
             this.session.signal({
@@ -1462,7 +1464,7 @@ export default {
           alert(err);
         });
       // 챔피언 화면 reload
-      window.location.reload(true);
+      // window.location.reload(true);
     },
     updateDBChallenger(newChallenger) {
       axios({
