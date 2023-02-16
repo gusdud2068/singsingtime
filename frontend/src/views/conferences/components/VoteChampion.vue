@@ -1,6 +1,6 @@
 <template>
-  <div style="margin-left: 10px; margin-top: 20px">
-    <v-btn class="votebtn" @click="pickChampion">
+  <div style="margin-left: 10px; margin-top: 20px;">
+    <v-btn class="votebtn" @click="pickChampion" style="font-size:25px;">
       투표하기
     </v-btn>
   </div>
@@ -25,8 +25,8 @@ export default {
 
 <style scoped>
 .votebtn {
-  width: 100px;
-  height: 100px;
+  width: 140px;
+  height: 140px;
   border-radius: 100px;
   background-color:mediumblue;
 }
