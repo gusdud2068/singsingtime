@@ -4,7 +4,8 @@
     id="main-container"
     class="container"
     :class="
-      ({ musicOn: this.selectedVideo && this.finish == false }, { win: this.finish == true })
+      ({ musicOn: this.selectedVideo && this.finish == false },
+      { win: this.finish == true })
     "
   >
     <v-row
@@ -240,7 +241,11 @@
       </h1>
       <h2>대결을 시작하시겠습니까?</h2>
 
-      <v-btn @click="sendStartSignal()" color="green" variant="outlined" style="font-size:20px;"
+      <v-btn
+        @click="sendStartSignal()"
+        color="green"
+        variant="outlined"
+        style="font-size: 20px"
         >확인</v-btn
       >
       <!-- 취소 만들기 -->
@@ -288,13 +293,20 @@
           <v-card style="padding: 5px; font-size: 20px" color="primary"
             ><img
               src="../../assets/images/sparkling.gif"
-              style="width: 30px" /><span style="color: white; font-size:30px;">챔피언</span>
+              style="width: 30px" /><span style="color: white; font-size: 30px"
+              >챔피언</span
+            >
 
             <img src="../../assets/images/sparkling.gif" style="width: 30px"
           /></v-card>
 
           <user-video
-            :class="{championVideo: this.nowPart == 'champion' && this.selectedVideo && !this.finish}"
+            :class="{
+              championVideo:
+                this.nowPart == 'champion' &&
+                this.selectedVideo &&
+                !this.finish,
+            }"
             :stream-manager="championStreamManager"
             @click.native="updateMainVideoStreamManager(championStreamManager)"
             :player="playerJoined"
@@ -349,7 +361,7 @@
               type="button"
               @click="showChampionSongList"
               value="도전 가능곡"
-              style="margin-right: 20px; font-size: 20px; width:140px;"
+              style="margin-right: 20px; font-size: 20px; width: 140px"
             />
 
             <input
@@ -485,12 +497,17 @@
           <v-card style="padding: 5px; font-size: 20px" color="green"
             ><img src="../../assets/images/sparkling.gif" style="width: 30px" />
 
-            <span style="color: white; font-size:30px;">도전자 </span
+            <span style="color: white; font-size: 30px">도전자 </span
             ><img src="../../assets/images/sparkling.gif" style="width: 30px"
           /></v-card>
 
           <user-video
-            :class="{challengerVideo: this.nowPart == 'challenger' && this.selectedVideo && !this.finish}"
+            :class="{
+              challengerVideo:
+                this.nowPart == 'challenger' &&
+                this.selectedVideo &&
+                !this.finish,
+            }"
             :stream-manager="challengerStreamManager"
             @click.native="
               updateMainVideoStreamManager(challengerStreamManager)
@@ -506,7 +523,7 @@
     </div>
 
     <!-- 관중들 들어갈 자리 -->
-    <v-row class="smallboxb" justify="space-around" style="width: 2500px;">
+    <v-row class="smallboxb" justify="space-around" style="width: 2500px">
       <div>
         <user-video
           :stream-manager="publisher"
@@ -914,106 +931,103 @@ export default {
       // this.nowplaysong = championSong.title;
       this.champion_confirm = false;
       this.TimeCounter = this.nowplaytime;
-      setTimeout(() => {
-        
-        var interval = setInterval(() => {
-          this.TimeCounter -= 1; //1초씩 감소
-          // console.log(this.myUserName)
-          // console.log(this.TimeCounter);
-  
-          // console.log("시간 : " + this.TimeCounter);
-          if (this.TimeCounter == 30) {
-            this.vote_please = true;
-            this.session.signal({ data: this.vote_please, type: "vote_please" });
-          }
-          if (this.TimeCounter == 0) {
-            console.log("timeStop22222");
-            this.timerStop(interval);
-          }
-        }, 1000);
-  
-        setInterval(() => {
-          if (this.nowPart == "champion") {
-            this.session.signal({ data: "challenger", type: "part_change" })
-          }
-          if (this.nowPart == "challenger") {
-            this.session.signal({ data: "champion", type: "part_change" })
-          }
-        }, 21 * 1000);
-  
-        // this.partTimeCounter = this.partTime;
-        // this.session.signal({ data: this.partTime, type: "time_reset" });
-        // var partinterval = setInterval(() => {
-        //   this.partTimeCounter -= 1; //1초씩 감소
-        //   if (this.partTimeCounter == -1) {
-        //     this.session.signal({ data: this.nowPart, type: "part_change" });
-        //     this.parttimerStop(partinterval);
-        //   }
-        // }, 1000);
-  
-        this.session.signal({
-          data: this.readyVideo,
-          type: "start_readyVideo",
+      var interval = setInterval(() => {
+        this.TimeCounter -= 1; //1초씩 감소
+        // console.log(this.myUserName)
+        // console.log(this.TimeCounter);
+
+        // console.log("시간 : " + this.TimeCounter);
+        if (this.TimeCounter == 30) {
+          this.vote_please = true;
+          this.session.signal({ data: this.vote_please, type: "vote_please" });
+        }
+        if (this.TimeCounter == 0) {
+          console.log("timeStop22222");
+          this.timerStop(interval);
+        }
+      }, 1000);
+
+      setInterval(() => {
+        if (this.nowPart == "champion") {
+          this.session.signal({ data: "challenger", type: "part_change" });
+        }
+        if (this.nowPart == "challenger") {
+          this.session.signal({ data: "champion", type: "part_change" });
+        }
+      }, 21 * 1000);
+
+      // this.partTimeCounter = this.partTime;
+      // this.session.signal({ data: this.partTime, type: "time_reset" });
+      // var partinterval = setInterval(() => {
+      //   this.partTimeCounter -= 1; //1초씩 감소
+      //   if (this.partTimeCounter == -1) {
+      //     this.session.signal({ data: this.nowPart, type: "part_change" });
+      //     this.parttimerStop(partinterval);
+      //   }
+      // }, 1000);
+
+      this.session.signal({
+        data: this.readyVideo,
+        type: "start_readyVideo",
+      });
+      this.session.signal({
+        data: this.champion_confirm,
+        type: "start_battle",
+      });
+      this.session.signal({
+        data: this.readyVideo,
+        type: "start_readyVideo",
+      });
+      // this.session.signal({
+      //   data: championSong.title,
+      //   type: "start_notice",
+      // });
+      // this.session.signal({
+      //   data: championSong.part4 + 10,
+      //   type: "start_nowplaytime",
+      // });
+      this.session.signal({
+        data: this.nowplaytime,
+        type: "start_timecounter",
+      });
+      this.selectedVideo = true;
+      this.session.signal({
+        data: this.selectedVideo,
+        type: "start_selectedVideo",
+      });
+      this.voteBtnShow = true;
+      this.session.signal({
+        data: this.voteBtnShow,
+        type: "start_voteBtnShow",
+      });
+      this.finish = false;
+      this.session.signal({
+        data: this.finish,
+        type: "start_finish",
+      });
+      this.session
+        .signal({
+          data: JSON.stringify(this.nowplaysong),
+          type: "songTitle",
+        })
+        // .signal({
+        //   data : championSong.id,
+        //   type: "songId",
+        // })
+        .then(() => {
+          console.log("노래방 시그널 전송");
+          // console.log(video.id.videoId)
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log("전송 에러");
         });
-        this.session.signal({
-          data: this.champion_confirm,
-          type: "start_battle",
-        });
-        this.session.signal({
-          data: this.readyVideo,
-          type: "start_readyVideo",
-        });
-        // this.session.signal({
-        //   data: championSong.title,
-        //   type: "start_notice",
-        // });
-        // this.session.signal({
-        //   data: championSong.part4 + 10,
-        //   type: "start_nowplaytime",
-        // });
-        this.session.signal({
-          data: this.nowplaytime,
-          type: "start_timecounter",
-        });
-        this.selectedVideo = true;
-        this.session.signal({
-          data: this.selectedVideo,
-          type: "start_selectedVideo",
-        });
-        this.voteBtnShow = true;
-        this.session.signal({
-          data: this.voteBtnShow,
-          type: "start_voteBtnShow",
-        });
-        this.finish = false;
-        this.session.signal({
-          data: this.finish,
-          type: "start_finish",
-        });
-        this.session
-          .signal({
-            data: JSON.stringify(this.nowplaysong),
-            type: "songTitle",
-          })
-          // .signal({
-          //   data : championSong.id,
-          //   type: "songId",
-          // })
-          .then(() => {
-            console.log("노래방 시그널 전송");
-            // console.log(video.id.videoId)
-          })
-          .catch((err) => {
-            console.log(err);
-            console.log("전송 에러");
-          });
-        this.session.signal({
-          // data: championSong.part4 + 10,
-          data: 5,
-          type: "songTime",
-        });
-        console.log(this.$store.state.video);
-      }, 6000);
+      this.session.signal({
+        // data: championSong.part4 + 10,
+        data: 5,
+        type: "songTime",
+      });
+      console.log(this.$store.state.video);
     },
     battleApplication: function (championSong) {
       // console.log("222222222222222222222222222");
@@ -1108,15 +1122,14 @@ export default {
           this.publisher.publishAudio(false);
         }
       }),
-
-      // 노래가 끝난 후 nowPart를 다시 champion으로 초기화
-      this.session.on("signal:nowPartChampion", (event) => {
-        this.nowPart = event.data
-      })
+        // 노래가 끝난 후 nowPart를 다시 champion으로 초기화
+        this.session.on("signal:nowPartChampion", (event) => {
+          this.nowPart = event.data;
+        });
 
       // 노래 끝나면 모두 mute 해제
       this.session.on("signal:crowdMuteCancel", () => {
-          this.publisher.publishAudio(true);
+        this.publisher.publishAudio(true);
       }),
         // onSelectVideoSpread
         this.session.on("signal:onSelectVideoSpread", () => {
@@ -1454,16 +1467,16 @@ export default {
           alert(err);
         });
     },
-    getWaitingQueue(){
+    getWaitingQueue() {
       axios({
         method: "get",
         url:
           import.meta.env.VITE_APP_URL +
           `/api/v1/playrooms/getmember/${this.sessionId}`,
-       data: {
-        sessionId : this.sessionId,
-       },
-        })
+        data: {
+          sessionId: this.sessionId,
+        },
+      })
         .then((res) => {
           console.log("대기열불러오기 1395");
           console.log(res.data);
@@ -1488,8 +1501,8 @@ export default {
       // 다음 대결을 위해 nowPart 를 다시 champion으로 수정
       this.session.signal({
         data: "champion",
-        type: "nowPartChampion"
-      })
+        type: "nowPartChampion",
+      });
 
       if (this.sessionInfo.likeChampion >= this.sessionInfo.likeChallenger) {
         this.winner = "챔피언";
@@ -1599,14 +1612,12 @@ export default {
       this.sessionInfo.waitingQueue.push(data);
       axios({
         method: "post",
-        url:
-          import.meta.env.VITE_APP_URL +
-          `/api/v1/playrooms/addmember/`,
-       data: {
-        sessionId : this.sessionId,
-        challengerId : data,
-       },
-        })
+        url: import.meta.env.VITE_APP_URL + `/api/v1/playrooms/addmember/`,
+        data: {
+          sessionId: this.sessionId,
+          challengerId: data,
+        },
+      })
         .then((res) => {
           console.log("jjjjjjjjjjjjjjjj");
           console.log(res.data);
@@ -1655,23 +1666,20 @@ export default {
         // aa 플레이룸-도전자 삭제 (변수 선언)
         const data = this.sessionInfo.waitingQueue.shift();
         axios({
-        method: "delete",
-        url:
-          import.meta.env.VITE_APP_URL +
-          `/api/v1/playrooms/deletemember/`,
-       data: {
-        sessionId : this.sessionId,
-        challengerId : data,
-       },
+          method: "delete",
+          url: import.meta.env.VITE_APP_URL + `/api/v1/playrooms/deletemember/`,
+          data: {
+            sessionId: this.sessionId,
+            challengerId: data,
+          },
         })
-        .then((res) => {
-          console.log("1574"+"deleteWaitingQueue");
-          console.log(res);
-        })
-        .catch((err) => {
-          alert(err);
-        });
-
+          .then((res) => {
+            console.log("1574" + "deleteWaitingQueue");
+            console.log(res);
+          })
+          .catch((err) => {
+            alert(err);
+          });
 
         return data;
       }
@@ -2050,10 +2058,10 @@ input {
   height: 60px;
 }
 
-.championVideo{
+.championVideo {
   box-shadow: 0 0 200px blue;
 }
-.challengerVideo{
+.challengerVideo {
   box-shadow: 0 0 200px green;
 }
 
