@@ -230,6 +230,7 @@
       <v-btn @click="sendStartSignal()" color="green" variant="outlined"
         >확인</v-btn
       >
+      <!-- 취소 만들기 -->
     </div>
 
     <Modal ref="waitingQueueModal">
@@ -1158,10 +1159,7 @@ export default {
         // 방 멤버들 중 도전자 빈 화면 생성
         this.challengerStreamManager = undefined;
         // 방 멤버들 중 챔피언 화면 생성
-        this.setChampionStreamManager().then(() => {
-          // stream set 후 새로고침
-          window.location.reload(true);
-        });
+        this.setChampionStreamManager();
       });
 
       // 3. 게임 끝나고 다음 도전자가 있을 때
@@ -1178,11 +1176,7 @@ export default {
         // 방 멤버들 중 도전자 화면 생성
         this.setChallengerStreamManager();
         // 방 멤버들 중 챔피언 화면 생성
-        this.setChampionStreamManager()
-        .then(()=>{
-          // stream set 후 새로고침
-          window.location.reload(true);
-        });
+        this.setChampionStreamManager();
       });
 
       // aa 구조 파악 필요
@@ -1458,11 +1452,6 @@ export default {
           this.setChampionStreamManager();
           // 방 멤버들 중 도전자 화면 생성
           this.setChallengerStreamManager();
-        })
-        .then(() => {
-          // DB 반영,
-          // stream set 후 새로고침
-          window.location.reload(true);
         })
         .catch((err) => {
           alert(err);
