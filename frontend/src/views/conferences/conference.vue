@@ -939,7 +939,7 @@ export default {
           if (this.nowPart == "challenger") {
             this.session.signal({ data: "champion", type: "part_change" })
           }
-        }, 16 * 1000);
+        }, 21 * 1000);
   
         // this.partTimeCounter = this.partTime;
         // this.session.signal({ data: this.partTime, type: "time_reset" });
