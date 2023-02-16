@@ -68,7 +68,7 @@
         <v-row justify="space-between">
           <vue-countdown
             class="championCount"
-            :time="16 * 1000"
+            :time="20 * 1000"
             v-slot="{ seconds }"
             v-if="this.nowPart == 'champion'"
           >
@@ -96,7 +96,7 @@
           </vue-countdown>
           <vue-countdown
             class="challengerCount"
-            :time="16 * 1000"
+            :time="20 * 1000"
             v-slot="{ seconds }"
             v-if="this.nowPart == 'challenger'"
           >
