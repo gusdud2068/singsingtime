@@ -1158,11 +1158,10 @@ export default {
         // 방 멤버들 중 도전자 빈 화면 생성
         this.challengerStreamManager = undefined;
         // 방 멤버들 중 챔피언 화면 생성
-        this.setChampionStreamManager();
-
-        // 1초 쉬고 새로고침
-        // setTimeout(() => console.log("1초 후에 실행됨"), 1000);
-        // window.location.reload(true);
+        this.setChampionStreamManager().then(() => {
+          // stream set 후 새로고침
+          window.location.reload(true);
+        });
       });
 
       // 3. 게임 끝나고 다음 도전자가 있을 때
@@ -1176,14 +1175,14 @@ export default {
         this.sessionInfo.championSongList = JSON.parse(
           event.data
         ).championSongList;
-        // 방 멤버들 중 챔피언 화면 생성
-        this.setChampionStreamManager();
         // 방 멤버들 중 도전자 화면 생성
         this.setChallengerStreamManager();
-
-        // 1초 쉬고 새로고침
-        // setTimeout(() => console.log("1초 후에 실행됨"), 1000);
-        // window.location.reload(true);
+        // 방 멤버들 중 챔피언 화면 생성
+        this.setChampionStreamManager()
+        .then(()=>{
+          // stream set 후 새로고침
+          window.location.reload(true);
+        });
       });
 
       // aa 구조 파악 필요
@@ -1343,7 +1342,7 @@ export default {
         });
     },
     // 방 멤버들 중 챔피언 화면 생성
-    setChampionStreamManager() {
+    async setChampionStreamManager() {
       for (let user of this.members) {
         if (
           JSON.parse(user.stream.connection.data).clientId ==
@@ -1446,7 +1445,7 @@ export default {
           } else {
             this.sessionInfo.challenger = next;
             // DB 플레이룸 도전자 정보 수정3
-            alert("다음 도전자 있음, 도전자 수정")
+            alert("다음 도전자 있음, 도전자 수정");
             this.updateDBChallenger(this.sessionInfo.challenger);
             // challenger 다음 사람 전파
             this.session.signal({
@@ -1460,11 +1459,14 @@ export default {
           // 방 멤버들 중 도전자 화면 생성
           this.setChallengerStreamManager();
         })
+        .then(() => {
+          // DB 반영,
+          // stream set 후 새로고침
+          window.location.reload(true);
+        })
         .catch((err) => {
           alert(err);
         });
-      // 챔피언 화면 reload
-      // window.location.reload(true);
     },
     updateDBChallenger(newChallenger) {
       axios({
@@ -1538,7 +1540,7 @@ export default {
     dequeue() {
       if (this.sessionInfo.waitingQueue.length == 0) return "";
       else {
-        // aa 플레이룸-도전자 삭제
+        // aa 플레이룸-도전자 삭제 (변수 선언)
         return this.sessionInfo.waitingQueue.shift();
       }
     },
