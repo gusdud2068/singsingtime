@@ -68,7 +68,7 @@
         <v-row justify="space-between">
           <vue-countdown
             class="championCount"
-            :time="20 * 1000"
+            :time="21 * 1000"
             v-slot="{ seconds }"
             v-if="this.nowPart == 'champion'"
           >
@@ -96,7 +96,7 @@
           </vue-countdown>
           <vue-countdown
             class="challengerCount"
-            :time="20 * 1000"
+            :time="21 * 1000"
             v-slot="{ seconds }"
             v-if="this.nowPart == 'challenger'"
           >
@@ -1021,12 +1021,12 @@ export default {
       // console.log(this.myUserId)
       this.nowplaysong = championSong.title;
       // this.nowplaytime = (championSong.part4 + 10);
-      this.nowplaytime = 80 + 10;
+      this.nowplaytime = 120 + 10;
       // this.nowplaytime = 60;
       this.champion_confirm = true;
       this.session.signal({ data: championSong.title, type: "battleApply" });
       this.session.signal({
-        data: 80 + 10,
+        data: 120 + 10,
         type: "battleApplySongTime",
       });
       this.session.signal({ data: true, type: "battlemodalshow" });
