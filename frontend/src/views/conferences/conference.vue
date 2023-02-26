@@ -567,7 +567,7 @@ import VueCountdown from "@chenfengyuan/vue-countdown";
 import RoomChat from "./components/room-chat.vue";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
-const API_KEY = "AIzaSyBGF5ljIuwHbPn27YSImtkkgk8KooR8q7I";
+const API_KEY = "api_key";
 
 let blobs;
 let blob;
